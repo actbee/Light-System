@@ -12,6 +12,8 @@ public:
 	ofColor getcolor();
 	int getlength();
 	queue<ofPoint> body;
+	bool in_body(int inx,int iny);
+	void addlength();
 private:
 	int x;    //the head position
 	int y;

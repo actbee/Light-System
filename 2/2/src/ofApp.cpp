@@ -1,5 +1,25 @@
 #include "ofApp.h"
 
+void ofApp::check_snack_and_target() {
+	int sx = mysnack.getx();
+	int sy = mysnack.gety();
+	int tx = mytarget.get_x();
+	int ty = mytarget.get_y();
+	if (sx == tx && sy == ty) {
+		cout << "eat one! " << endl;
+		mysnack.addlength();
+
+		int random_x = (int)ofRandom(0, 15);
+		int random_y = (int)ofRandom(0, 10);
+		while (mysnack.in_body(random_x, random_y) == true) {
+			random_x = (int)ofRandom(0, 15);
+			random_y = (int)ofRandom(0, 10);
+		}
+		mytarget.setup(random_x, random_y, YELLOW);
+	}
+}
+
+//--------------------------------------------------------------
 void ofApp::beback() {
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
@@ -18,8 +38,17 @@ void ofApp::draw_snack() {
 	  mysnack.body.push(mysnack.body.front());
 	  mysnack.body.pop();
 	}
+	mycircles[mysnack.getx()][mysnack.gety()].setcolor(WHITE);
 }
 
+//--------------------------------------------------------------
+
+void ofApp::draw_target() {
+	ofColor color = mytarget.get_color();
+	int posx = mytarget.get_x();
+	int posy = mytarget.get_y();
+	mycircles[posx][posy].setcolor(color);
+}
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -30,7 +59,14 @@ void ofApp::setup(){
 				mycircles[x0][y0].setup(x, y);
 		}
 	}
-	mysnack.setup((int)ofRandom(0, 15), (int)ofRandom(0, 10),3, RED);
+	mysnack.setup(7,5,3, RED);
+	int random_x = (int)ofRandom(0, 15);
+	int random_y = (int)ofRandom(0, 10);
+	while (mysnack.in_body(random_x, random_y) == true) {
+		random_x = (int)ofRandom(0, 15);
+		random_y = (int)ofRandom(0, 10);
+	}
+	mytarget.setup(random_x, random_y, YELLOW);
 }
 
 //--------------------------------------------------------------
@@ -38,6 +74,7 @@ void ofApp::update(){
 	/*for (int i = 0; i < num_circles; i++) {
 		mycircles[i].update();
 	}*/
+	check_snack_and_target();
 }
 
 //--------------------------------------------------------------
@@ -46,6 +83,7 @@ void ofApp::draw(){
 	ofSetColor(255);
 	ofFill();
 	beback();
+	draw_target();
 	draw_snack();
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++){
@@ -57,34 +95,43 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	if (key == OF_KEY_LEFT) {
-		mysnack.add(-1, 0);
-		int xx = mysnack.getx();
-		if (xx == -1) {
-			mysnack.add(15, 0);
+		int nextx = mysnack.getx() - 1;
+		if (nextx == -1) {
+			mysnack.add(14, 0);
+		}
+		else {
+			mysnack.add(-1, 0);
 		}
 	}
 	else if (key == OF_KEY_RIGHT) {
-		mysnack.add(1, 0);
-		int xx = mysnack.getx();
-		if (xx ==15) {
-			mysnack.add(-15, 0);
+		int nextx = mysnack.getx() + 1;
+		if (nextx ==15) {
+			mysnack.add(-14, 0);
+		}
+		else {
+			mysnack.add(1, 0);
 		}
 	}
 	else if (key == OF_KEY_UP) {
-		mysnack.add(0, -1);
-		int yy = mysnack.gety();
-		if (yy == -1) {
-			mysnack.add(0,10);
+		int nexty = mysnack.gety() - 1;
+		if (nexty== -1) {
+			mysnack.add(0,9);
+		}
+		else {
+			mysnack.add(0, -1);
 		}
 	}
 	else if (key == OF_KEY_DOWN) {
-		mysnack.add(0, 1);
-		int yy = mysnack.gety();
-		if (yy ==10) {
-			mysnack.add(0, -10);
+		int nexty = mysnack.gety() + 1;
+		if (nexty ==10) {
+			mysnack.add(0, -9);
+		}
+		else {
+			mysnack.add(0, 1);
 		}
 	}
-	cout << "now: " << mysnack.getx() << " , " << mysnack.gety() << endl;
+	cout << "now head is : " << mysnack.getx() << " , " << mysnack.gety() << endl;
+
 }
 
 //--------------------------------------------------------------

@@ -192,11 +192,13 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\snack.cpp" />
+    <ClCompile Include="src\target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\circle.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\snack.h" />
+    <ClInclude Include="src\target.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

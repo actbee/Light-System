@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include"circle.h"
 #include"snack.h"
+#include"target.h"
+
 //#define num_circles 150
 const ofColor BLACK(0, 0, 0);
 const ofColor WHITE(255, 255, 255);
@@ -30,8 +32,11 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		void draw_snack();
+		void draw_target();
 		void beback();
+		void check_snack_and_target();
 
 		circle mycircles[15][10];
 		snack mysnack;
+		target mytarget;
 };
