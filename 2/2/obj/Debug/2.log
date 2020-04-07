@@ -1,0 +1,11 @@
+﻿  ofApp.cpp
+d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec3f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec2f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  2.vcxproj -> D:\Study\UNI\FINAL\final\2\2\bin\2_debug.exe
+  
+  	                   2	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\fmodex\lib\vs\Win32\
+  	  *多余文件   		 6018560	D:\Study\UNI\FINAL\final\2\2\bin\FreeImage.dll
+  
+  	                   1	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\FreeImage\lib\vs\Win32\
+  	  *多余文件   		 1266176	D:\Study\UNI\FINAL\final\2\2\bin\fmodex.dll
+  	  *多余文件   		 1312768	D:\Study\UNI\FINAL\final\2\2\bin\fmodexL.dll
