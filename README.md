@@ -12,6 +12,6 @@ Since most of the professors in PD actually do not care about the design of hard
 there is a great possibility that I can not gradute on time even though I finish this project normally.
 Think really hard about how to release a nice visual output. God helps me!
 
-<center>![LOOSE ENDS](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/1.png)</center>
+[LOOSE ENDS](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/1.png)
 
 
