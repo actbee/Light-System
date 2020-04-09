@@ -4,6 +4,10 @@
 #include"circle.h"
 #include"snack.h"
 #include"target.h"
+#include"character.h"
+#include"library.cpp"
+#include<vector>
+
 
 //#define num_circles 150
 const ofColor BLACK(0, 0, 0);
@@ -39,12 +43,11 @@ class ofApp : public ofBaseApp{
 		circle mycircles[15][10];
 		snack mysnack;
 		target mytarget;
-
+		character mycharacter;
 		//game system
 
 		int score;
 		string game_state;
 		void resetall();
-
 
 };
