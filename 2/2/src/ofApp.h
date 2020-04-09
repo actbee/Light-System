@@ -39,4 +39,12 @@ class ofApp : public ofBaseApp{
 		circle mycircles[15][10];
 		snack mysnack;
 		target mytarget;
+
+		//game system
+
+		int score;
+		string game_state;
+		void resetall();
+
+
 };

@@ -1,15 +1,36 @@
 #include"snack.h"
 
+
+ofPoint snack::get_before() {
+	return before_head;
+}
+
+bool  snack::dead() {
+	return is_dead;
+}
+
 void snack::setup(int inx, int iny, int inlength,ofColor incolor) {
-	x = inx;
-	y = iny;
+	head.x = inx;
+	head.y = iny;
 	color = incolor;
 	length = inlength;
-	for (int i = length - 1;  i >= 0; i--) {
-		int xx = x - i;
-		body.push(ofPoint(xx, y));
+	while(!body.empty()) {
+		body.pop();
 	}
+	for (int i = length - 1;  i >= 0; i--) {
+		int xx = head.x - i;
+		body.push(ofPoint(xx, head.y));
+	}
+	for (int i = 0; i < body.size(); i++) {
+		cout << body.front().x << "," << body.front().y << endl;
+		body.push(body.front());
+		body.pop();
+	}
+	is_dead = false;
+	before_head.x = head.x - 1;
+	before_head.y = head.y;
 }
+
 bool snack::in_body(int inx, int iny) {
 	bool check = false;
 	for (int i = 0; i < length; i++) {
@@ -23,27 +44,30 @@ bool snack::in_body(int inx, int iny) {
 }
 
 void snack::add(int inx, int iny) {
-	int newx =x+inx;
-	int newy=y+ iny;
+	int newx =head.x+inx;
+	int newy=head.y+ iny;
 	bool in=in_body(newx, newy);
 	if (in == false) {
-		x = newx;
-		y = newy;
+		before_head = head;
+		head.x = newx;
+		head.y = newy;
 		body.pop();
-		body.push(ofPoint(x, y));
+		body.push(ofPoint(head.x, head.y));
 	}
 	else {
-		cout << "add error." << endl;
+		if (newx == before_head.x&&newy==before_head.y) {
+			cout << "add error." << endl;
+		}
+		else {
+			is_dead = true;
+		}
 	}
 }
 
+ofPoint snack::get_head() {
+	return head;
+}
 
-int snack::getx() {
-	return x;
-}
-int snack::gety() {
-	return y;
-}
 ofColor snack::getcolor() {
 	return color;
 }
