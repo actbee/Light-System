@@ -10,4 +10,8 @@ I will update this document once I have finished most of the works.
 
 Since most of the professors in PD actually do not care about the design of hardwares and the code itself, 
 there is a great possibility that I can not gradute on time even though I finish this project normally.
-Think really hard about how to release a nice visual output. God help me.
+Think really hard about how to release a nice visual output. God helps me!
+
+<center>![LOOSE ENDS](https://i.pinimg.com/originals/a0/be/83/a0be83f9af14a545beba72d6e73ef367.jpg)</center>
+
+
