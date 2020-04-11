@@ -56,14 +56,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	resetall();
-}
-
-//------------------------------------------------------------
-
-void ofApp::resetall() {
-	game_state = "START";
-	score = 0;
+	ofSetFrameRate(60);
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -71,6 +64,17 @@ void ofApp::resetall() {
 			mycircles[x0][y0].setup(x, y);
 		}
 	}
+	resetall();
+}
+
+//------------------------------------------------------------
+
+void ofApp::resetall() {
+	ofSetFrameRate(60);
+	game_state = "START";
+	score = 0;
+	time = 0;
+	mycharacter.reset();
 	mysnack.setup(7, 5, 8, RED);
 	int random_x = (int)ofRandom(0, 15);
 	int random_y = (int)ofRandom(0, 10);
@@ -91,7 +95,18 @@ void ofApp::update() {
 	{
 		check_snack_and_target();
 	}
-	
+	else if (game_state == "OVER") {
+		ofSetFrameRate(5);
+		time += 1;
+		ofPoint topright= mycharacter.get_topright();
+		if (topright.x< 0) {
+			resetall();
+			game_state == "START";
+		}
+		else {
+			mycharacter.move(ofPoint(15 - time, 4));
+		}
+	}
 }
 
 //--------------------------------------------------------------

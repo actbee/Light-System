@@ -30,3 +30,25 @@ ofPoint character::get_topleft() {
 	return topleft;
 }
 
+ofPoint character::get_topright() {
+	int xx = topleft.x + 4;
+	int yy = topleft.y;
+	return ofPoint(xx, yy);
+}
+
+void character::reset() {
+	topleft.x = 1;
+	topleft.y = 1;
+	int transfer[5][4]= {
+		   {0,0,0,1},
+	       {0,0,1,1},
+	       {0,1,0,1},
+	       {0,0,0,1},
+	       {0,0,0,1}
+	};
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 4; j++) {
+			words[i][j] = transfer[i][j];
+		}
+	}
+}

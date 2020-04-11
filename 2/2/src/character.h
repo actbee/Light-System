@@ -10,6 +10,8 @@ public:
 	void change(int in[][4], int n);
 	int words[5][4];
 	ofPoint get_topleft();
+	ofPoint get_topright();
+	void reset();
 private:
 	ofPoint topleft;
 };

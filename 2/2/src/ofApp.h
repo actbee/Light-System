@@ -49,5 +49,5 @@ class ofApp : public ofBaseApp{
 		int score;
 		string game_state;
 		void resetall();
-
+		int time;
 };
