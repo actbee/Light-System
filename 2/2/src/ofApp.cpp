@@ -1,5 +1,4 @@
 #include "ofApp.h"
-
 extern const int one[5][4];
 
 void ofApp::check_snack_and_target() {
@@ -104,7 +103,7 @@ void ofApp::update() {
 			game_state == "START";
 		}
 		else {
-			mycharacter.move(ofPoint(15 - time, 4));
+			mycharacter.move(ofPoint(15 - time, 2));
 		}
 	}
 }

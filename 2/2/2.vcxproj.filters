@@ -27,6 +27,12 @@
     <ClCompile Include="src\target.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\character.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\library.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\circle.h">
@@ -39,6 +45,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\target.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\character.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\inc\Kinect.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,11 +1,7 @@
-﻿  ofApp.cpp
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec3f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec2f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  2.vcxproj -> D:\Study\UNI\FINAL\final\2\2\bin\2_debug.exe
-  
-  	                   2	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\fmodex\lib\vs\Win32\
-  	  *多余文件   		 6018560	D:\Study\UNI\FINAL\final\2\2\bin\FreeImage.dll
-  
-  	                   1	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\FreeImage\lib\vs\Win32\
-  	  *多余文件   		 1266176	D:\Study\UNI\FINAL\final\2\2\bin\fmodex.dll
-  	  *多余文件   		 1312768	D:\Study\UNI\FINAL\final\2\2\bin\fmodexL.dll
+﻿    正在创建库 bin\2_debug.lib 和对象 bin\2_debug.exp
+main.obj : error LNK2019: 无法解析的外部符号 GetDefaultKinectSensor，该符号在函数 main 中被引用
+C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\\Lib\x86\Kinect20.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
+C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\\Lib\x86\Kinect20.VisualGestureBuilder.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
+C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\\Lib\x86\Kinect20.Face.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
+C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\\Lib\x86\Kinect20.Fusion.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
+bin\2_debug.exe : fatal error LNK1120: 1 个无法解析的外部命令
