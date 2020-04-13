@@ -8,6 +8,7 @@
 #include"character.h"
 #include"library.cpp"
 #include<vector>
+#include<stack>
 
 
 //#define num_circles 150
@@ -44,7 +45,7 @@ class ofApp : public ofBaseApp{
 		circle mycircles[15][10];
 		snack mysnack;
 		target mytarget;
-		character mycharacter;
+		vector<character> mycharacters;
 		//game system
 
 		int score;
