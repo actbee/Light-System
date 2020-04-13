@@ -1,5 +1,5 @@
 #include "ofApp.h"
-extern const int one[5][4];
+extern const int one[7][4];
 
 void ofApp::check_snack_and_target() {
 	int sx = mysnack.get_head().x;
@@ -125,7 +125,7 @@ void ofApp::draw(){
 	}
 	else if (game_state == "OVER") {
 		vector<ofPoint> select;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (mycharacter.words[i][j] == 1) {
 					int posx = j + mycharacter.get_topleft().x;
@@ -197,81 +197,81 @@ void ofApp::keyPressed(int key) {
 		if (mysnack.dead() == true) {
 			game_state = "OVER";
 			cout << "your score is: " << score << endl;
-			int oo[5][4];
+			int oo[7][4];
 
 			switch (score) {
 			case 1:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = one[i][j];
 					}
 				}
 				break;
 			case 2:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = two[i][j];
 					}
 				}
 				break;
 			case 3:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = three[i][j];
 					}
 				}
 				break;
 			case 4:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = four[i][j];
 					}
 				}
 				break;
 			case 5:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = five[i][j];
 					}
 				}
 				break;
 			case 6:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i <7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = six[i][j];
 					}
 				}
 				break;
 			case 7:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = seven[i][j];
 					}
 				}
 				break;
 			case 8:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = eight[i][j];
 					}
 				}
 				break;
 			case 9:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = nine[i][j];
 					}
 				}
 				break;
 			default:
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 7; i++) {
 					for (int j = 0; j < 4; j++) {
 						oo[i][j] = zero[i][j];
 					}
 				}
 				break;
 			}
-			mycharacter.change(oo, 5);
+			mycharacter.change(oo, 7);
 		}
 	}
 	else if (game_state == "OVER") {

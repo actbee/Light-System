@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+//#include"ofxKinectForWindows2.h"
 #include"circle.h"
 #include"snack.h"
 #include"target.h"

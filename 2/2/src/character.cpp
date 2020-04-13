@@ -39,14 +39,16 @@ ofPoint character::get_topright() {
 void character::reset() {
 	topleft.x = 1;
 	topleft.y = 1;
-	int transfer[5][4]= {
-		   {0,0,0,1},
-	       {0,0,1,1},
-	       {0,1,0,1},
-	       {0,0,0,1},
-	       {0,0,0,1}
+    int transfer[7][4] = {
+	{1,1,1,1},
+	{1,0,0,1},
+	{1,0,0,1},
+	{1,0,0,1},
+	{1,0,0,1},
+	{1,0,0,1},
+	{1,1,1,1}
 	};
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i <7; i++) {
 		for (int j = 0; j < 4; j++) {
 			words[i][j] = transfer[i][j];
 		}

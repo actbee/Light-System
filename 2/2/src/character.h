@@ -8,7 +8,7 @@ public:
 	character(int in[][4], int n);
 	character();
 	void change(int in[][4], int n);
-	int words[5][4];
+	int words[7][4];
 	ofPoint get_topleft();
 	ofPoint get_topright();
 	void reset();
