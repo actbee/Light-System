@@ -123,7 +123,11 @@ void ofApp::update() {
 	else if (game_state == "TEST") {
 		ofSetFrameRate(3);
 		time += 1;
-		time = time % 5;
+		time = time %18;
+		int move = time-4;
+		if (move > 4) {
+			move = 9 - move;
+		}
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
 				my_img[i][j] = BLACK;
@@ -131,8 +135,18 @@ void ofApp::update() {
 		}
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
-				if (i + time < 11) {
-					switch (pixel_alien[i + time][j]) {
+				if (i + move < 11&&i+move>=0) {
+					int num;
+					if (time % 6 == 0 || time%6==2||time%6==4||time%6==5 ) {
+						num = pixel_alien[i + move][j];
+				   }
+					else if (time % 6 == 1) {
+						num = pixel_alien_l[i + move][j];
+					}
+					else if (time % 6 == 3) {
+						num = pixel_alien_r[i + move][j];
+					}
+					switch (num) {
 					case 0: {
 						my_img[i][j] = BLACK;
 						cout << "do black" << endl;
