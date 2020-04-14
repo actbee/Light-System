@@ -70,7 +70,8 @@ void ofApp::setup(){
 
 void ofApp::resetall() {
 	ofSetFrameRate(60);
-	game_state = "START";
+//	game_state = "START";
+	game_state = "TEST";
 	score =0;
 	time = 0;
 
@@ -87,6 +88,12 @@ void ofApp::resetall() {
 		random_y = (int)ofRandom(0, 10);
 	}
 	mytarget.setup(random_x, random_y, YELLOW);
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] =BLACK;
+		}
+	}
 }
 
 
@@ -113,6 +120,43 @@ void ofApp::update() {
 		game_state == "START";
 	}
 	}
+	else if (game_state == "TEST") {
+		ofSetFrameRate(3);
+		time += 1;
+		time = time % 5;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				my_img[i][j] = BLACK;
+			}
+		}
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				if (i + time < 11) {
+					switch (pixel_alien[i + time][j]) {
+					case 0: {
+						my_img[i][j] = BLACK;
+						cout << "do black" << endl;
+						break;
+					}
+					case 1: {
+						my_img[i][j] = RED;
+						cout << "do red" << endl;
+						break;
+					}
+					case 2: {
+						my_img[i][j] = PURPLE;
+						cout << "do blue" << endl;
+						break;
+					}
+					default: {
+						cout << "something is wrong!" << endl;
+					}
+					}
+				}
+			}
+		}
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -158,6 +202,14 @@ void ofApp::draw(){
 					mycircles[x0][y0].draw();
 
 				}
+			}
+		}
+	}
+	else if (game_state == "TEST") {
+		for (int x0 = 0; x0 < 15; x0++) {
+			for (int y0 = 0; y0 < 10; y0++) {
+				mycircles[x0][y0].setcolor(my_img[y0][x0]);
+				mycircles[x0][y0].draw();
 			}
 		}
 	}

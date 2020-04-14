@@ -17,6 +17,8 @@ const ofColor WHITE(255, 255, 255);
 const ofColor RED(255, 1, 52);
 const ofColor YELLOW(250, 240, 20);
 const ofColor GREEN(2, 233, 3);
+const ofColor PURPLE(230, 0, 230);
+const ofColor BLUE(0, 0, 150);
 
 class ofApp : public ofBaseApp{
 
@@ -52,4 +54,5 @@ class ofApp : public ofBaseApp{
 		string game_state;
 		void resetall();
 		int time;
+		ofColor my_img[10][15];
 };
