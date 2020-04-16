@@ -16,7 +16,7 @@ void ofApp::check_snack_and_target() {
 			random_x = (int)ofRandom(0, 15);
 			random_y = (int)ofRandom(0, 10);
 		}
-		mytarget.setup(random_x, random_y, YELLOW);
+		mytarget.setup(random_x, random_y, BLUE);
 	}
 }
 
@@ -41,7 +41,7 @@ void ofApp::draw_snack() {
 	}
 	int xx = mysnack.get_head().x;
 	int yy = mysnack.get_head().y;
-	mycircles[xx][yy].setcolor(WHITE);
+	mycircles[xx][yy].setcolor(RED);
 }
 
 //--------------------------------------------------------------
@@ -80,14 +80,14 @@ void ofApp::resetall() {
 	my_character.reset();
 	mycharacters.push_back(my_character);
 
-	mysnack.setup(7, 5, 8, RED);
+	mysnack.setup(7, 5, 8, PURPLE);
 	int random_x = (int)ofRandom(0, 15);
 	int random_y = (int)ofRandom(0, 10);
 	while (mysnack.in_body(random_x, random_y) == true) {
 		random_x = (int)ofRandom(0, 15);
 		random_y = (int)ofRandom(0, 10);
 	}
-	mytarget.setup(random_x, random_y, YELLOW);
+	mytarget.setup(random_x, random_y,BLUE);
 
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
@@ -109,22 +109,22 @@ void ofApp::update() {
 	else if (game_state == "OVER") {
 		ofSetFrameRate(5);
 		time += 1;
-			int before = 0;
-			for (vector<character>::iterator iter = mycharacters.begin(); iter != mycharacters.end(); iter++) {
-				iter->move(ofPoint(15 - time+before*5, 2));
-				before++;
-			}
-	ofPoint topright = mycharacters.back().get_topright();
-	if (topright.x < 0) {
-		resetall();
-		game_state == "START";
+		int before = 0;
+		for (vector<character>::iterator iter = mycharacters.begin(); iter != mycharacters.end(); iter++) {
+			iter->move(ofPoint(15 - time + before * 5, 2));
+			before++;
+		}
+		ofPoint topright = mycharacters.back().get_topright();
+		if (topright.x < 0) {
+			resetall();
+			game_state == "START";
+		}
 	}
-	}
-	else if (game_state == "TEST") {
+	/*else if (game_state == "TEST") {
 		ofSetFrameRate(3);
 		time += 1;
-		time = time %18;
-		int move = time-4;
+		time = time % 18;
+		int move = time - 4;
 		if (move > 4) {
 			move = 9 - move;
 		}
@@ -135,11 +135,11 @@ void ofApp::update() {
 		}
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
-				if (i + move < 11&&i+move>=0) {
+				if (i + move < 11 && i + move >= 0) {
 					int num;
-					if (time % 6 == 0 || time%6==2||time%6==4||time%6==5 ) {
+					if (time % 6 == 0 || time % 6 == 2 || time % 6 == 4 || time % 6 == 5) {
 						num = pixel_alien[i + move][j];
-				   }
+					}
 					else if (time % 6 == 1) {
 						num = pixel_alien_l[i + move][j];
 					}
@@ -149,17 +149,14 @@ void ofApp::update() {
 					switch (num) {
 					case 0: {
 						my_img[i][j] = BLACK;
-						cout << "do black" << endl;
 						break;
 					}
 					case 1: {
 						my_img[i][j] = RED;
-						cout << "do red" << endl;
 						break;
 					}
 					case 2: {
 						my_img[i][j] = PURPLE;
-						cout << "do blue" << endl;
 						break;
 					}
 					default: {
@@ -169,8 +166,56 @@ void ofApp::update() {
 				}
 			}
 		}
-	}
-
+	}  */
+	else if (game_state == "TEST") {
+		ofSetFrameRate(3);
+		time += 1;
+		time = time % 12;
+		if (time == 0) {
+			time = 1;
+		}
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				my_img[i][j] = BLACK;
+			}
+		}
+		for (int i = 1; i < 9; i++) {
+			for (int j = 3; j < 14; j++) {
+				int num=0;
+				if (time == 1 || time == 12) {
+					num = pixel_fly_one[i - 1][j - 3];
+				}
+				else if (time == 2 || time == 11) {
+					num = pixel_fly_two[i - 1][j - 3];
+				}
+				else if (time == 3|| time == 10) {
+					num = pixel_fly_three[i - 1][j - 3];
+				}
+				else if (time == 4 || time == 9) {
+					 num = pixel_fly_four[i - 1][j - 3];
+				}
+				else if (time == 5 || time == 8) {
+					 num = pixel_fly_five[i - 1][j - 3];
+				}
+				else if (time == 6 || time == 7) {
+					num = pixel_fly_six[i - 1][j - 3];
+				}
+				switch (num) {
+				case 0: {
+					my_img[i][j] = BLACK;
+					break;
+				}
+				case 1: {
+					my_img[i][j] = PURPLE;
+					break;
+				}
+				default: {
+					cout << "something is wrong!" << endl;
+				}
+				}
+			}
+		}
+	} 
 }
 
 //--------------------------------------------------------------

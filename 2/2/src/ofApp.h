@@ -18,7 +18,7 @@ const ofColor RED(255, 1, 52);
 const ofColor YELLOW(250, 240, 20);
 const ofColor GREEN(2, 233, 3);
 const ofColor PURPLE(230, 0, 230);
-const ofColor BLUE(0, 0, 150);
+const ofColor BLUE(57,189,255);
 
 class ofApp : public ofBaseApp{
 
