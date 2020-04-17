@@ -70,3 +70,13 @@ void depthimage::exit() {
 	kinectsensor->Release();
 	depthframereader->Release();
 }
+
+depthimage::depthimage() {
+	if (!InitialKinectV2()) {
+		std::cout << "error!!" << std::endl;
+	}
+}
+
+depthimage::~depthimage() {
+	exit();
+}

@@ -19,68 +19,117 @@ int main( ){
 
 // Standard Library
 #include <iostream>
-// OpenCV Header
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
 
-// Kinect for Windows SDK Header
-#include <Kinect.h>
+#include"ofMain.h"
+#include"ofApp.h"
+
 
 using namespace std;
 
-int main(int argc, char** argv)
+int main()
 {
+
+	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
+	ofRunApp(new ofApp());
+
+	
 	// 1a. Get default Sensor
+	cout << "Try to get default sensor" << endl;
 	IKinectSensor* pSensor = nullptr;
-	GetDefaultKinectSensor(&pSensor);
+	if (GetDefaultKinectSensor(&pSensor) != S_OK)
+	{
+		cerr << "Get Sensor failed" << endl;
+		return -1;
+	}
 
 	// 1b. Open sensor
-	pSensor->Open();
+	cout << "Try to open sensor" << endl;
+	if (pSensor->Open() != S_OK)
+	{
+		cerr << "Can't open sensor" << endl;
+		return -1;
+	}
 
 	// 2a. Get frame source
-	IDepthFrameSource* pFrameSource = nullptr;
-	pSensor->get_DepthFrameSource(&pFrameSource);
+	cout << "Try to get body index source" << endl;
+	IBodyIndexFrameSource* pFrameSource = nullptr;
+	if (pSensor->get_BodyIndexFrameSource(&pFrameSource) != S_OK)
+	{
+		cerr << "Can't get body index frame source" << endl;
+		return -1;
+	}
 
 	// 2b. Get frame description
-	int        iWidth = 0;
-	int        iHeight = 0;
+	cout << "get body index frame description" << endl;
+	int		iWidth = 0;
+	int		iHeight = 0;
 	IFrameDescription* pFrameDescription = nullptr;
-	pFrameSource->get_FrameDescription(&pFrameDescription);
-	pFrameDescription->get_Width(&iWidth);
-	pFrameDescription->get_Height(&iHeight);
+	if (pFrameSource->get_FrameDescription(&pFrameDescription) == S_OK)
+	{
+		pFrameDescription->get_Width(&iWidth);
+		pFrameDescription->get_Height(&iHeight);
+	}
 	pFrameDescription->Release();
 	pFrameDescription = nullptr;
 
-	// 2c. get some dpeth only meta
-	UINT16 uDepthMin = 0, uDepthMax = 0;
-	pFrameSource->get_DepthMinReliableDistance(&uDepthMin);
-	pFrameSource->get_DepthMaxReliableDistance(&uDepthMax);
-	cout << "Reliable Distance: "
-		<< uDepthMin << " ¨C " << uDepthMax << endl;
-
-	// perpare OpenCV
-	cv::Mat mDepthImg(iHeight, iWidth, CV_16UC1);
-	cv::Mat mImg8bit(iHeight, iWidth, CV_8UC1);
-	cv::namedWindow("Depth Map");
-
 	// 3a. get frame reader
-	IDepthFrameReader* pFrameReader = nullptr;
-	pFrameSource->OpenReader(&pFrameReader);
+	cout << "Try to get body index frame reader" << endl;
+	IBodyIndexFrameReader* pFrameReader = nullptr;
+	if (pFrameSource->OpenReader(&pFrameReader) != S_OK)
+	{
+		cerr << "Can't get body index frame reader" << endl;
+		return -1;
+	}
+
+	// 2c. release Frame source
+	cout << "Release frame source" << endl;
+	pFrameSource->Release();
+	pFrameSource = nullptr;
+
+	// Prepare OpenCV data
+	cv::Mat	mImg(iHeight, iWidth, CV_8UC3);
+	cv::namedWindow("Body Index Image");
+
+	// color array
+	cv::Vec3b aColorTable[7] = {
+		cv::Vec3b(255,0,0),
+		cv::Vec3b(0,255,0),
+		cv::Vec3b(0,0,255),
+		cv::Vec3b(255,255,0),
+		cv::Vec3b(255,0,255),
+		cv::Vec3b(0,255,255),
+		cv::Vec3b(0,0,0),
+	};
 
 	// Enter main loop
 	while (true)
 	{
 		// 4a. Get last frame
-		IDepthFrame* pFrame = nullptr;
+		IBodyIndexFrame* pFrame = nullptr;
 		if (pFrameReader->AcquireLatestFrame(&pFrame) == S_OK)
 		{
-			// 4c. copy the depth map to image
-			pFrame->CopyFrameDataToArray(iWidth * iHeight,
-				reinterpret_cast<UINT16*>(mDepthImg.data));
-
-			// 4d. convert from 16bit to 8bit
-			mDepthImg.convertTo(mImg8bit, CV_8U, 255.0f / uDepthMax);
-			cv::imshow("Depth Map", mImg8bit);
+			// 4c. Fill OpenCV image
+			UINT uSize = 0;
+			BYTE* pBuffer = nullptr;
+			if (pFrame->AccessUnderlyingBuffer(&uSize, &pBuffer) == S_OK)
+			{
+				for (int y = 0; y < iHeight; ++y)
+				{
+					for (int x = 0; x < iWidth; ++x)
+					{
+						int uBodyIdx = pBuffer[x + y * iWidth];
+						if (uBodyIdx < 6)
+							mImg.at<cv::Vec3b>(y, x) = aColorTable[uBodyIdx];
+						else
+							mImg.at<cv::Vec3b>(y, x) = aColorTable[6];
+					}
+				}
+				cv::imshow("Body Index Image", mImg);
+			}
+			else
+			{
+				cerr << "Data access error" << endl;
+			}
 
 			// 4e. release frame
 			pFrame->Release();
@@ -93,19 +142,19 @@ int main(int argc, char** argv)
 	}
 
 	// 3b. release frame reader
+	cout << "Release frame reader" << endl;
 	pFrameReader->Release();
 	pFrameReader = nullptr;
 
-	// 2d. release Frame source
-	pFrameSource->Release();
-	pFrameSource = nullptr;
-
 	// 1c. Close Sensor
+	cout << "close sensor" << endl;
 	pSensor->Close();
 
 	// 1d. Release Sensor
+	cout << "Release sensor" << endl;
 	pSensor->Release();
 	pSensor = nullptr;
 
 	return 0;
+	
 }

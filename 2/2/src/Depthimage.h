@@ -3,11 +3,14 @@
 #include<Kinect.h>
 class depthimage {
 public:
+	depthimage();
+	~depthimage();
 	void exit();
+	ofImage display;
+	void UpdateKinectV2();
+
 private:
 	bool InitialKinectV2();
-	void UpdateKinectV2();
-	ofImage display;
 	IKinectSensor* kinectsensor;
 	IDepthFrameReader* depthframereader;
 };

@@ -9,6 +9,16 @@
 #include"library.cpp"
 #include<vector>
 #include<stack>
+#include"Depthimage.h"
+
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include"ofMain.h"
+#include"ofApp.h"
+// Kinect for Windows SDK Header
+#include <Kinect.h>
+
 
 
 //#define num_circles 150
@@ -55,4 +65,7 @@ class ofApp : public ofBaseApp{
 		void resetall();
 		int time;
 		ofColor my_img[10][15];
+
+		depthimage myKinect;
+
 };
