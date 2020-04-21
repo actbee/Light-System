@@ -222,6 +222,28 @@ int main()
 							DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);
 							*/
+
+							float x1 = aJoints[JointType_ElbowLeft].Position.X;
+							float y1 = aJoints[JointType_ElbowLeft].Position.Y;
+							float x2 = aJoints[JointType_ThumbLeft].Position.X;
+							float y2 = aJoints[JointType_ThumbLeft].Position.Y;
+							float k = (x2 - x1) / (y2 - y1);
+							if (-1 <= k < 1) {
+								if (x2 > x1) {
+									cout << "right" << endl;
+								}
+								else if (x2 <= x1) {
+									cout << "left" << endl;
+								}
+							}
+							else {
+								if (y2 > y1) {
+									cout << "up" << endl;
+								}
+								else if (y2 <= y1) {
+									cout << "down" << endl;
+								}
+							}
 						}
 					}
 				}
