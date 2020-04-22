@@ -8,9 +8,13 @@ public:
 	void exit();
 	ofImage display;
 	void UpdateKinectV2();
+	int get_elbow_direction();
 
 private:
 	bool InitialKinectV2();
 	IKinectSensor* kinectsensor;
 	IDepthFrameReader* depthframereader;
+	IBodyFrameReader* bodyframereader;
+	IBody** BodyData;
+	IBodyFrameSource* framesource;
 };

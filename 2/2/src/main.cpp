@@ -26,39 +26,49 @@ int main( ){
 
 using namespace std;
 
-int main(int argc, char** argv)
+void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapper* pCMapper)
+{
+	if (rJ1.TrackingState == TrackingState_NotTracked || rJ2.TrackingState == TrackingState_NotTracked)
+		return;
+
+	ColorSpacePoint ptJ1, ptJ2;
+	pCMapper->MapCameraPointToColorSpace(rJ1.Position, &ptJ1);
+	pCMapper->MapCameraPointToColorSpace(rJ2.Position, &ptJ2);
+
+	cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(0, 0, 255), 5);
+}
+
+int main()
 {
 
 	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
-	//ofRunApp(new ofApp());
+	ofRunApp(new ofApp());
 
-	
-	// 1. Sensor related code
+	/*
+	// 1a. Get default Sensor
 	cout << "Try to get default sensor" << endl;
 	IKinectSensor* pSensor = nullptr;
+	if (GetDefaultKinectSensor(&pSensor) != S_OK)
 	{
-		if (GetDefaultKinectSensor(&pSensor) != S_OK)
-		{
-			cerr << "Get Sensor failed" << endl;
-			return -1;
-		}
-
-		cout << "Try to open sensor" << endl;
-		if (pSensor->Open() != S_OK)
-		{
-			cerr << "Can't open sensor" << endl;
-			return -1;
-		}
+		cerr << "Get Sensor failed" << endl;
+		return -1;
 	}
 
-	// 2. Color related code
-	IColorFrameReader* pColorFrameReader = nullptr;
-	UINT uColorBufferSize = 0;
-	UINT uColorPointNum = 0;
-	int iColorWidth = 0, iColorHeight = 0;
-	cout << "Try to get color source" << endl;
+	// 1b. Open sensor
+	cout << "Try to open sensor" << endl;
+	if (pSensor->Open() != S_OK)
 	{
-		// Get frame source
+		cerr << "Can't open sensor" << endl;
+		return -1;
+	}
+
+	// 2. Color Related code
+	IColorFrameReader* pColorFrameReader = nullptr;
+	cv::Mat	mColorImg;
+	UINT uBufferSize = 0;
+	{
+		// 2a. Get color frame source
+		cout << "Try to get color source" << endl;
 		IColorFrameSource* pFrameSource = nullptr;
 		if (pSensor->get_ColorFrameSource(&pFrameSource) != S_OK)
 		{
@@ -66,21 +76,20 @@ int main(int argc, char** argv)
 			return -1;
 		}
 
-		// Get frame description
+		// 2b. Get frame description
 		cout << "get color frame description" << endl;
+		int		iWidth = 0;
+		int		iHeight = 0;
 		IFrameDescription* pFrameDescription = nullptr;
 		if (pFrameSource->get_FrameDescription(&pFrameDescription) == S_OK)
 		{
-			pFrameDescription->get_Width(&iColorWidth);
-			pFrameDescription->get_Height(&iColorHeight);
-
-			uColorPointNum = iColorWidth * iColorHeight;
-			uColorBufferSize = uColorPointNum * 4 * sizeof(BYTE);
+			pFrameDescription->get_Width(&iWidth);
+			pFrameDescription->get_Height(&iHeight);
 		}
 		pFrameDescription->Release();
 		pFrameDescription = nullptr;
 
-		// get frame reader
+		// 2c. get frame reader
 		cout << "Try to get color frame reader" << endl;
 		if (pFrameSource->OpenReader(&pColorFrameReader) != S_OK)
 		{
@@ -88,197 +97,198 @@ int main(int argc, char** argv)
 			return -1;
 		}
 
-		// release Frame source
+		// 2d. release Frame source
 		cout << "Release frame source" << endl;
 		pFrameSource->Release();
 		pFrameSource = nullptr;
+
+		// Prepare OpenCV data
+		mColorImg = cv::Mat(iHeight, iWidth, CV_8UC4);
+		uBufferSize = iHeight * iWidth * 4 * sizeof(BYTE);
 	}
 
-	// 3. Depth related code
-	IDepthFrameReader* pDepthFrameReader = nullptr;
-	UINT uDepthPointNum = 0;
-	int iDepthWidth = 0, iDepthHeight = 0;
-	cout << "Try to get depth source" << endl;
+	// 3. Body related code
+	IBodyFrameReader* pBodyFrameReader = nullptr;
+	IBody** aBodyData = nullptr;
+	INT32 iBodyCount = 0;
 	{
-		// Get frame source
-		IDepthFrameSource* pFrameSource = nullptr;
-		if (pSensor->get_DepthFrameSource(&pFrameSource) != S_OK)
+		// 3a. Get frame source
+		cout << "Try to get body source" << endl;
+		IBodyFrameSource* pFrameSource = nullptr;
+		if (pSensor->get_BodyFrameSource(&pFrameSource) != S_OK)
 		{
-			cerr << "Can't get depth frame source" << endl;
+			cerr << "Can't get body frame source" << endl;
 			return -1;
 		}
 
-		// Get frame description
-		cout << "get depth frame description" << endl;
-		IFrameDescription* pFrameDescription = nullptr;
-		if (pFrameSource->get_FrameDescription(&pFrameDescription) == S_OK)
+		// 3b. Get the number of body
+		if (pFrameSource->get_BodyCount(&iBodyCount) != S_OK)
 		{
-			pFrameDescription->get_Width(&iDepthWidth);
-			pFrameDescription->get_Height(&iDepthHeight);
-			uDepthPointNum = iDepthWidth * iDepthHeight;
+			cerr << "Can't get body count" << endl;
+			return -1;
 		}
-		pFrameDescription->Release();
-		pFrameDescription = nullptr;
+		cout << " > Can trace " << iBodyCount << " bodies" << endl;
+		aBodyData = new IBody*[iBodyCount];
+		for (int i = 0; i < iBodyCount; ++i)
+			aBodyData[i] = nullptr;
 
-		// get frame reader
-		cout << "Try to get depth frame reader" << endl;
-		if (pFrameSource->OpenReader(&pDepthFrameReader) != S_OK)
+		// 3c. get frame reader
+		cout << "Try to get body frame reader" << endl;
+		if (pFrameSource->OpenReader(&pBodyFrameReader) != S_OK)
 		{
-			cerr << "Can't get depth frame reader" << endl;
+			cerr << "Can't get body frame reader" << endl;
 			return -1;
 		}
 
-		// release Frame source
+		// 3d. release Frame source
 		cout << "Release frame source" << endl;
 		pFrameSource->Release();
 		pFrameSource = nullptr;
 	}
 
-	// 4. Body Index releated code
-	IBodyIndexFrameReader* pBIFrameReader = nullptr;
-	cout << "Try to get body index source" << endl;
-	{
-		// Get frame source
-		IBodyIndexFrameSource* pFrameSource = nullptr;
-		if (pSensor->get_BodyIndexFrameSource(&pFrameSource) != S_OK)
-		{
-			cerr << "Can't get body index frame source" << endl;
-			return -1;
-		}
-
-		// get frame reader
-		cout << "Try to get body index frame reader" << endl;
-		if (pFrameSource->OpenReader(&pBIFrameReader) != S_OK)
-		{
-			cerr << "Can't get depth frame reader" << endl;
-			return -1;
-		}
-
-		// release Frame source
-		cout << "Release frame source" << endl;
-		pFrameSource->Release();
-		pFrameSource = nullptr;
-	}
-
-	// 5. Coordinate Mapper
+	// 4. get CoordinateMapper
 	ICoordinateMapper* pCoordinateMapper = nullptr;
 	if (pSensor->get_CoordinateMapper(&pCoordinateMapper) != S_OK)
 	{
-		cerr << "get_CoordinateMapper failed" << endl;
+		cout << "Can't get coordinate mapper" << endl;
 		return -1;
 	}
 
-	// 6. OpenCV code
-	cv::namedWindow("Background Remove");
-	cv::Mat	imgColor(iColorHeight, iColorWidth, CV_8UC4);
-
-	// 7. Load background
-	cv::Mat imgBG(iColorHeight, iColorWidth, CV_8UC3);
-	if (argc > 1)
-	{
-		cv::Mat imgSrc = cv::imread(argv[1]);
-		cv::resize(imgSrc, imgBG, cv::Size(iColorWidth, iColorHeight));
-	}
-	else
-	{
-		imgBG.setTo(128);
-	}
-
-	// 8. Enter main loop
-	UINT16*				pDepthPoints = new UINT16[uDepthPointNum];
-	BYTE*				pBodyIndex = new BYTE[uDepthPointNum];
-	DepthSpacePoint*	pPointArray = new DepthSpacePoint[uColorPointNum];
+	// Enter main loop
+	cv::namedWindow("Body Image");
 	while (true)
 	{
-		// 8a. Read color frame
+		// 4a. Get last frame
 		IColorFrame* pColorFrame = nullptr;
 		if (pColorFrameReader->AcquireLatestFrame(&pColorFrame) == S_OK)
 		{
-			pColorFrame->CopyConvertedFrameDataToArray(uColorBufferSize, imgColor.data, ColorImageFormat_Bgra);
-			pColorFrame->Release();
-			pColorFrame = nullptr;
-		}
-
-		// 8b. read depth frame
-		IDepthFrame* pDepthFrame = nullptr;
-		if (pDepthFrameReader->AcquireLatestFrame(&pDepthFrame) == S_OK)
-		{
-			pDepthFrame->CopyFrameDataToArray(uDepthPointNum, pDepthPoints);
-			pDepthFrame->Release();
-			pDepthFrame = nullptr;
-		}
-
-		// 8c. read body index frame
-		IBodyIndexFrame* pBIFrame = nullptr;
-		if (pBIFrameReader->AcquireLatestFrame(&pBIFrame) == S_OK)
-		{
-			pBIFrame->CopyFrameDataToArray(uDepthPointNum, pBodyIndex);
-			pBIFrame->Release();
-			pBIFrame = nullptr;
-		}
-
-		// 9a. make a copy of background
-		cv::Mat imgTarget = imgBG.clone();
-
-		// 9b. map color to depth
-		if (pCoordinateMapper->MapColorFrameToDepthSpace(uDepthPointNum, pDepthPoints, uColorPointNum, pPointArray) == S_OK)
-		{
-			for (int y = 0; y < imgColor.rows; ++y)
+			// 4c. Copy to OpenCV image
+			if (pColorFrame->CopyConvertedFrameDataToArray(uBufferSize, mColorImg.data, ColorImageFormat_Bgra) != S_OK)
 			{
-				for (int x = 0; x < imgColor.cols; ++x)
-				{
-					// ( x, y ) in color frame = rPoint in depth frame
-					const DepthSpacePoint& rPoint = pPointArray[y * imgColor.cols + x];
+				cerr << "Data copy error" << endl;
+			}
 
-					// check if rPoint is in range
-					if (rPoint.X >= 0 && rPoint.X < iDepthWidth && rPoint.Y >= 0 && rPoint.Y < iDepthHeight)
+			// 4e. release frame
+			pColorFrame->Release();
+		}
+		cv::Mat mImg = mColorImg.clone();
+
+		// 4b. Get body data
+		IBodyFrame* pBodyFrame = nullptr;
+		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)
+		{
+			// 4b. get Body data
+			if (pBodyFrame->GetAndRefreshBodyData(iBodyCount, aBodyData) == S_OK)
+			{
+				// 4c. for each body
+				for (int i = 0; i < iBodyCount; ++i)
+				{
+					IBody* pBody = aBodyData[i];
+
+					// check if is tracked
+					BOOLEAN bTracked = false;
+					if ((pBody->get_IsTracked(&bTracked) == S_OK) && bTracked)
 					{
-						// fill color from color frame if this pixel is user
-						int iIdx = (int)rPoint.X + iDepthWidth * (int)rPoint.Y;
-						if (pBodyIndex[iIdx] < 6)
+						// get joint position
+						Joint aJoints[JointType::JointType_Count];
+						if (pBody->GetJoints(JointType::JointType_Count, aJoints) == S_OK)
 						{
-							cv::Vec4b& rPixel = imgColor.at<cv::Vec4b>(y, x);
-							imgTarget.at<cv::Vec3b>(y, x) = cv::Vec3b(rPixel[0], rPixel[1], rPixel[2]);
+							DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_SpineMid], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_SpineMid], aJoints[JointType_SpineShoulder], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_Neck], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_Neck], aJoints[JointType_Head], pCoordinateMapper);
+
+							DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_ShoulderLeft], aJoints[JointType_ElbowLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_WristLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_WristLeft], aJoints[JointType_HandLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_HandLeft], aJoints[JointType_HandTipLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_HandLeft], aJoints[JointType_ThumbLeft], pCoordinateMapper);
+
+							DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_ShoulderRight], aJoints[JointType_ElbowRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_WristRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_WristRight], aJoints[JointType_HandRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_HandRight], aJoints[JointType_HandTipRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_HandRight], aJoints[JointType_ThumbRight], pCoordinateMapper);
+							/*
+							DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_HipLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_HipLeft], aJoints[JointType_KneeLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_KneeLeft], aJoints[JointType_AnkleLeft], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_AnkleLeft], aJoints[JointType_FootLeft], pCoordinateMapper);
+
+							DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_HipRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_HipRight], aJoints[JointType_KneeRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
+							DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);
+							
+
+							float x1 = aJoints[JointType_ElbowLeft].Position.X;
+							float y1 = aJoints[JointType_ElbowLeft].Position.Y;
+							float x2 = aJoints[JointType_ThumbLeft].Position.X;
+							float y2 = aJoints[JointType_ThumbLeft].Position.Y;
+							float k = (x2 - x1) / (y2 - y1);
+							if (-1 <= k < 1) {
+								if (x2 > x1) {
+									cout << "right" << endl;
+								}
+								else if (x2 <= x1) {
+									cout << "left" << endl;
+								}
+							}
+							else {
+								if (y2 > y1) {
+									cout << "up" << endl;
+								}
+								else if (y2 <= y1) {
+									cout << "down" << endl;
+								}
+							}
 						}
 					}
 				}
 			}
+			else
+			{
+				cerr << "Can't read body data" << endl;
+			}
 
-			cv::imshow("Background Remove", imgTarget);
+			// 4e. release frame
+			pBodyFrame->Release();
 		}
 
-		// check keyboard input
+		// show image
+		cv::resize(mImg, mImg, cv::Size(800, 600), 0, 0, 1);
+		cv::imshow("Body Image", mImg);
+
+		// 4c. check keyboard input
 		if (cv::waitKey(30) == VK_ESCAPE) {
 			break;
 		}
 	}
-	delete[] pPointArray;
-	delete[] pBodyIndex;
-	delete[] pDepthPoints;
 
-	// release coordinate mapper
-	cout << "Release coordinate mapper" << endl;
-	pCoordinateMapper->Release();
-	pCoordinateMapper = nullptr;
+	// 3. delete body data array
+	delete[] aBodyData;
 
-	// release frame reader
-	cout << "Release frame reader" << endl;
+	// 3. release frame reader
+	cout << "Release body frame reader" << endl;
+	pBodyFrameReader->Release();
+	pBodyFrameReader = nullptr;
+
+	// 2. release color frame reader
+	cout << "Release color frame reader" << endl;
 	pColorFrameReader->Release();
 	pColorFrameReader = nullptr;
-	pDepthFrameReader->Release();
-	pDepthFrameReader = nullptr;
-	pBIFrameReader->Release();
-	pBIFrameReader = nullptr;
 
-	// Close Sensor
+	// 1c. Close Sensor
 	cout << "close sensor" << endl;
 	pSensor->Close();
 
-	// Release Sensor
+	// 1d. Release Sensor
 	cout << "Release sensor" << endl;
 	pSensor->Release();
 	pSensor = nullptr;
-
+	*/
 	return 0;
 	
 }

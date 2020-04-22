@@ -58,7 +58,7 @@ void ofApp::setup(){
 
 	ofSetFrameRate(60);
 	
-	/*
+	
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -67,15 +67,15 @@ void ofApp::setup(){
 		}
 	}
 	resetall();
-	*/
+	
 }
 
 //------------------------------------------------------------
 
 void ofApp::resetall() {
 	ofSetFrameRate(60);
-//	game_state = "START";
-	game_state = "TEST";
+	game_state = "START";
+//	game_state = "TEST";
 	score =0;
 	time = 0;
 
@@ -106,10 +106,28 @@ void ofApp::update() {
 	/*for (int i = 0; i < num_circles; i++) {
 		mycircles[i].update();
 	}*/
-	myKinect.UpdateKinectV2();
-	/*
+	//myKinect.UpdateKinectV2();
 	if (game_state == "START")
 	{
+		ofSetFrameRate(3);
+		int control=myKinect.get_elbow_direction();
+		//cout << control << endl;
+		control = 1;
+		switch (control) {
+		case 1:
+			keyPressed(OF_KEY_RIGHT);
+			break;
+		case 2:
+			keyPressed(OF_KEY_UP);
+			break;
+		case 3:
+			keyPressed(OF_KEY_LEFT);
+			break;
+		case 4:
+			keyPressed(OF_KEY_DOWN);
+			break;
+		}
+
 		check_snack_and_target();
 	}
 	else if (game_state == "OVER") {
@@ -172,7 +190,7 @@ void ofApp::update() {
 				}
 			}
 		}
-	}  
+	}  */
 	else if (game_state == "TEST") {
 		ofSetFrameRate(3);
 		time += 1;
@@ -223,13 +241,13 @@ void ofApp::update() {
 		}
 	} 
 
-	*/
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	myKinect.display.draw(0,0);
-	/*
+	//myKinect.display.draw(0,0);
+	
 	ofBackground(50);
 	ofSetColor(255);
 	ofFill();
@@ -282,7 +300,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	*/
+
 }
 
 //--------------------------------------------------------------

@@ -1,6 +1,9 @@
 #include"Depthimage.h"
 
 bool depthimage::InitialKinectV2() {
+	bodyframereader = nullptr;
+	BodyData = nullptr;
+	framesource = nullptr;
 	HRESULT hr_;
 	hr_ = GetDefaultKinectSensor(& kinectsensor);
 	if (FAILED(hr_)) {
@@ -67,6 +70,7 @@ void depthimage::UpdateKinectV2() {
 }
 
 void depthimage::exit() {
+	kinectsensor->Close();
 	kinectsensor->Release();
 	depthframereader->Release();
 }
@@ -79,4 +83,77 @@ depthimage::depthimage() {
 
 depthimage::~depthimage() {
 	exit();
+}
+
+int depthimage::get_elbow_direction() {
+	int direction = 0; //1 means left, 2 up, 3 right, 4 down
+	bodyframereader = nullptr;
+	BodyData = nullptr;
+	INT32 iBodyCount = 0;
+
+	framesource = nullptr;
+	if (kinectsensor->get_BodyFrameSource(&framesource) != S_OK) {
+		cerr << "cant get body frame source" << endl;
+		return -1;
+	}
+	if (framesource->get_BodyCount(&iBodyCount) != S_OK) {
+		cerr << "can not get body count" << endl;
+	}
+	BodyData = new IBody*[iBodyCount];
+	for (int i = 0; i < iBodyCount; i++) {
+		BodyData[i] = nullptr;
+	}
+	if (framesource->OpenReader(&bodyframereader) != S_OK) {
+		cerr << "can not get body frame reader" << endl;
+		return -1;
+	}
+	framesource->Release();
+	framesource = nullptr;
+	IBodyFrame* bodyframe = nullptr;
+	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
+		for (int i = 0; i < iBodyCount; i++) {
+			IBody* body = BodyData[i];
+			BOOLEAN track = false;
+			if ((body->get_IsTracked(&track) == S_OK) && track) {
+				Joint joints[JointType::JointType_Count];
+				if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+					float x1 = joints[JointType_ElbowLeft].Position.X;
+					float y1 = joints[JointType_ElbowLeft].Position.Y;
+					float x2 = joints[JointType_ThumbLeft].Position.X;
+					float y2 = joints[JointType_ThumbLeft].Position.Y;
+					float k = (x2 - x1) / (y2 - y1);
+					if (-1 <= k < 1) {
+						if (x2 > x1) {
+							cout << "right" << endl;
+							direction=1;
+						}
+						else if (x2 <= x1) {
+							cout << "left" << endl;
+							direction=3;
+						}
+					}
+					else {
+						if (y2 > y1) {
+							cout << "up" << endl;
+							direction=2;
+						}
+						else if (y2 <= y1) {
+							cout << "down" << endl;
+							direction=4;
+						}
+					}
+				}
+				else {
+					cerr << "can not read body data" << endl;
+				}
+				bodyframe->Release();
+			}
+		}
+	}
+	delete[] BodyData;
+	bodyframereader->Release();
+	bodyframereader = nullptr;
+
+
+	return direction;
 }
