@@ -52,7 +52,7 @@ int main()
 {
 
 	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
-	ofRunApp(new ofApp());
+//	ofRunApp(new ofApp());
 
 	
 	// 1a. Get default Sensor
@@ -236,10 +236,10 @@ int main()
 							DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);
 							*/
 							
-							float x1 = aJoints[JointType_ElbowLeft].Position.X;
-							float y1 = aJoints[JointType_ElbowLeft].Position.Y;
-							float x2 = aJoints[JointType_HandLeft].Position.X;
-							float y2 = aJoints[JointType_HandLeft].Position.Y;
+							float x1 = aJoints[JointType_ElbowRight].Position.X;
+							float y1 = aJoints[JointType_ElbowRight].Position.Y;
+							float x2 = aJoints[JointType_HandRight].Position.X;
+							float y2 = aJoints[JointType_HandRight].Position.Y;
 							if (x2 == x1) {
 								goto jmp;
 							}
@@ -266,7 +266,7 @@ jmp:
 									dir = 4;
 								}
 							}
-							DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper,dir);
+							DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper,dir);
 						}
 					}
 				}

@@ -88,10 +88,10 @@ int depthimage::get_elbow_direction() {
 				if ((body->get_IsTracked(&track) == S_OK) && track) {
 					Joint joints[JointType::JointType_Count];
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						float x1 = joints[JointType_ElbowLeft].Position.X;
-						float y1 = joints[JointType_ElbowLeft].Position.Y;
-						float x2 = joints[JointType_HandLeft].Position.X;
-						float y2 = joints[JointType_HandLeft].Position.Y;
+						float x1 = joints[JointType_ElbowRight].Position.X;
+						float y1 = joints[JointType_ElbowRight].Position.Y;
+						float x2 = joints[JointType_HandRight].Position.X;
+						float y2 = joints[JointType_HandRight].Position.Y;
 						if (x2 == x1) {
 							goto jmp;
 						}
@@ -137,7 +137,37 @@ jmp:
 	return direction;
 }
 
-
+float depthimage::get_depth() {
+	float depth = 0;
+	IBodyFrame* bodyframe = nullptr;
+	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
+		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
+			for (int i = 0; i < iBodyCount; i++) {
+				IBody* body = BodyData[i];
+				BOOLEAN track = false;
+				if ((body->get_IsTracked(&track) == S_OK) && track) {
+					Joint joints[JointType::JointType_Count];
+					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+						depth = joints[JointType_Head].Position.X;
+					}
+					else {
+						std::cout << "can not read body data" << std::endl;
+					}
+				}
+			}
+		}
+		else {
+			std::cout << "can not update body frame" << std::endl;
+		}
+		bodyframe->Release();
+	}
+	/*else {
+		std::cout << "can not read body frame" << std::endl;
+	}
+	std::cout << "finish update" << std::endl;*/
+	std::cout << "depth:" << depth << std::endl;
+	return depth;
+}
 
 void depthimage::exit() {
 	delete[] BodyData;

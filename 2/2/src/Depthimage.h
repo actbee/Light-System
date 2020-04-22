@@ -9,6 +9,7 @@ public:
 	ofImage display;
 	void UpdateKinectV2();
 	int get_elbow_direction();
+	float get_depth();
 
 private:
 	bool InitialKinectV2();

@@ -55,7 +55,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	
+	game_state = "OVER";
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -71,8 +71,7 @@ void ofApp::setup(){
 
 void ofApp::resetall() {
 	ofSetFrameRate(60);
-	game_state = "START";
-//	game_state = "TEST";
+
 	score =0;
 	time = 0;
 
@@ -104,9 +103,24 @@ void ofApp::update() {
 		mycircles[i].update();
 	}*/
 	//myKinect.UpdateKinectV2();
+
 	if (game_state == "START")
 	{
-		ofSetFrameRate(6);
+		if (score < 3) {
+			ofSetFrameRate(3);
+		}
+		else if (score < 6) {
+			ofSetFrameRate(6);
+		}
+		else if (score < 9) {
+			ofSetFrameRate(9);
+		}
+		else if (score < 12) {
+			ofSetFrameRate(12);
+		}
+		else {
+			ofSetFrameRate(15);
+		}
 		int control=myKinect.get_elbow_direction();
 		//cout << control << endl;
 		//control = 1;
@@ -137,8 +151,8 @@ void ofApp::update() {
 		}
 		ofPoint topright = mycharacters.back().get_topright();
 		if (topright.x < 0) {
-			resetall();
-			game_state == "START";
+		//	resetall();
+			game_state = "TEST";
 		}
 	}
 	/*else if (game_state == "TEST") {
@@ -235,6 +249,12 @@ void ofApp::update() {
 				}
 				}
 			}
+		}
+		float point = myKinect.get_depth();
+		if (point > 0.2) {
+			resetall();
+			game_state = "START";
+			cout << "start game" << endl;
 		}
 	} 
 
