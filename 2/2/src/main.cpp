@@ -44,7 +44,7 @@ int main()
 	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
 	ofRunApp(new ofApp());
 
-	/*
+	
 	// 1a. Get default Sensor
 	cout << "Try to get default sensor" << endl;
 	IKinectSensor* pSensor = nullptr;
@@ -158,6 +158,7 @@ int main()
 	cv::namedWindow("Body Image");
 	while (true)
 	{
+		/*
 		// 4a. Get last frame
 		IColorFrame* pColorFrame = nullptr;
 		if (pColorFrameReader->AcquireLatestFrame(&pColorFrame) == S_OK)
@@ -171,8 +172,9 @@ int main()
 			// 4e. release frame
 			pColorFrame->Release();
 		}
+		*/
 		cv::Mat mImg = mColorImg.clone();
-
+		
 		// 4b. Get body data
 		IBodyFrame* pBodyFrame = nullptr;
 		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)
@@ -221,7 +223,7 @@ int main()
 							DrawLine(mImg, aJoints[JointType_HipRight], aJoints[JointType_KneeRight], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);
-							
+							*/
 
 							float x1 = aJoints[JointType_ElbowLeft].Position.X;
 							float y1 = aJoints[JointType_ElbowLeft].Position.Y;
@@ -255,6 +257,7 @@ int main()
 
 			// 4e. release frame
 			pBodyFrame->Release();
+			pBodyFrame = nullptr;
 		}
 
 		// show image
@@ -288,7 +291,7 @@ int main()
 	cout << "Release sensor" << endl;
 	pSensor->Release();
 	pSensor = nullptr;
-	*/
+	
 	return 0;
 	
 }

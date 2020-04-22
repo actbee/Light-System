@@ -12,9 +12,13 @@ public:
 
 private:
 	bool InitialKinectV2();
+
 	IKinectSensor* kinectsensor;
-	IDepthFrameReader* depthframereader;
+	IDepthFrameReader* depthframereader;\
+
 	IBodyFrameReader* bodyframereader;
 	IBody** BodyData;
-	IBodyFrameSource* framesource;
+	IBodyFrameSource* bodyframesource;
+	INT32 iBodyCount;
+
 };

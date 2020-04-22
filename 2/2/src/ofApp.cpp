@@ -55,9 +55,6 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
-	ofSetFrameRate(60);
-	
 	
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
@@ -112,7 +109,7 @@ void ofApp::update() {
 		ofSetFrameRate(3);
 		int control=myKinect.get_elbow_direction();
 		//cout << control << endl;
-		control = 1;
+		//control = 1;
 		switch (control) {
 		case 1:
 			keyPressed(OF_KEY_RIGHT);

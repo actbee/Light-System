@@ -3,33 +3,40 @@
 bool depthimage::InitialKinectV2() {
 	bodyframereader = nullptr;
 	BodyData = nullptr;
-	framesource = nullptr;
-	HRESULT hr_;
-	hr_ = GetDefaultKinectSensor(& kinectsensor);
-	if (FAILED(hr_)) {
-		ofLog(OF_LOG_ERROR, "Get Kinect sensor failed!");
+	iBodyCount = 0;
+	bodyframesource = nullptr;
+	kinectsensor = nullptr;
+
+
+	if (GetDefaultKinectSensor(&kinectsensor) != S_OK) {
+		std::cout << "can not get sensor" << std::endl;
 		return false;
 	}
-	if (kinectsensor) {
-		hr_ = kinectsensor->Open();
-		IDepthFrameSource* depthframesource = nullptr;
-		if (SUCCEEDED(hr_)) {
-			hr_ = kinectsensor->get_DepthFrameSource(&depthframesource);
-		}
-		if (SUCCEEDED(hr_)) {
-			hr_ = depthframesource->OpenReader(&depthframereader);
-		}
-		if (depthframesource != nullptr) {
-			depthframesource->Release();
-		}
-	}
-	if (!kinectsensor || FAILED(hr_)) {
-		ofLog(OF_LOG_ERROR, "Initial failed!");
+	if (kinectsensor->Open() != S_OK) {
+		std::cout << "can not open sensor" << std::endl;
 		return false;
 	}
-	else {
-		return true;
+
+	if (kinectsensor->get_BodyFrameSource(&bodyframesource) != S_OK) {
+		std::cout << "cant get body frame source" << std::endl;
+		return false;
 	}
+	if (bodyframesource->get_BodyCount(&iBodyCount) != S_OK) {
+		std::cout << "can not get body count" << std::endl;
+		return false;
+	}
+//	std::cout << "can trace" <<iBodyCount<< std::endl;
+	BodyData = new IBody*[iBodyCount];
+	for (int i = 0; i < iBodyCount; i++) {
+		BodyData[i] = nullptr;
+	}
+	if (bodyframesource->OpenReader(&bodyframereader) != S_OK) {
+		std::cout << "can not get body frame reader" << std::endl;
+		return false;
+	}
+	bodyframesource->Release();
+	bodyframesource = nullptr;
+	return true;
 }
 
 void depthimage::UpdateKinectV2() {
@@ -69,10 +76,74 @@ void depthimage::UpdateKinectV2() {
 	}
 }
 
+int depthimage::get_elbow_direction() {
+	int direction = 0; //1 means left, 2 up, 3 right, 4 down
+	
+	IBodyFrame* bodyframe = nullptr;
+	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
+		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
+			for (int i = 0; i < iBodyCount; i++) {
+				IBody* body = BodyData[i];
+				BOOLEAN track = false;
+				if ((body->get_IsTracked(&track) == S_OK) && track) {
+					Joint joints[JointType::JointType_Count];
+					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+						float x1 = joints[JointType_ElbowLeft].Position.X;
+						float y1 = joints[JointType_ElbowLeft].Position.Y;
+						float x2 = joints[JointType_ThumbLeft].Position.X;
+						float y2 = joints[JointType_ThumbLeft].Position.Y;
+						float k = (x2 - x1) / (y2 - y1);
+						if (-1 <= k < 1) {
+							if (x2 > x1) {
+								std::cout << "right" << std::endl;
+								direction = 1;
+							}
+							else if (x2 <= x1) {
+								std::cout << "left" << std::endl;
+								direction = 3;
+							}
+						}
+						else {
+							if (y2 > y1) {
+								std::cout << "up" << std::endl;
+								direction = 2;
+							}
+							else if (y2 <= y1) {
+								std::cout << "down" << std::endl;
+								direction = 4;
+							}
+						}
+					}
+					else {
+						std::cout << "can not read body data" << std::endl;
+					}
+				}
+			}
+		}
+		else {
+			std::cout << "can not update body frame" << std::endl;
+		}
+		bodyframe->Release();
+	}
+	/*else {
+		std::cout << "can not read body frame" << std::endl;
+	}
+	std::cout << "finish update" << std::endl;*/
+	return direction;
+}
+
+
+
 void depthimage::exit() {
+	delete[] BodyData;
+	bodyframereader->Release();
+	bodyframereader = nullptr;
+	depthframereader->Release();
+	depthframereader = nullptr;
+	
 	kinectsensor->Close();
 	kinectsensor->Release();
-	depthframereader->Release();
+	
 }
 
 depthimage::depthimage() {
@@ -85,75 +156,3 @@ depthimage::~depthimage() {
 	exit();
 }
 
-int depthimage::get_elbow_direction() {
-	int direction = 0; //1 means left, 2 up, 3 right, 4 down
-	bodyframereader = nullptr;
-	BodyData = nullptr;
-	INT32 iBodyCount = 0;
-
-	framesource = nullptr;
-	if (kinectsensor->get_BodyFrameSource(&framesource) != S_OK) {
-		cerr << "cant get body frame source" << endl;
-		return -1;
-	}
-	if (framesource->get_BodyCount(&iBodyCount) != S_OK) {
-		cerr << "can not get body count" << endl;
-	}
-	BodyData = new IBody*[iBodyCount];
-	for (int i = 0; i < iBodyCount; i++) {
-		BodyData[i] = nullptr;
-	}
-	if (framesource->OpenReader(&bodyframereader) != S_OK) {
-		cerr << "can not get body frame reader" << endl;
-		return -1;
-	}
-	framesource->Release();
-	framesource = nullptr;
-	IBodyFrame* bodyframe = nullptr;
-	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
-		for (int i = 0; i < iBodyCount; i++) {
-			IBody* body = BodyData[i];
-			BOOLEAN track = false;
-			if ((body->get_IsTracked(&track) == S_OK) && track) {
-				Joint joints[JointType::JointType_Count];
-				if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-					float x1 = joints[JointType_ElbowLeft].Position.X;
-					float y1 = joints[JointType_ElbowLeft].Position.Y;
-					float x2 = joints[JointType_ThumbLeft].Position.X;
-					float y2 = joints[JointType_ThumbLeft].Position.Y;
-					float k = (x2 - x1) / (y2 - y1);
-					if (-1 <= k < 1) {
-						if (x2 > x1) {
-							cout << "right" << endl;
-							direction=1;
-						}
-						else if (x2 <= x1) {
-							cout << "left" << endl;
-							direction=3;
-						}
-					}
-					else {
-						if (y2 > y1) {
-							cout << "up" << endl;
-							direction=2;
-						}
-						else if (y2 <= y1) {
-							cout << "down" << endl;
-							direction=4;
-						}
-					}
-				}
-				else {
-					cerr << "can not read body data" << endl;
-				}
-				bodyframe->Release();
-			}
-		}
-	}
-	delete[] BodyData;
-	bodyframereader->Release();
-	bodyframereader = nullptr;
-
-
-	return direction;
-}
