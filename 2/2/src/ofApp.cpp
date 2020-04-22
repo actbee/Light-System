@@ -106,7 +106,7 @@ void ofApp::update() {
 	//myKinect.UpdateKinectV2();
 	if (game_state == "START")
 	{
-		ofSetFrameRate(3);
+		ofSetFrameRate(6);
 		int control=myKinect.get_elbow_direction();
 		//cout << control << endl;
 		//control = 1;

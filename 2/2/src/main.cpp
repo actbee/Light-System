@@ -26,7 +26,7 @@ int main( ){
 
 using namespace std;
 
-void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapper* pCMapper)
+void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapper* pCMapper,int dir)
 {
 	if (rJ1.TrackingState == TrackingState_NotTracked || rJ2.TrackingState == TrackingState_NotTracked)
 		return;
@@ -34,8 +34,18 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 	ColorSpacePoint ptJ1, ptJ2;
 	pCMapper->MapCameraPointToColorSpace(rJ1.Position, &ptJ1);
 	pCMapper->MapCameraPointToColorSpace(rJ2.Position, &ptJ2);
-
-	cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(0, 0, 255), 5);
+	if (dir == 1) {
+		cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(0, 0, 255), 15);
+	}
+	else if (dir == 2) {
+		cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(255, 255, 255), 15);
+	}
+	else if (dir == 3) {
+		cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(255, 0, 0), 15);
+	}
+	else if (dir == 4) {
+		cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(0, 255, 0), 15);
+	}
 }
 
 int main()
@@ -195,6 +205,7 @@ int main()
 						Joint aJoints[JointType::JointType_Count];
 						if (pBody->GetJoints(JointType::JointType_Count, aJoints) == S_OK)
 						{
+							/*
 							DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_SpineMid], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_SpineMid], aJoints[JointType_SpineShoulder], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_Neck], pCoordinateMapper);
@@ -224,28 +235,38 @@ int main()
 							DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);
 							*/
-
+							
 							float x1 = aJoints[JointType_ElbowLeft].Position.X;
 							float y1 = aJoints[JointType_ElbowLeft].Position.Y;
-							float x2 = aJoints[JointType_ThumbLeft].Position.X;
-							float y2 = aJoints[JointType_ThumbLeft].Position.Y;
-							float k = (x2 - x1) / (y2 - y1);
-							if (-1 <= k < 1) {
+							float x2 = aJoints[JointType_HandLeft].Position.X;
+							float y2 = aJoints[JointType_HandLeft].Position.Y;
+							if (x2 == x1) {
+								goto jmp;
+							}
+							float k = (y2 - y1) / (x2 - x1);
+							int dir = 0;
+							if (k < 1.0&&k>=-1.0) {
 								if (x2 > x1) {
-									cout << "right" << endl;
+									cout << "right" <<k<< endl;
+									dir = 1;
 								}
-								else if (x2 <= x1) {
-									cout << "left" << endl;
+								else if (x2 <x1) {
+									cout << "left" << k<<endl;
+									dir = 3;
 								}
 							}
 							else {
+jmp:
 								if (y2 > y1) {
-									cout << "up" << endl;
+									cout << "up" << k<<endl;
+									dir = 2;
 								}
 								else if (y2 <= y1) {
-									cout << "down" << endl;
+									cout << "down" <<k<< endl;
+									dir = 4;
 								}
 							}
+							DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper,dir);
 						}
 					}
 				}

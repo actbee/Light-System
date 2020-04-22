@@ -90,20 +90,25 @@ int depthimage::get_elbow_direction() {
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
 						float x1 = joints[JointType_ElbowLeft].Position.X;
 						float y1 = joints[JointType_ElbowLeft].Position.Y;
-						float x2 = joints[JointType_ThumbLeft].Position.X;
-						float y2 = joints[JointType_ThumbLeft].Position.Y;
-						float k = (x2 - x1) / (y2 - y1);
-						if (-1 <= k < 1) {
+						float x2 = joints[JointType_HandLeft].Position.X;
+						float y2 = joints[JointType_HandLeft].Position.Y;
+						if (x2 == x1) {
+							goto jmp;
+						}
+						float k = (y2 - y1) / (x2 - x1);
+						std::cout << "k is " << k << std::endl;
+						if (k < 1.0&&k>=-1.0) {
 							if (x2 > x1) {
 								std::cout << "right" << std::endl;
 								direction = 1;
 							}
-							else if (x2 <= x1) {
+							else if (x2 < x1) {
 								std::cout << "left" << std::endl;
 								direction = 3;
 							}
 						}
 						else {
+jmp:
 							if (y2 > y1) {
 								std::cout << "up" << std::endl;
 								direction = 2;
