@@ -10,6 +10,7 @@
 #include<vector>
 #include<stack>
 #include"Depthimage.h"
+#include"pixel_image.h"
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -54,6 +55,8 @@ class ofApp : public ofBaseApp{
 		void beback();
 		void check_snack_and_target();
 
+		void create_pixel_fly();
+
 		circle mycircles[15][10];
 		snack mysnack;
 		target mytarget;
@@ -65,7 +68,7 @@ class ofApp : public ofBaseApp{
 		void resetall();
 		int time;
 		ofColor my_img[10][15];
-
+		pixel_image mypixels;
 		depthimage myKinect;
 
 };

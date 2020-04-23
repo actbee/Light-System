@@ -1,6 +1,41 @@
 #include "ofApp.h"
 
+void ofApp::create_pixel_fly() {
+	mypixels.changesize(6, 8, 11);
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) {
+			mypixels.setpixels(0, i, j, pixel_fly_one[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) {
+			mypixels.setpixels(1, i, j, pixel_fly_two[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) {
+			mypixels.setpixels(2, i, j, pixel_fly_three[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) {
+			mypixels.setpixels(3, i, j, pixel_fly_four[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) {
+			mypixels.setpixels(4, i, j, pixel_fly_five[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 11; j++) {
+			mypixels.setpixels(5, i, j, pixel_fly_six[i][j]);
+		}
+	}
+}
 
+
+//--------------------------------------------------------------
 void ofApp::check_snack_and_target() {
 	int sx = mysnack.get_head().x;
 	int sy = mysnack.get_head().y;
@@ -55,7 +90,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	game_state = "OVER";
+	game_state = "TEST";
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -64,7 +99,7 @@ void ofApp::setup(){
 		}
 	}
 	resetall();
-	
+	create_pixel_fly();
 }
 
 //------------------------------------------------------------
