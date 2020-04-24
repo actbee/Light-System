@@ -104,7 +104,7 @@ int pixel_image::getpixels(int t, int i, int j) {
 int pixel_image::getposition(int t, int i, int j) {
 	int xx= i - topleft.x;
 	int yy = j - topleft.y;
-	if (0 <= xx && xx < width && 0 <= yy && yy < height) {
+	if (0 <= xx && xx < width && 0 <= yy && yy < height&&t<timeflow&&t>=0) {
 		return images[t][yy][xx];
 	}
 	return 0;
@@ -165,6 +165,9 @@ void pixel_image::update() {
 	topleft.y += v.y;
 }
 
+int pixel_image::gettimeflow() {
+	return timeflow;
+}
 
 
 

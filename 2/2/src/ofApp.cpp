@@ -117,6 +117,34 @@ void ofApp::change_status(string new_status) {
 		mypixels.setboard(2, 2, 3, 3);
 		mypixels.change_v(0, 0);
 }
+	else if (new_status == "TEST2") {
+	    game_state = "TEST2";
+		create_pixel_alien();
+		ofSetFrameRate(3);
+		mypixels.settopleft(3, 3);
+		mypixels.setboard(1, 3, 0, 0);
+		mypixels.change_v(0, 1);
+}
+}
+//--------------------------------------------------------------
+
+void ofApp::create_pixel_alien() {
+	mypixels.changesize(3, 11, 16);
+	for (int i = 0; i < 11; i++) {
+		for (int j = 0; j < 16; j++) {
+			mypixels.setpixels(0, i, j, pixel_alien[i][j]);
+		}
+	}
+	for (int i = 0; i < 11; i++) {
+		for (int j = 0; j < 16; j++) {
+			mypixels.setpixels(1, i, j, pixel_alien[i][j]);
+		}
+	}
+	for (int i = 0; i < 11; i++) {
+		for (int j = 0; j < 16; j++) {
+			mypixels.setpixels(2, i, j, pixel_alien[i][j]);
+		}
+	}
 }
 
 
@@ -360,18 +388,17 @@ void ofApp::update() {
 	else if (game_state == "TEST") {
 		
 		time += 1;
-		if (time > 10) {
+		int timemax =mypixels.gettimeflow();
+		if (time > 2*timemax) {
 			time = 1;
 		}
-		int time0 = 11 - time;
 		int t;
-		if (time0 > time) {
-			t = time;
+		if (time <= timemax) {
+			t = time - 1;
 		}
-		else {
-			t = time0;
+		else if (time > timemax) {
+			t = 2 * timemax -time;
 		}
-		
 		mypixels.update();
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
@@ -381,6 +408,9 @@ void ofApp::update() {
 				}
 				else if (check == 1) {
 					my_img[i][j] = PURPLE;
+				}
+				else if (check == 2) {
+					my_img[i][j] = RED;
 				}
 			}
 		}

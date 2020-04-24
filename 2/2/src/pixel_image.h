@@ -20,6 +20,7 @@ public:
 	void update();
 	void change_v(int x, int y);
 	void setboard(int x1, int x2, int y1, int y2);
+	int gettimeflow();
 
 private:
 	int*** images;
