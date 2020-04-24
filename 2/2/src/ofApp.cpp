@@ -210,7 +210,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("TEST");
+	change_status("START");
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -536,9 +536,7 @@ void ofApp::keyPressed(int key) {
 			change_status("OVER");
 		}
 	}
-	else{
-		resetall();
-	}
+	
 }
 
 //--------------------------------------------------------------
