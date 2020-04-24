@@ -91,6 +91,32 @@ int pixel_image::getpixels(int t, int i, int j) {
 	return images[t][i][j];
 }
 
+int pixel_image::getposition(int t, int i, int j) {
+	int xx= i - topleft.x;
+	int yy = j - topleft.y;
+	if (0 <= xx && xx < width && 0 <= yy && yy < height) {
+		return images[t][yy][xx];
+	}
+	return 0;
+}
+
+
 void pixel_image::settopleft(int x,int y) {
 	topleft = ofPoint(x, y);
 }
+
+void pixel_image::move_down() {
+	topleft.y += 1;
+}
+void pixel_image::move_up() {
+	topleft.y -= 1;
+}
+void pixel_image::move_left() {
+	topleft.x -= 1;
+}
+void pixel_image::move_right() {
+	topleft.x += 1;
+}
+
+
+

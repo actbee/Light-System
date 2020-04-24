@@ -34,7 +34,6 @@ void ofApp::create_pixel_fly() {
 	}
 }
 
-
 //--------------------------------------------------------------
 void ofApp::check_snack_and_target() {
 	int sx = mysnack.get_head().x;
@@ -246,29 +245,36 @@ void ofApp::update() {
 		}
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
-				my_img[i][j] = BLACK;
+				int check = mypixels.getposition(0, j, i);
+				if (check == 0) {
+					my_img[i][j] = BLACK;
+				}
+				else if (check == 1) {
+					my_img[i][j] = PURPLE;
+				}
 			}
 		}
+		/*
 		for (int i = 1; i < 9; i++) {
 			for (int j = 3; j < 14; j++) {
 				int num=0;
 				if (time == 1 || time == 12) {
-					num = pixel_fly_one[i - 1][j - 3];
+					num = mypixels.getpixels(0,i-1,j-3);
 				}
 				else if (time == 2 || time == 11) {
-					num = pixel_fly_two[i - 1][j - 3];
+					num = mypixels.getpixels(1, i - 1, j - 3);
 				}
 				else if (time == 3|| time == 10) {
-					num = pixel_fly_three[i - 1][j - 3];
+					num = mypixels.getpixels(2, i - 1, j - 3);
 				}
 				else if (time == 4 || time == 9) {
-					 num = pixel_fly_four[i - 1][j - 3];
+					 num = mypixels.getpixels(3, i - 1, j - 3);
 				}
 				else if (time == 5 || time == 8) {
-					 num = pixel_fly_five[i - 1][j - 3];
+					 num = mypixels.getpixels(4, i - 1, j - 3);
 				}
 				else if (time == 6 || time == 7) {
-					num = pixel_fly_six[i - 1][j - 3];
+					num = mypixels.getpixels(5, i - 1, j - 3);
 				}
 				switch (num) {
 				case 0: {
@@ -285,6 +291,8 @@ void ofApp::update() {
 				}
 			}
 		}
+		*/
+
 		float point = myKinect.get_depth();
 		if (point > 0.2) {
 			resetall();
