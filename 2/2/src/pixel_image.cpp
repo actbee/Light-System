@@ -42,31 +42,25 @@ pixel_image::pixel_image(int t, int h, int w) {
 }
 
 pixel_image::~pixel_image() {
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
+	for (int i = 0; i < timeflow; i++) {
+		for (int j = 0; j <height; j++) {
 			delete []images[i][j];
 		}
-	}
-	for (int i = 0; i <height; i++) {
 		delete []images[i];
 	}
 	delete []images;
 }
 
 void pixel_image::changesize(int t, int h, int w) {
-	/*for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			delete[]images[i][j];
+	for (int i = 0; i < timeflow; i++) {       //there is a bug here. do not know how to solve it
+		for (int j = 0; j < height; j++) {
+			delete[] images[i][j];
 		}
+			delete[] images[i];
 	}
-	cout << "delete1 success" << endl;
-	for (int i = 0; i < height; i++) {
-		delete[]images[i];
-	}
-	cout << "delete2 success" << endl;
-	delete[]images;
+	delete[] images;
 	cout << "delete3 success" << endl;
-	*/
+	
 	timeflow = t;
 	height = h;
 	width = w;
