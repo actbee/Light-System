@@ -121,8 +121,8 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST2";
 		create_pixel_alien();
 		ofSetFrameRate(3);
-		mypixels.settopleft(3, 3);
-		mypixels.setboard(1, 3, 0, 0);
+		mypixels.settopleft(1, 3);
+		mypixels.setboard(0, 0, 2, 2);
 		mypixels.change_v(0, 1);
 }
 }
@@ -132,7 +132,7 @@ void ofApp::create_pixel_alien() {
 	mypixels.changesize(3, 11, 16);
 	for (int i = 0; i < 11; i++) {
 		for (int j = 0; j < 16; j++) {
-			mypixels.setpixels(0, i, j, pixel_alien[i][j]);
+			mypixels.setpixels(0, i, j, pixel_alien_l[i][j]);
 		}
 	}
 	for (int i = 0; i < 11; i++) {
@@ -142,7 +142,7 @@ void ofApp::create_pixel_alien() {
 	}
 	for (int i = 0; i < 11; i++) {
 		for (int j = 0; j < 16; j++) {
-			mypixels.setpixels(2, i, j, pixel_alien[i][j]);
+			mypixels.setpixels(2, i, j, pixel_alien_r[i][j]);
 		}
 	}
 }
@@ -238,7 +238,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("START");
+	change_status("TEST2");
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -385,7 +385,7 @@ void ofApp::update() {
 			}
 		}
 	}  */
-	else if (game_state == "TEST") {
+	else if (game_state == "TEST"||game_state=="TEST2") {
 		
 		time += 1;
 		int timemax =mypixels.gettimeflow();
@@ -414,44 +414,6 @@ void ofApp::update() {
 				}
 			}
 		}
-		/*
-		for (int i = 1; i < 9; i++) {
-			for (int j = 3; j < 14; j++) {
-				int num=0;
-				if (time == 1 || time == 12) {
-					num = mypixels.getpixels(0,i-1,j-3);
-				}
-				else if (time == 2 || time == 11) {
-					num = mypixels.getpixels(1, i - 1, j - 3);
-				}
-				else if (time == 3|| time == 10) {
-					num = mypixels.getpixels(2, i - 1, j - 3);
-				}
-				else if (time == 4 || time == 9) {
-					 num = mypixels.getpixels(3, i - 1, j - 3);
-				}
-				else if (time == 5 || time == 8) {
-					 num = mypixels.getpixels(4, i - 1, j - 3);
-				}
-				else if (time == 6 || time == 7) {
-					num = mypixels.getpixels(5, i - 1, j - 3);
-				}
-				switch (num) {
-				case 0: {
-					my_img[i][j] = BLACK;
-					break;
-				}
-				case 1: {
-					my_img[i][j] = PURPLE;
-					break;
-				}
-				default: {
-					cout << "something is wrong!" << endl;
-				}
-				}
-			}
-		}
-		*/
 
 		float point = myKinect.get_depth();
 		if (point > 0.2) {
@@ -511,7 +473,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "TEST") {
+	else if (game_state == "TEST"||game_state=="TEST2") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);
