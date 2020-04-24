@@ -110,6 +110,11 @@ void ofApp::change_status(string new_status) {
 		}
 	}
 	else if (new_status == "TEST") {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] = BLACK;
+		}
+	}
 	    game_state = "TEST";
 		create_pixel_fly();
 		ofSetFrameRate(3);
@@ -118,6 +123,11 @@ void ofApp::change_status(string new_status) {
 		mypixels.change_v(0, 0);
 }
 	else if (new_status == "TEST2") {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] = BLACK;
+		}
+	}
 	    game_state = "TEST2";
 		create_pixel_alien();
 		ofSetFrameRate(3);
@@ -238,7 +248,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("OVER");
+	change_status("START");
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -246,6 +256,7 @@ void ofApp::setup(){
 			mycircles[x0][y0].setup(x, y);
 		}
 	}
+	
 //	resetall();
 //	create_pixel_fly();
 }
@@ -272,11 +283,7 @@ void ofApp::resetall() {
 	}
 	mytarget.setup(random_x, random_y,BLUE);
 
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 15; j++) {
-			my_img[i][j] =BLACK;
-		}
-	}
+
 }
 
 
@@ -321,8 +328,11 @@ void ofApp::update() {
 			keyPressed(OF_KEY_DOWN);
 			break;
 		}
-
-		check_snack_and_target();
+			check_snack_and_target();
+			if (mysnack.dead() == true) {
+				change_status("OVER");
+				update();
+			}
 	}
 	else if (game_state == "OVER") {
 		ofSetFrameRate(5);
@@ -335,6 +345,7 @@ void ofApp::update() {
 		ofPoint topright = mycharacters.back().get_topright();
 		if (topright.x < 0) {
 		//	resetall();
+
 			int random = (int)ofRandom(0, 2);
 			switch (random) {
 			case 0:
@@ -532,11 +543,11 @@ void ofApp::keyPressed(int key) {
 			}
 		}
 		cout << "now head is : " << mysnack.get_head().x << " , " << mysnack.get_head().y << endl;
-		if (mysnack.dead() == true) {
-			change_status("OVER");
-		}
+		
 	}
-	
+	else {
+		change_status("START");
+	}
 }
 
 //--------------------------------------------------------------
@@ -589,6 +600,7 @@ void ofApp::mousePressed(int x, int y, int button){
 			}
 		}
 	}
+
 }
 
 //--------------------------------------------------------------
