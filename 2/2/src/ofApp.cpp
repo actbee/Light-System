@@ -3,8 +3,33 @@
 void ofApp::change_status(string new_status) {
 	if (new_status == "START") {
 		game_state = "START";
-		resetall();
+		ofSetFrameRate(60);
+
+		score = 0;
+		time = 0;
+
+		mycharacters.clear();
+		character my_character;
+		my_character.reset();
+		mycharacters.push_back(my_character);
+
+		mysnack.setup(7, 5, 8, PURPLE);
+		int random_x = (int)ofRandom(0, 15);
+		int random_y = (int)ofRandom(0, 10);
+		while (mysnack.in_body(random_x, random_y) == true) {
+			random_x = (int)ofRandom(0, 15);
+			random_y = (int)ofRandom(0, 10);
+		}
+		mytarget.setup(random_x, random_y, BLUE);
+	//	hand = "RIGHT";
+		string newchoose = myKinect.choose_hand();
+		while(newchoose == "NO") {
+			newchoose = myKinect.choose_hand();
+		}
+		cout << newchoose<<endl;
+		hand = newchoose;
 	}
+
 	else if (new_status == "OVER") {
 		game_state = "OVER";
 		cout << "your score is: " << score << endl;
@@ -256,34 +281,7 @@ void ofApp::setup(){
 			mycircles[x0][y0].setup(x, y);
 		}
 	}
-	
-//	resetall();
 //	create_pixel_fly();
-}
-
-//------------------------------------------------------------
-
-void ofApp::resetall() {
-	ofSetFrameRate(60);
-
-	score =0;
-	time = 0;
-
-	mycharacters.clear();
-	character my_character;
-	my_character.reset();
-	mycharacters.push_back(my_character);
-
-	mysnack.setup(7, 5, 8, PURPLE);
-	int random_x = (int)ofRandom(0, 15);
-	int random_y = (int)ofRandom(0, 10);
-	while (mysnack.in_body(random_x, random_y) == true) {
-		random_x = (int)ofRandom(0, 15);
-		random_y = (int)ofRandom(0, 10);
-	}
-	mytarget.setup(random_x, random_y,BLUE);
-
-
 }
 
 
@@ -311,7 +309,7 @@ void ofApp::update() {
 		else {
 			ofSetFrameRate(15);
 		}
-		int control=myKinect.get_elbow_direction();
+			int control = myKinect.get_elbow_direction(hand);
 		//cout << control << endl;
 		//control = 1;
 		switch (control) {

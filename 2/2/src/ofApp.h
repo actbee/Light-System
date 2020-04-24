@@ -66,11 +66,10 @@ class ofApp : public ofBaseApp{
 
 		int score;
 		string game_state;
-		void resetall();
 		void change_status(string new_statue);
 		int time;
 		ofColor my_img[10][15];
 		pixel_image mypixels;
 		depthimage myKinect;
-
+		string hand;
 };

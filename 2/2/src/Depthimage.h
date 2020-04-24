@@ -8,8 +8,9 @@ public:
 	void exit();
 	ofImage display;
 	void UpdateKinectV2();
-	int get_elbow_direction();
+	int get_elbow_direction(string words);
 	float get_depth();
+	string choose_hand();
 
 private:
 	bool InitialKinectV2();
