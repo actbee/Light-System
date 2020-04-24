@@ -5,14 +5,24 @@ pixel_image::pixel_image() {
 	timeflow = 0;
 	width = 0;
 	height = 0;
+	v = ofPoint(0, 0);
+	toup = 0;
+	toleft = 0;
+	toright = 0;
+	todown = 0;
 }
 
 
 pixel_image::pixel_image(int t, int h, int w) {
 	topleft = ofPoint(0, 0);
+	v = ofPoint(0, 0);
 	timeflow = t;
 	width = w;
 	height = h;
+	toup = 0;
+	toleft = 0;
+	toright = 0;
+	todown = 0;
 	images = new int**[timeflow];
 	for (int i = 0; i < timeflow; i++) {
 		images[i] = new int*[height];
@@ -100,6 +110,9 @@ int pixel_image::getposition(int t, int i, int j) {
 	return 0;
 }
 
+ofPoint pixel_image::gettopleft() {
+	return topleft;
+}
 
 void pixel_image::settopleft(int x,int y) {
 	topleft = ofPoint(x, y);
@@ -117,6 +130,42 @@ void pixel_image::move_left() {
 void pixel_image::move_right() {
 	topleft.x += 1;
 }
+
+void pixel_image::change_v(int x, int y) {
+	if (v.x >= 0) {
+		v.x = x;
+	}
+	else {
+		v.x = -x;
+	}
+	if (v.y >= 0) {
+		v.y = y;
+	}
+	else {
+		v.y = -y;
+	}
+}
+
+void pixel_image::setboard(int x1, int x2, int y1, int y2) {
+	toright = x1;
+	toleft = x2;
+	toup = y1;
+	todown = y2;
+}
+
+void pixel_image::update() {
+	
+	if ((v.x > 0 && topleft.x > 14-toright)||(v.x < 0 && topleft.x + width-1 < 0+toleft)){
+		v.x = -v.x;
+	}
+	if ((v.y > 0 && topleft.y>9-todown)||(v.y<0&&topleft.y+height-1<0+toup)) {
+		v.y=-v.y;
+	}
+    topleft.x += v.x;
+	topleft.y += v.y;
+}
+
+
 
 
 

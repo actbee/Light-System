@@ -239,13 +239,23 @@ void ofApp::update() {
 	else if (game_state == "TEST") {
 		ofSetFrameRate(3);
 		time += 1;
-		time = time % 12;
-		if (time == 0) {
+		if (time > 10) {
 			time = 1;
 		}
+		int time0 = 11 - time;
+		int t;
+		if (time0 > time) {
+			t = time;
+		}
+		else {
+			t = time0;
+		}
+		mypixels.setboard(2, 2, 1, 1);
+		mypixels.change_v(1, 1);
+		mypixels.update();
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
-				int check = mypixels.getposition(0, j, i);
+				int check = mypixels.getposition(t, j, i);
 				if (check == 0) {
 					my_img[i][j] = BLACK;
 				}
