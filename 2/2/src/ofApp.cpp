@@ -160,6 +160,19 @@ void ofApp::change_status(string new_status) {
 		mypixels.setboard(0, 0, 2, 2);
 		mypixels.change_v(0, 1);
 }
+	else if (new_status == "TEST3") {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] = BLACK;
+		}
+	}
+	    game_state = "TEST3";
+	     create_pixel_bubble();
+		 ofSetFrameRate(3);
+		 mypixels.settopleft(1, 1);
+		 mypixels.setboard(0, 0, 2, 2);
+		 mypixels.change_v(0,0);
+}
 }
 //--------------------------------------------------------------
 
@@ -219,6 +232,32 @@ void ofApp::create_pixel_fly() {
 }
 
 //--------------------------------------------------------------
+
+void ofApp::create_pixel_bubble() {
+	mypixels.changesize(4, 9, 9);
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			mypixels.setpixels(0, i, j, pixel_bubble_1[i][j]);
+		}
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			mypixels.setpixels(1, i, j, pixel_bubble_2[i][j]);
+		}
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			mypixels.setpixels(2, i, j, pixel_bubble_3[i][j]);
+		}
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			mypixels.setpixels(3, i, j, pixel_bubble_4[i][j]);
+		}
+	}
+}
+
+//--------------------------------------------------------------
 void ofApp::check_snack_and_target() {
 	int sx = mysnack.get_head().x;
 	int sy = mysnack.get_head().y;
@@ -273,7 +312,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("START");
+	change_status("TEST3");
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -344,13 +383,16 @@ void ofApp::update() {
 		if (topright.x < 0) {
 		//	resetall();
 
-			int random = (int)ofRandom(0, 2);
+			int random = (int)ofRandom(0, 3);
 			switch (random) {
 			case 0:
 				change_status("TEST");
 				break;
 			case 1:
 				change_status("TEST2");
+				break;
+			case 2:
+				change_status("TEST3");
 				break;
 			}
 		}
@@ -402,7 +444,7 @@ void ofApp::update() {
 			}
 		}
 	}  */
-	else if (game_state == "TEST"||game_state=="TEST2") {
+	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3") {
 		
 		time += 1;
 		int timemax =mypixels.gettimeflow();
@@ -429,14 +471,17 @@ void ofApp::update() {
 				else if (check == 2) {
 					my_img[i][j] = RED;
 				}
+				else if (check == 3) {
+					my_img[i][j] = BLUE;
+				}
 			}
 		}
 
-		float point = myKinect.get_depth();
-		if (point > 0.2) {
+		/*float point = myKinect.get_depth();
+		if (point<2.0) {
 			change_status("START");
 			cout << "start game" << endl;
-		}
+		}*/
 	} 
 
 	
@@ -490,7 +535,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "TEST"||game_state=="TEST2") {
+	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);

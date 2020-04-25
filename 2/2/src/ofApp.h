@@ -57,6 +57,7 @@ class ofApp : public ofBaseApp{
 
 		void create_pixel_fly();
 		void create_pixel_alien();
+		void create_pixel_bubble();
 
 		circle mycircles[15][10];
 		snack mysnack;

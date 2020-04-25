@@ -184,7 +184,7 @@ int main()
 		}
 		*/
 		cv::Mat mImg = mColorImg.clone();
-		
+
 		// 4b. Get body data
 		IBodyFrame* pBodyFrame = nullptr;
 		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)
@@ -235,38 +235,71 @@ int main()
 							DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
 							DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);
 							*/
-							
-							float x1 = aJoints[JointType_ElbowRight].Position.X;
-							float y1 = aJoints[JointType_ElbowRight].Position.Y;
-							float x2 = aJoints[JointType_HandRight].Position.X;
-							float y2 = aJoints[JointType_HandRight].Position.Y;
-							if (x2 == x1) {
-								goto jmp;
+
+							float rx1 = aJoints[JointType_ElbowRight].Position.X;
+							float ry1 = aJoints[JointType_ElbowRight].Position.Y;
+							float rx2 = aJoints[JointType_HandRight].Position.X;
+							float ry2 = aJoints[JointType_HandRight].Position.Y;
+							if (rx2 == rx1) {
+								goto rjmp;
 							}
-							float k = (y2 - y1) / (x2 - x1);
+							float rk = (ry2 - ry1) / (rx2 - rx1);
 							int dir = 0;
-							if (k < 1.0&&k>=-1.0) {
-								if (x2 > x1) {
-									cout << "right" <<k<< endl;
+							if (rk < 1.0&&rk >= -1.0) {
+								if (rx2 > rx1) {
+									cout << "right" << rk << endl;
 									dir = 1;
 								}
-								else if (x2 <x1) {
-									cout << "left" << k<<endl;
+								else if (rx2 < rx1) {
+									cout << "left" << rk << endl;
 									dir = 3;
 								}
 							}
 							else {
-jmp:
-								if (y2 > y1) {
-									cout << "up" << k<<endl;
+							rjmp:
+								if (ry2 > ry1) {
+									cout << "up" << rk << endl;
 									dir = 2;
 								}
-								else if (y2 <= y1) {
-									cout << "down" <<k<< endl;
+								else if (ry2 <= ry1) {
+									cout << "down" << rk << endl;
 									dir = 4;
 								}
 							}
-							DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper,dir);
+							DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dir);
+
+							float lx1 = aJoints[JointType_ElbowLeft].Position.X;
+							float ly1 = aJoints[JointType_ElbowLeft].Position.Y;
+							float lx2 = aJoints[JointType_HandLeft].Position.X;
+							float ly2 = aJoints[JointType_HandLeft].Position.Y;
+							if (lx2 == lx1) {
+								goto ljmp;
+							}
+							float lk = (ly2 - ly1) / (lx2 - lx1);
+
+							if (lk < 1.0&&lk >= -1.0) {
+								if (lx2 > lx1) {
+									cout << "right" << lk << endl;
+									dir = 1;
+								}
+								else if (lx2 < lx1) {
+									cout << "left" << lk << endl;
+									dir = 3;
+								}
+							}
+							else {
+							ljmp:
+								if (ly2 > ly1) {
+									cout << "up" << lk << endl;
+									dir = 2;
+								}
+								else if (ly2 <= ly1) {
+									cout << "down" << lk << endl;
+									dir = 4;
+								}
+							}
+							DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper, dir);
+
 						}
 					}
 				}
@@ -312,7 +345,7 @@ jmp:
 	cout << "Release sensor" << endl;
 	pSensor->Release();
 	pSensor = nullptr;
-	
+
 	return 0;
 	
 }

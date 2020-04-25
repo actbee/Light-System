@@ -59,7 +59,6 @@ void pixel_image::changesize(int t, int h, int w) {
 			delete[] images[i];
 	}
 	delete[] images;
-	cout << "delete3 success" << endl;
 	
 	timeflow = t;
 	height = h;
