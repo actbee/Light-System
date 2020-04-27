@@ -173,6 +173,19 @@ void ofApp::change_status(string new_status) {
 		 mypixels.setboard(0, 0, 2, 2);
 		 mypixels.change_v(0,0);
 }
+	else if (new_status == "TEST4") {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] = BLACK;
+		}
+	}
+	   game_state = "TEST4";
+	   create_pixel_acaleph();
+	   ofSetFrameRate(3);
+	   mypixels.settopleft(1, 1);
+	   mypixels.setboard(0, 0, 2, 2);
+	   mypixels.change_v(0, 0);
+}
 }
 //--------------------------------------------------------------
 
@@ -227,6 +240,17 @@ void ofApp::create_pixel_fly() {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 11; j++) {
 			mypixels.setpixels(5, i, j, pixel_fly_six[i][j]);
+		}
+	}
+}
+
+//--------------------------------------------------------------
+
+void ofApp::create_pixel_acaleph() {
+	mypixels.changesize(1, 8, 8);
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			mypixels.setpixels(0, i, j, pixel_acaleph[i][j]);
 		}
 	}
 }
@@ -312,7 +336,7 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("TEST3");
+	change_status("TEST4");
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -383,7 +407,7 @@ void ofApp::update() {
 		if (topright.x < 0) {
 		//	resetall();
 
-			int random = (int)ofRandom(0, 3);
+			int random = (int)ofRandom(0, 4);
 			switch (random) {
 			case 0:
 				change_status("TEST");
@@ -393,6 +417,9 @@ void ofApp::update() {
 				break;
 			case 2:
 				change_status("TEST3");
+				break;
+			case 3:
+				change_status("TEST4");
 				break;
 			}
 		}
@@ -444,7 +471,7 @@ void ofApp::update() {
 			}
 		}
 	}  */
-	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3") {
+	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
 		
 		time += 1;
 		int timemax =mypixels.gettimeflow();
@@ -535,7 +562,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3") {
+	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);
