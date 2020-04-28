@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿  ofApp.cpp
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec3f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec2f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
@@ -8,36 +7,11 @@ d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframew
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(913): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(914): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(915): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-=======
-﻿  library.cpp
-  main.cpp
-  ofApp.cpp
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec3f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec2f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec3f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec2f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(326): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(331): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(326): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(331): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(912): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(912): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(913): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(913): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(914): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(914): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\main.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(915): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\ofApp.cpp)
-d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(915): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据 (编译源文件 src\main.cpp)
->>>>>>> 5219332... add pixel acaleph
   2.vcxproj -> D:\Study\UNI\FINAL\final\2\2\bin\2_debug.exe
   
   	                   2	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\fmodex\lib\vs\x64\
-  	  *多余文件   		 1266176	D:\Study\UNI\FINAL\final\2\2\bin\fmodex.dll
-  	  *多余文件   		 1312768	D:\Study\UNI\FINAL\final\2\2\bin\fmodexL.dll
   	  *多余文件   		 6942208	D:\Study\UNI\FINAL\final\2\2\bin\FreeImage.dll
   
   	                   1	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\FreeImage\lib\vs\x64\
-  	  *多余文件   		 1266176	D:\Study\UNI\FINAL\final\2\2\bin\fmodex.dll
   	  *多余文件   		 1503232	D:\Study\UNI\FINAL\final\2\2\bin\fmodex64.dll
-  	  *多余文件   		 1312768	D:\Study\UNI\FINAL\final\2\2\bin\fmodexL.dll
   	  *多余文件   		 1552384	D:\Study\UNI\FINAL\final\2\2\bin\fmodexL64.dll

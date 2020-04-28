@@ -64,7 +64,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
     <Import Project="..\..\..\..\Softwares\opencv\opencv.props" />
-    <Import Project="..\..\..\..\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\addons\ofxKinectForWindows2\ofxKinectForWindows2.props" />
+    <Import Project="..\..\..\..\Softwares\opencv\kinect2.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -80,8 +80,6 @@
     <TargetName>$(ProjectName)_debug</TargetName>
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
-    <IncludePath>$(KINECTSDK20_DIR)\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(KINECTSDK20_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\</OutDir>
@@ -120,7 +118,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(KINECTSDK20_DIR)\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -128,8 +126,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>kinect20.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -180,33 +178,36 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\character.cpp" />
+    <ClCompile Include="src\circle.cpp" />
+    <ClCompile Include="src\Depthimage.cpp" />
+    <ClCompile Include="src\library.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\pixel_image.cpp" />
+    <ClCompile Include="src\snack.cpp" />
+    <ClCompile Include="src\target.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\character.h" />
+    <ClInclude Include="src\circle.h" />
+    <ClInclude Include="src\Depthimage.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\pixel_image.h" />
+    <ClInclude Include="src\snack.h" />
+    <ClInclude Include="src\target.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="icon.rc">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\character.cpp" />
-    <ClCompile Include="src\circle.cpp" />
-    <ClCompile Include="src\library.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="src\snack.cpp" />
-    <ClCompile Include="src\target.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\inc\Kinect.h" />
-    <ClInclude Include="src\character.h" />
-    <ClInclude Include="src\circle.h" />
-    <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\snack.h" />
-    <ClInclude Include="src\target.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openFrameworksCompiled\project\vs\openFrameworksLib.vcxproj">
-      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

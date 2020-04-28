@@ -181,9 +181,9 @@ void ofApp::change_status(string new_status) {
 	}
 	   game_state = "TEST4";
 	   create_pixel_acaleph();
-	   ofSetFrameRate(3);
+	   ofSetFrameRate(10);
 	   mypixels.settopleft(1, 1);
-	   mypixels.setboard(0, 0, 2, 2);
+	   mypixels.setboard(1, 1, 2, 2);
 	   mypixels.change_v(0, 0);
 }
 }
@@ -247,10 +247,20 @@ void ofApp::create_pixel_fly() {
 //--------------------------------------------------------------
 
 void ofApp::create_pixel_acaleph() {
-	mypixels.changesize(1, 8, 8);
+	mypixels.changesize(3, 8, 8);
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			mypixels.setpixels(0, i, j, pixel_acaleph[i][j]);
+			mypixels.setpixels(0, i, j, pixel_acaleph_1[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			mypixels.setpixels(1, i, j, pixel_acaleph_2[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			mypixels.setpixels(2, i, j, pixel_acaleph_3[i][j]);
 		}
 	}
 }
