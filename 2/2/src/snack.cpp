@@ -59,6 +59,11 @@ void snack::add(int inx, int iny) {
 			cout << "add error." << endl;
 		}
 		else {
+			before_head = head;
+			head.x = newx;
+			head.y = newy;
+			body.pop();
+			body.push(ofPoint(head.x, head.y));
 			is_dead = true;
 		}
 	}
@@ -102,4 +107,12 @@ void snack::addlength() {
 		body.push(body.front());
 		body.pop();
 	}
+}
+void snack::sublength() {
+	if (length == 0) {
+		cout << "error" << endl;
+		return;
+	}
+	length -= 1;
+	body.pop();
 }

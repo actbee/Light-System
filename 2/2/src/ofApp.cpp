@@ -53,6 +53,7 @@ void ofApp::change_status(string new_status) {
 
 	else if (new_status == "OVER") {
 		game_state = "OVER";
+		time = 0;
 		cout << "your score is: " << score << endl;
 		mycharacters.clear();
 		int oo[7][4];
@@ -390,16 +391,16 @@ void ofApp::update() {
 	if (game_state == "START")
 	{
 			if (mysnack.dead() != true) {
-				if (score < 3) {
+				if (score < 2) {
 					ofSetFrameRate(3);
 				}
-				else if (score < 6) {
+				else if (score < 9) {
 					ofSetFrameRate(6);
 				}
-				else if (score < 9) {
+				else if (score < 12) {
 					ofSetFrameRate(9);
 				}
-				else if (score < 12) {
+				else if (score < 15) {
 					ofSetFrameRate(12);
 				}
 				else {
@@ -427,10 +428,14 @@ void ofApp::update() {
 				update();*/
 			}
 			else {
-				mysnack.body.pop();
-				if (mysnack.body.empty()) {
-					change_status("OVER");
-					update();
+				ofSetFrameRate(5);
+				time++;
+				if (time > 5) {
+					mysnack.sublength();
+					if (mysnack.getlength() == 0) {
+						change_status("OVER");
+						update();
+					}
 				}
 			}
 	}

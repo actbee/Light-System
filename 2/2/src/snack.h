@@ -14,6 +14,7 @@ public:
 	queue<ofPoint> body;
 	bool in_body(int inx,int iny);
 	void addlength();
+	void sublength();
 	bool dead();
 private:
 	ofPoint head;    //the head position
