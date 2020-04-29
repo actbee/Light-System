@@ -389,42 +389,49 @@ void ofApp::update() {
 
 	if (game_state == "START")
 	{
-		if (score < 3) {
-			ofSetFrameRate(3);
-		}
-		else if (score < 6) {
-			ofSetFrameRate(6);
-		}
-		else if (score < 9) {
-			ofSetFrameRate(9);
-		}
-		else if (score < 12) {
-			ofSetFrameRate(12);
-		}
-		else {
-			ofSetFrameRate(15);
-		}
-			int control = myKinect.get_elbow_direction(hand);
-		//cout << control << endl;
-		//control = 1;
-		switch (control) {
-		case 1:
-			keyPressed(OF_KEY_RIGHT);
-			break;
-		case 2:
-			keyPressed(OF_KEY_UP);
-			break;
-		case 3:
-			keyPressed(OF_KEY_LEFT);
-			break;
-		case 4:
-			keyPressed(OF_KEY_DOWN);
-			break;
-		}
-			check_snack_and_target();
-			if (mysnack.dead() == true) {
-				change_status("OVER");
-				update();
+			if (mysnack.dead() != true) {
+				if (score < 3) {
+					ofSetFrameRate(3);
+				}
+				else if (score < 6) {
+					ofSetFrameRate(6);
+				}
+				else if (score < 9) {
+					ofSetFrameRate(9);
+				}
+				else if (score < 12) {
+					ofSetFrameRate(12);
+				}
+				else {
+					ofSetFrameRate(15);
+				}
+				int control = myKinect.get_elbow_direction(hand);
+				//cout << control << endl;
+				//control = 1;
+				switch (control) {
+				case 1:
+					keyPressed(OF_KEY_RIGHT);
+					break;
+				case 2:
+					keyPressed(OF_KEY_UP);
+					break;
+				case 3:
+					keyPressed(OF_KEY_LEFT);
+					break;
+				case 4:
+					keyPressed(OF_KEY_DOWN);
+					break;
+				}
+				check_snack_and_target();
+				/*change_status("OVER");
+				update();*/
+			}
+			else {
+				mysnack.body.pop();
+				if (mysnack.body.empty()) {
+					change_status("OVER");
+					update();
+				}
 			}
 	}
 	else if (game_state == "READY") {

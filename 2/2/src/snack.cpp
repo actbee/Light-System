@@ -21,11 +21,11 @@ void snack::setup(int inx, int iny, int inlength,ofColor incolor) {
 		int xx = head.x - i;
 		body.push(ofPoint(xx, head.y));
 	}
-	for (int i = 0; i < body.size(); i++) {
+	/*for (int i = 0; i < body.size(); i++) {
 		cout << body.front().x << "," << body.front().y << endl;
 		body.push(body.front());
 		body.pop();
-	}
+	}*/
 	is_dead = false;
 	before_head.x = head.x - 1;
 	before_head.y = head.y;
