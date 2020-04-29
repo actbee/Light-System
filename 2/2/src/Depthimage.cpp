@@ -247,8 +247,8 @@ void depthimage::exit() {
 	delete[] BodyData;
 	bodyframereader->Release();
 	bodyframereader = nullptr;
-	depthframereader->Release();
-	depthframereader = nullptr;
+	//depthframereader->Release();
+	//depthframereader = nullptr;
 	
 	kinectsensor->Close();
 	kinectsensor->Release();

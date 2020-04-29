@@ -22,12 +22,33 @@ void ofApp::change_status(string new_status) {
 		}
 		mytarget.setup(random_x, random_y, BLUE);
 	//	hand = "RIGHT";
+		/*
 		string newchoose = myKinect.choose_hand();
 		while(newchoose == "NO") {
 			newchoose = myKinect.choose_hand();
 		}
 		cout << newchoose<<endl;
 		hand = newchoose;
+		*/
+	}
+	else if (new_status == "READY") {
+		time = 0;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				my_img[i][j] = BLACK;
+			}
+		}
+		game_state = "READY";
+		mypixels.changesize(1, 10, 15);
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				mypixels.setpixels(0, i, j,LR[i][j]);
+			}
+		}
+		ofSetFrameRate(5);
+		mypixels.settopleft(0, 0);
+		mypixels.setboard(0, 0, 0, 0);
+		mypixels.change_v(0, 0, 1);
 	}
 
 	else if (new_status == "OVER") {
@@ -346,7 +367,8 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("TEST4");
+	change_status("READY");
+	hand = "LEFT";
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -404,6 +426,61 @@ void ofApp::update() {
 				change_status("OVER");
 				update();
 			}
+	}
+	else if (game_state == "READY") {
+		if (time > 7) {
+			change_status("START");
+			return;
+		}
+		string newchoose = myKinect.choose_hand();
+		while (newchoose == "NO") {
+			newchoose = myKinect.choose_hand();
+		}
+		if (newchoose == hand) {
+			int i;
+			for (i = 0; i < 10 - (time + 1); i++) {
+				for (int j = 0; j < 15; j++) {
+					int check = mypixels.getposition(0, j, i);
+					if (check == 0) {
+						my_img[i][j] = BLACK;
+					}
+					else if (check == 2) {
+						my_img[i][j] = RED;
+					}
+				}
+			}
+			for (; i < 10; i++) {
+				for (int j = 0; j < 15; j++) {
+					int check = mypixels.getposition(0, j, i);
+					if (check == 0) {
+						my_img[i][j] = BLACK;
+					}
+					else if (check == 2) {
+						if(hand=="LEFT"){
+							if (j < 6) {
+								my_img[i][j] = BLUE;
+							}
+							else {
+								my_img[i][j] = RED;
+							}
+						}
+						else {
+							if (j < 6) {
+								my_img[i][j] = RED;
+							}
+							else {
+								my_img[i][j] = BLUE;
+							}
+						}
+					}
+				}
+			}
+			time++;
+		}
+		else {
+			time = 0;
+		}
+		hand = newchoose;
 	}
 	else if (game_state == "OVER") {
 		ofSetFrameRate(5);
@@ -572,7 +649,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
+	else if (game_state=="READY"||game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);
