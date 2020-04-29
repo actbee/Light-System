@@ -367,8 +367,6 @@ void ofApp::draw_target() {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	change_status("READY");
-	hand = "LEFT";
 	for (int x0 = 0; x0 < 15; x0++) {
 		for (int y0 = 0; y0 < 10; y0++) {
 			float x = (x0 + 1)*ofGetWidth() / 16;
@@ -376,6 +374,8 @@ void ofApp::setup(){
 			mycircles[x0][y0].setup(x, y);
 		}
 	}
+	hand = "LEFT";
+	change_status("READY");
 //	create_pixel_fly();
 }
 
@@ -433,10 +433,21 @@ void ofApp::update() {
 			return;
 		}
 		string newchoose = myKinect.choose_hand();
-		while (newchoose == "NO") {
-			newchoose = myKinect.choose_hand();
+		if(newchoose == "NO") {
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 15; j++) {
+					int check = mypixels.getposition(0, j, i);
+					if (check == 0) {
+						my_img[i][j] = BLACK;
+					}
+					else if (check == 2) {
+						my_img[i][j] = RED;
+					}
+				}
+			}
+			time = 0;
 		}
-		if (newchoose == hand) {
+		else if (newchoose == hand) {
 			int i;
 			for (i = 0; i < 10 - (time + 1); i++) {
 				for (int j = 0; j < 15; j++) {
@@ -591,11 +602,11 @@ void ofApp::update() {
 			}
 		}
 
-		/*float point = myKinect.get_depth();
-		if (point<2.0) {
-			change_status("START");
+		float point = myKinect.get_depth();
+		if (point>1.0) {
+			change_status("READY");
 			cout << "start game" << endl;
-		}*/
+		}
 	} 
 
 	
