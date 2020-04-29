@@ -145,7 +145,7 @@ void ofApp::change_status(string new_status) {
 		ofSetFrameRate(3);
 		mypixels.settopleft(3, 1);
 		mypixels.setboard(2, 2, 3, 3);
-		mypixels.change_v(0, 0);
+		mypixels.change_v(0, 0,1);
 }
 	else if (new_status == "TEST2") {
 	for (int i = 0; i < 10; i++) {
@@ -158,7 +158,7 @@ void ofApp::change_status(string new_status) {
 		ofSetFrameRate(3);
 		mypixels.settopleft(1, 3);
 		mypixels.setboard(0, 0, 2, 2);
-		mypixels.change_v(0, 1);
+		mypixels.change_v(0, 0, 1);
 }
 	else if (new_status == "TEST3") {
 	for (int i = 0; i < 10; i++) {
@@ -171,7 +171,7 @@ void ofApp::change_status(string new_status) {
 		 ofSetFrameRate(3);
 		 mypixels.settopleft(1, 1);
 		 mypixels.setboard(0, 0, 2, 2);
-		 mypixels.change_v(0,0);
+		 mypixels.change_v(0,0,1);
 }
 	else if (new_status == "TEST4") {
 	for (int i = 0; i < 10; i++) {
@@ -184,7 +184,7 @@ void ofApp::change_status(string new_status) {
 	   ofSetFrameRate(10);
 	   mypixels.settopleft(1, 1);
 	   mypixels.setboard(1, 1, 2, 2);
-	   mypixels.change_v(0, 0);
+	   mypixels.change_v(1, 0, 5);
 }
 }
 //--------------------------------------------------------------

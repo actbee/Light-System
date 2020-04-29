@@ -18,7 +18,7 @@ public:
 	void move_up();
 	void move_down();
 	void update();
-	void change_v(int x, int y);
+	void change_v(int x,int y,int mid);
 	void setboard(int x1, int x2, int y1, int y2);
 	int gettimeflow();
 
@@ -33,6 +33,8 @@ private:
 	int todown;
 	int toleft;
 	int toright;
+	int counter;
+	int gap;
 };
 
 #endif

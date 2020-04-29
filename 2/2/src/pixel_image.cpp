@@ -10,6 +10,8 @@ pixel_image::pixel_image() {
 	toleft = 0;
 	toright = 0;
 	todown = 0;
+	counter = 0;
+	gap = 1;
 }
 
 
@@ -129,7 +131,7 @@ void pixel_image::move_right() {
 	topleft.x += 1;
 }
 
-void pixel_image::change_v(int x, int y) {
+void pixel_image::change_v(int x, int y,int mid) {
 	if (v.x >= 0) {
 		v.x = x;
 	}
@@ -142,6 +144,8 @@ void pixel_image::change_v(int x, int y) {
 	else {
 		v.y = -y;
 	}
+	gap = mid;
+	counter = 0;
 }
 
 void pixel_image::setboard(int x1, int x2, int y1, int y2) {
@@ -152,15 +156,18 @@ void pixel_image::setboard(int x1, int x2, int y1, int y2) {
 }
 
 void pixel_image::update() {
-	
-	if ((v.x > 0 && topleft.x > 14-toright)||(v.x < 0 && topleft.x + width-1 < 0+toleft)){
-		v.x = -v.x;
+	counter++;
+	if (counter >= gap) {
+		if ((v.x > 0 && topleft.x > 14 - toright) || (v.x < 0 && topleft.x + width - 1 < 0 + toleft)) {
+			v.x = -v.x;
+		}
+		if ((v.y > 0 && topleft.y > 9 - todown) || (v.y < 0 && topleft.y + height - 1 < 0 + toup)) {
+			v.y = -v.y;
+		}
+		topleft.x += v.x;
+		topleft.y += v.y;
+		counter = 0;
 	}
-	if ((v.y > 0 && topleft.y>9-todown)||(v.y<0&&topleft.y+height-1<0+toup)) {
-		v.y=-v.y;
-	}
-    topleft.x += v.x;
-	topleft.y += v.y;
 }
 
 int pixel_image::gettimeflow() {
