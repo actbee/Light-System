@@ -211,6 +211,29 @@ void ofApp::change_status(string new_status) {
 }
 //--------------------------------------------------------------
 
+void ofApp::send_messages() {
+	string message;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			ofColor color=mycircles[i][j].getcolor();
+			if (color == BLACK) {
+				message += "00";
+			}
+			else if (color == RED) {
+				message += "01";
+			}
+			else if (color == PURPLE) {
+				message += "10";
+			}
+			else if (color == BLUE) {
+				message += "11";
+			}
+		}
+	}
+	cout << "send it:" << message << endl;
+}
+
+//--------------------------------------------------------------
 void ofApp::create_pixel_alien() {
 	mypixels.changesize(3, 11, 16);
 	for (int i = 0; i < 11; i++) {
@@ -628,6 +651,7 @@ void ofApp::update() {
 void ofApp::draw(){
 	//myKinect.display.draw(0,0);
 	
+	send_messages();
 	ofBackground(50);
 	ofSetColor(255);
 	ofFill();

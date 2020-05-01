@@ -12,15 +12,15 @@
 #include"Depthimage.h"
 #include"pixel_image.h"
 
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include<opencv2/imgproc/imgproc.hpp>
+
 #include"ofMain.h"
 #include"ofApp.h"
+#include<winsock.h>
+
 // Kinect for Windows SDK Header
 #include <Kinect.h>
 
-
+#pragma comment(lib,"ws2_32lib")
 
 //#define num_circles 150
 const ofColor BLACK(0, 0, 0);
@@ -60,6 +60,9 @@ class ofApp : public ofBaseApp{
 		void create_pixel_bubble();
 		void create_pixel_acaleph();
 
+		void change_status(string new_statue);
+		void send_messages();
+
 		circle mycircles[15][10];
 		snack mysnack;
 		target mytarget;
@@ -68,7 +71,6 @@ class ofApp : public ofBaseApp{
 
 		int score;
 		string game_state;
-		void change_status(string new_statue);
 		int time;
 		ofColor my_img[10][15];
 		pixel_image mypixels;
