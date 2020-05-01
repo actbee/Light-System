@@ -11,7 +11,7 @@
 #include<stack>
 #include"Depthimage.h"
 #include"pixel_image.h"
-
+#include"sender.h"
 
 #include"ofMain.h"
 #include"ofApp.h"
@@ -20,7 +20,7 @@
 // Kinect for Windows SDK Header
 #include <Kinect.h>
 
-#pragma comment(lib,"ws2_32lib")
+#pragma comment(lib,"ws2_32.lib")
 
 //#define num_circles 150
 const ofColor BLACK(0, 0, 0);
