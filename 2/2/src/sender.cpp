@@ -1,4 +1,5 @@
 #include"sender.h"
+#include"iostream"
 #pragma comment(lib,"ws2_32.lib")
 WSADATA wsadata;
 SOCKET sendsocket;
@@ -12,13 +13,18 @@ sender::sender() {
 	sendsocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	recvaddr.sin_family = AF_INET;
 	recvaddr.sin_port = htons(PORT);
-	recvaddr.sin_addr.s_addr = inet_addr("192.168.1.110");
+	recvaddr.sin_addr.s_addr = inet_addr("60.255.136.62");
 }
 
-void sender::senddate(string output) {
-	char* words;
+sender::~sender() {
+	close();
+}
+
+void sender::senddata(std::string output) {
+	char words[301];    //there must be a better way to translate the string to char array, need to improve here
 	strcpy(words, output.c_str());
-	sendto(sendsocket, words, buflen, 0, (sockaddr*)&recvaddr, sizeof(recvaddr));
+	std::cout <<"send it:"<< words <<std::endl;
+	sendto(sendsocket, words, sizeof(words), 0, (sockaddr*)&recvaddr, sizeof(recvaddr));
 }
 
 void sender::close() {

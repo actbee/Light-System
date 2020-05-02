@@ -230,7 +230,8 @@ void ofApp::send_messages() {
 			}
 		}
 	}
-	cout << "send it:" << message << endl;
+	mysender.senddata(message);
+//	cout << "send it:" << message << endl;
 }
 
 //--------------------------------------------------------------

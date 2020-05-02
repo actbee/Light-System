@@ -2,13 +2,13 @@
 #define _sender
 #include<WINSOCK2.H>
 #include<string>
-using std::string;
+//using namespace std;
 
 class sender {
 public:
 	sender();
 	~sender();
-	void senddate(string output);
+	void senddata(std::string output);
 	void close();
 };
 
