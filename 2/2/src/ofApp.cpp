@@ -213,24 +213,24 @@ void ofApp::change_status(string new_status) {
 
 void ofApp::send_messages() {
 	string message;
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 15; j++) {
-			ofColor color=mycircles[i][j].getcolor();
-			if (color == BLACK) {
-				message += "00";
-			}
-			else if (color == RED) {
-				message += "01";
-			}
-			else if (color == PURPLE) {
-				message += "10";
-			}
-			else if (color == BLUE) {
-				message += "11";
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				ofColor color = mycircles[i][j].getcolor();
+				if (color == BLACK) {
+					message += "0";
+				}
+				else if (color == RED) {
+					message += "1";
+				}
+				else if (color == PURPLE) {
+					message += "2";
+				}
+				else if (color == BLUE) {
+					message += "3";
+				}
 			}
 		}
-	}
-	mysender.senddata(message);
+		mysender.senddata(message);
 //	cout << "send it:" << message << endl;
 }
 

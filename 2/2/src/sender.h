@@ -9,6 +9,7 @@ public:
 	sender();
 	~sender();
 	void senddata(std::string output);
+	void recvmain();
 	void close();
 };
 
