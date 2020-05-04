@@ -711,7 +711,10 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	if (game_state == "START") {
-		if (key == OF_KEY_LEFT) {
+		if (mysnack.dead() == true) {
+			return;
+		}
+		else if (key == OF_KEY_LEFT) {
 			int nextx = mysnack.get_head().x - 1;
 			if (nextx == -1) {
 				mysnack.add(14, 0);

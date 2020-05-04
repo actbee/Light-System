@@ -26,7 +26,7 @@ void sender::senddata(std::string output) {
 	//char words[2] = "0";
 	std::cout <<"send it:"<< words <<std::endl;
 	sendto(sendsocket, words, sizeof(words), 0, (sockaddr*)&recvaddr, sizeof(recvaddr));
-	recvmain();    //test if the send success
+//	recvmain();    //test if the send success
 }
 
 void sender::recvmain() {
