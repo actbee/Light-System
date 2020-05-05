@@ -1,5 +1,7 @@
 # Interactive Light System Design Based On Simple Gesture Recognition 
 
+![LOGO](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/pixel.jpg)
+
 ## Introduction
 
 This is a project I made based on Openframeworks, an amazing creative coding frameworks. 
