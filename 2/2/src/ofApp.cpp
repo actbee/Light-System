@@ -223,10 +223,10 @@ void ofApp::send_messages() {
 					message += "1";
 				}
 				else if (color == PURPLE) {
-					message += "2";
+					message += "3";
 				}
 				else if (color == BLUE) {
-					message += "3";
+					message += "2";
 				}
 			}
 		}
