@@ -25,6 +25,7 @@ int main( ){
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include<opencv2/imgproc/imgproc.hpp>
+#include<process.h>
 
 using namespace std;
 
@@ -50,20 +51,14 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 	}
 }
 
-int main()
-{
-
-	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
-	ofRunApp(new ofApp());
-
-	
+void go_kinect(void *) {
 	// 1a. Get default Sensor
 	cout << "Try to get default sensor" << endl;
 	IKinectSensor* pSensor = nullptr;
 	if (GetDefaultKinectSensor(&pSensor) != S_OK)
 	{
 		cerr << "Get Sensor failed" << endl;
-		return -1;
+		return;
 	}
 
 	// 1b. Open sensor
@@ -71,7 +66,7 @@ int main()
 	if (pSensor->Open() != S_OK)
 	{
 		cerr << "Can't open sensor" << endl;
-		return -1;
+		return;
 	}
 
 	// 2. Color Related code
@@ -85,7 +80,7 @@ int main()
 		if (pSensor->get_ColorFrameSource(&pFrameSource) != S_OK)
 		{
 			cerr << "Can't get color frame source" << endl;
-			return -1;
+			return ;
 		}
 
 		// 2b. Get frame description
@@ -106,7 +101,7 @@ int main()
 		if (pFrameSource->OpenReader(&pColorFrameReader) != S_OK)
 		{
 			cerr << "Can't get color frame reader" << endl;
-			return -1;
+			return ;
 		}
 
 		// 2d. release Frame source
@@ -130,14 +125,14 @@ int main()
 		if (pSensor->get_BodyFrameSource(&pFrameSource) != S_OK)
 		{
 			cerr << "Can't get body frame source" << endl;
-			return -1;
+			return ;
 		}
 
 		// 3b. Get the number of body
 		if (pFrameSource->get_BodyCount(&iBodyCount) != S_OK)
 		{
 			cerr << "Can't get body count" << endl;
-			return -1;
+			return;
 		}
 		cout << " > Can trace " << iBodyCount << " bodies" << endl;
 		aBodyData = new IBody*[iBodyCount];
@@ -149,7 +144,7 @@ int main()
 		if (pFrameSource->OpenReader(&pBodyFrameReader) != S_OK)
 		{
 			cerr << "Can't get body frame reader" << endl;
-			return -1;
+			return;
 		}
 
 		// 3d. release Frame source
@@ -163,7 +158,7 @@ int main()
 	if (pSensor->get_CoordinateMapper(&pCoordinateMapper) != S_OK)
 	{
 		cout << "Can't get coordinate mapper" << endl;
-		return -1;
+		return;
 	}
 
 	// Enter main loop
@@ -347,6 +342,16 @@ int main()
 	cout << "Release sensor" << endl;
 	pSensor->Release();
 	pSensor = nullptr;
+}
+
+int main()
+{
+
+	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
+	
+	_beginthread(go_kinect,1024*1024,NULL);
+	ofRunApp(new ofApp());
+	
 
 	return 0;
 	
