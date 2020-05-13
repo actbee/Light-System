@@ -12,6 +12,8 @@ public:
 	float get_depth();
 	string choose_hand();
 
+
+
 private:
 	bool InitialKinectV2();
 

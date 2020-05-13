@@ -344,7 +344,7 @@ void ofApp::check_snack_and_target() {
 	int tx = mytarget.get_x();
 	int ty = mytarget.get_y();
 	if (sx == tx && sy == ty) {
-		cout << "eat one! " << endl;
+	//	cout << "eat one! " << endl;
 		mysnack.addlength();
 		score += 1;
 		int random_x = (int)ofRandom(0, 15);
@@ -750,7 +750,7 @@ void ofApp::keyPressed(int key) {
 				mysnack.add(0, 1);
 			}
 		}
-		cout << "now head is : " << mysnack.get_head().x << " , " << mysnack.get_head().y << endl;
+		//cout << "now head is : " << mysnack.get_head().x << " , " << mysnack.get_head().y << endl;
 		
 	}
 	else {

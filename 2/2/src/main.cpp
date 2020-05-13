@@ -51,6 +51,24 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 	}
 }
 
+void DrawCircle(cv::Mat& rImg, const Joint& rJ1, ICoordinateMapper* pCMapper, int dir)
+{
+	if (rJ1.TrackingState == TrackingState_NotTracked )
+		return;
+
+	ColorSpacePoint ptJ1;
+	pCMapper->MapCameraPointToColorSpace(rJ1.Position, &ptJ1);
+	if (dir == 1) {
+		cout << "draw circle 1" << endl;
+		cout << ptJ1.X << "," << ptJ1.Y << endl;
+		cv::circle(rImg, cv::Point(ptJ1.X, ptJ1.Y), 100, cv::Vec3b(250, 0, 0),15);
+	}
+	else if (dir == 2) {
+		cout << "draw circle 2" << endl;
+		cv::circle(rImg, cv::Point(ptJ1.X, ptJ1.Y), 100, cv::Vec3b(0, 0,250),15);
+	}
+}
+
 void go_kinect(void *) {
 	// 1a. Get default Sensor
 	cout << "Try to get default sensor" << endl;
@@ -305,6 +323,19 @@ void go_kinect(void *) {
 							if (abs(check) < 0.5) {
 								DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dir);
 								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper, dir);
+								HandState left;
+								if (pBody->get_HandLeftState(&left)==S_OK) {
+								//	cout << "check!!!" << endl;
+									if (left == HandState_Closed) {
+										DrawCircle(mImg, aJoints[JointType_Head], pCoordinateMapper, 1);
+									}
+									else{
+										DrawCircle(mImg, aJoints[JointType_Head], pCoordinateMapper, 2);
+									}
+								}
+								else {
+									cout << "wrong" << endl;
+								}
 							}
 						}
 					}
