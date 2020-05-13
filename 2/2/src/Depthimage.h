@@ -11,6 +11,7 @@ public:
 	int get_elbow_direction(string words);
 	float get_depth();
 	string choose_hand();
+	bool openhand();
 
 
 
@@ -28,5 +29,7 @@ private:
 	float maxwidth;
 	float mindepth;
 	float maxdepth;
+
+	float pos;
 
 };

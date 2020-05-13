@@ -265,6 +265,47 @@ string depthimage::choose_hand() {
 	return hand;
 }
 
+bool depthimage::openhand() {
+	bool open = false;
+	IBodyFrame* bodyframe = nullptr;
+	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
+		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
+			for (int i = 0; i < iBodyCount; i++) {
+				IBody* body = BodyData[i];
+				BOOLEAN track = false;
+				if ((body->get_IsTracked(&track) == S_OK) && track) {
+					Joint joints[JointType::JointType_Count];
+					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+						float check = joints[JointType_Head].Position.Z;
+						float pos = joints[JointType_Head].Position.X;
+						//		cout << check << " , " << pos << endl;
+						if (check > mindepth&&check < maxdepth&&abs(pos) < maxwidth) {
+							HandState left;
+							if (body->get_HandLeftState(&left) == S_OK) {
+								//	cout << "check!!!" << endl;
+								if (left == HandState_Open) {
+									open = true;
+								}
+							}
+							else {
+								cout << "wrong" << endl;
+							}
+						}
+					}
+					else {
+						std::cout << "can not read body data" << std::endl;
+					}
+				}
+			}
+		}
+		else {
+			std::cout << "can not update body frame" << std::endl;
+		}
+		bodyframe->Release();
+	}
+	return open;
+}
+
 void depthimage::exit() {
 	delete[] BodyData;
 	bodyframereader->Release();
