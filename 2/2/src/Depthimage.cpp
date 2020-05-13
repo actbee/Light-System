@@ -6,6 +6,10 @@ bool depthimage::InitialKinectV2() {
 	iBodyCount = 0;
 	bodyframesource = nullptr;
 	kinectsensor = nullptr;
+	maxdepth = 9999;
+	mindepth = 0;
+	maxwidth= 0.5;
+
 
 
 	if (GetDefaultKinectSensor(&kinectsensor) != S_OK) {
@@ -60,6 +64,7 @@ void depthimage::UpdateKinectV2() {
 		depthframedescription->get_Height(&depthheight);
 		depthframe->get_DepthMinReliableDistance(&usmindepth);
 		depthframe->get_DepthMaxReliableDistance(&usmaxdepth);
+		
 		depthframe->AccessUnderlyingBuffer(&depthbuffersize, &depthbuffer);
 
 		ofPixels tmpdisplay;
@@ -88,48 +93,53 @@ int depthimage::get_elbow_direction(string	words) {
 				if ((body->get_IsTracked(&track) == S_OK) && track) {
 					Joint joints[JointType::JointType_Count];
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						float x1, x2, y1, y2;
-						if (words == "LEFT") {
-						x1 = joints[JointType_ElbowLeft].Position.X;
-						y1 = joints[JointType_ElbowLeft].Position.Y;
-						x2 = joints[JointType_HandLeft].Position.X;
-						y2 = joints[JointType_HandLeft].Position.Y;
-					    }
-						else{
-							x1 = joints[JointType_ElbowRight].Position.X;
-							y1 = joints[JointType_ElbowRight].Position.Y;
-							x2 = joints[JointType_HandRight].Position.X;
-							y2 = joints[JointType_HandRight].Position.Y;
-						}
-						if (x2 == x1) {
-							goto jmp;
-						}
-						float k = (y2 - y1) / (x2 - x1);
-						std::cout << "k is " << k << std::endl;
-						if (k < 1.0&&k>=-1.0) {
-							if (x2 > x1) {
-								std::cout << "right" << std::endl;
-								direction = 1;
+
+						float check = joints[JointType_Head].Position.Z;
+						float pos = joints[JointType_Head].Position.X;
+						if(check>mindepth&&check<maxdepth&&abs(pos)<maxwidth){
+							float x1, x2, y1, y2;
+							if (words == "LEFT") {
+								x1 = joints[JointType_ElbowLeft].Position.X;
+								y1 = joints[JointType_ElbowLeft].Position.Y;
+								x2 = joints[JointType_HandLeft].Position.X;
+								y2 = joints[JointType_HandLeft].Position.Y;
 							}
-							else if (x2 < x1) {
-								std::cout << "left" << std::endl;
-								direction = 3;
+							else {
+								x1 = joints[JointType_ElbowRight].Position.X;
+								y1 = joints[JointType_ElbowRight].Position.Y;
+								x2 = joints[JointType_HandRight].Position.X;
+								y2 = joints[JointType_HandRight].Position.Y;
+							}
+							if (x2 == x1) {
+								goto jmp;
+							}
+							float k = (y2 - y1) / (x2 - x1);
+							//	std::cout << "k is " << k << std::endl;
+							if (k < 1.0&&k >= -1.0) {
+								if (x2 > x1) {
+									//	std::cout << "right" << std::endl;
+									direction = 1;
+								}
+								else if (x2 < x1) {
+									//	std::cout << "left" << std::endl;
+									direction = 3;
+								}
+							}
+							else {
+							jmp:
+								if (y2 > y1) {
+									//		std::cout << "up" << std::endl;
+									direction = 2;
+								}
+								else if (y2 <= y1) {
+									//		std::cout << "down" << std::endl;
+									direction = 4;
+								}
 							}
 						}
-						else {
-jmp:
-							if (y2 > y1) {
-								std::cout << "up" << std::endl;
-								direction = 2;
-							}
-							else if (y2 <= y1) {
-								std::cout << "down" << std::endl;
-								direction = 4;
-							}
 						}
-					}
 					else {
-						std::cout << "can not read body data" << std::endl;
+			 			std::cout << "can not read body data" << std::endl;
 					}
 				}
 			}
@@ -147,7 +157,7 @@ jmp:
 }
 
 float depthimage::get_depth() {
-	float depth = 0;
+	float depth = maxdepth;
 	IBodyFrame* bodyframe = nullptr;
 	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
 		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
@@ -157,7 +167,12 @@ float depthimage::get_depth() {
 				if ((body->get_IsTracked(&track) == S_OK) && track) {
 					Joint joints[JointType::JointType_Count];
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						depth = joints[JointType_Head].Position.Z;
+						float check= joints[JointType_Head].Position.Z;
+						float pos = joints[JointType_Head].Position.X;
+				//		cout << check << " , " << pos << endl;
+						if (check > mindepth&&check < maxdepth&&abs(pos)<maxwidth) {
+							depth = check;
+						}
 					}
 					else {
 						std::cout << "can not read body data" << std::endl;
@@ -174,7 +189,7 @@ float depthimage::get_depth() {
 		std::cout << "can not read body frame" << std::endl;
 	}
 	std::cout << "finish update" << std::endl;*/
-	std::cout << "depth:" << depth << std::endl;
+	//std::cout << "depth:" << depth << std::endl;
 	return depth;
 }
 
@@ -189,46 +204,53 @@ string depthimage::choose_hand() {
 				if ((body->get_IsTracked(&track) == S_OK) && track) {
 					Joint joints[JointType::JointType_Count];
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						float left_x1, left_x2, left_y1, left_y2;
-						left_x1 = joints[JointType_ElbowLeft].Position.X;
-						left_y1 = joints[JointType_ElbowLeft].Position.Y;
-						left_x2 = joints[JointType_HandLeft].Position.X;
-						left_y2 = joints[JointType_HandLeft].Position.Y;
-						float right_x1, right_x2, right_y1, right_y2;
-						right_x1 = joints[JointType_ElbowRight].Position.X;
-						right_y1 = joints[JointType_ElbowRight].Position.Y;
-						right_x2 = joints[JointType_HandRight].Position.X;
-						right_y2 = joints[JointType_HandRight].Position.Y;
+						float check = joints[JointType_Head].Position.Z;
+						float pos = joints[JointType_Head].Position.X;
+				//		cout << check << " , " << pos<< endl;
+						if(check>mindepth&&check<maxdepth&&abs(pos)<maxwidth){
+							float left_x1, left_x2, left_y1, left_y2;
+							left_x1 = joints[JointType_ElbowLeft].Position.X;
+							left_y1 = joints[JointType_ElbowLeft].Position.Y;
+							left_x2 = joints[JointType_HandLeft].Position.X;
+							left_y2 = joints[JointType_HandLeft].Position.Y;
+							float right_x1, right_x2, right_y1, right_y2;
+							right_x1 = joints[JointType_ElbowRight].Position.X;
+							right_y1 = joints[JointType_ElbowRight].Position.Y;
+							right_x2 = joints[JointType_HandRight].Position.X;
+							right_y2 = joints[JointType_HandRight].Position.Y;
 
-						if (left_x2 == left_x1) {
-							goto left_jmp;
-						}
-						float left_k = (left_y2 - left_y1) / (left_x2 - left_x1);
-						if (left_k < 1.0&&left_k >= -1.0) {
-							hand= "LEFT";
-						}
-						else {
-						left_jmp:
-							if (left_y2 > left_y1) {
-								hand= "LEFT";
+							if (left_x2 == left_x1) {
+								goto left_jmp;
 							}
-						}
-						if (hand == "NO") {
-							if (right_x2 == right_x1) {
-								goto right_jmp;
-							}
-							float right_k = (right_y2 - right_y1) / (right_x2 - right_x1);
-							if (right_k < 1.0&&right_k >= -1.0) {
-								hand="RIGHT";
+							float left_k = (left_y2 - left_y1) / (left_x2 - left_x1);
+							if (left_k < 1.0&&left_k >= -1.0) {
+								hand = "LEFT";
 							}
 							else {
-							right_jmp:
-								if (right_y2 > right_y1) {
-									hand="RIGHT";
+							left_jmp:
+								if (left_y2 > left_y1) {
+									hand = "LEFT";
+								}
+							}
+							if (hand == "NO") {
+								if (right_x2 == right_x1) {
+									goto right_jmp;
+								}
+								float right_k = (right_y2 - right_y1) / (right_x2 - right_x1);
+								if (right_k < 1.0&&right_k >= -1.0) {
+									hand = "RIGHT";
+								}
+								else {
+								right_jmp:
+									if (right_y2 > right_y1) {
+										hand = "RIGHT";
+									}
 								}
 							}
 						}
+			
 					}
+
 					else {
 						std::cout << "can not read body data" << std::endl;
 					}

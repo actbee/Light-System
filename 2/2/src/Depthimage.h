@@ -23,4 +23,8 @@ private:
 	IBodyFrameSource* bodyframesource;
 	INT32 iBodyCount;
 
+	float maxwidth;
+	float mindepth;
+	float maxdepth;
+
 };

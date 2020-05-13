@@ -28,6 +28,9 @@
     <ClCompile Include="src\target.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\sender.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -57,6 +60,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\target.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sender.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,7 +24,7 @@ void sender::senddata(std::string output) {
 	char words[151];    //there must be a better way to translate the string to char array, need to improve here
 	strcpy(words, output.c_str());
 	//char words[2] = "0";
-	std::cout <<"send it:"<< words <<std::endl;
+	//std::cout <<"send it:"<< words <<std::endl;
 	sendto(sendsocket, words, sizeof(words), 0, (sockaddr*)&recvaddr, sizeof(recvaddr));
 //	recvmain();    //test if the send success
 }
@@ -39,7 +39,7 @@ void sender::recvmain() {
 		{
 			s[n] = '\0';
 			//cout << WSAGetLastError() << endl;
-			std::cout << std::endl << "receive messeage" << inet_ntoa(sfrom.sin_addr) << "-" << htons(sfrom.sin_port) << ": " << s << std::endl;
+		//	std::cout << std::endl << "receive messeage" << inet_ntoa(sfrom.sin_addr) << "-" << htons(sfrom.sin_port) << ": " << s << std::endl;
 		}
 }
 

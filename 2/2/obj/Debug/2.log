@@ -1,4 +1,4 @@
-﻿  ofApp.cpp
+﻿  Depthimage.cpp
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec3f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofvec2f.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(326): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
@@ -7,6 +7,9 @@ d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframew
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(913): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(914): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\math\ofmatrix4x4.h(915): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\study\uni\final\final\2\2\src\depthimage.cpp(74): warning C4018: “<”: 有符号/无符号不匹配
+d:\study\uni\final\final\2\2\src\depthimage.cpp(72): warning C4996: 'ofPixels_<unsigned char>::getPixels': Use getData instead
+  d:\study\uni\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\openframeworks\graphics\ofpixels.h(312): note: 参见“ofPixels_<unsigned char>::getPixels”的声明
   2.vcxproj -> D:\Study\UNI\FINAL\final\2\2\bin\2_debug.exe
   
   	                   2	D:\Study\UNI\of_v0.11.0_vs2017_release\of_v0.11.0_vs2017_release\libs\fmodex\lib\vs\x64\
