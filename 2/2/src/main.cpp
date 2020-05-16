@@ -321,10 +321,17 @@ void go_kinect(void *) {
 								DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dir);
 								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper, dir);
 								HandState left;
-								if (pBody->get_HandLeftState(&left)==S_OK) {
+								HandState right;
+								if (pBody->get_HandLeftState(&left)==S_OK&&pBody->get_HandRightState(&right)==S_OK) {
 								//	cout << "check!!!" << endl;
-									if (left == HandState_Closed) {
-										DrawCircle(mImg, aJoints[JointType_Head], pCoordinateMapper, 1);
+									float head_y = aJoints[JointType_Head].Position.Y;
+									float left_y = aJoints[JointType_HandLeft].Position.Y;
+									float right_y = aJoints[JointType_HandRight].Position.Y;
+									if (left == HandState_Closed&&left_y>head_y) {
+											DrawCircle(mImg, aJoints[JointType_Head], pCoordinateMapper, 1);
+									}
+									else if (right == HandState_Closed && right_y > head_y) {
+										  DrawCircle(mImg, aJoints[JointType_Head], pCoordinateMapper, 1);
 									}
 									else{
 										DrawCircle(mImg, aJoints[JointType_Head], pCoordinateMapper, 2);

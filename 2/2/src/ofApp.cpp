@@ -614,8 +614,8 @@ void ofApp::update() {
 		}
 	}  */
 	else if (game_state == "FOLLOW") {
+	  myKinect.detect_body();
 	  float pos = myKinect.get_pos();
-	  cout << pos << endl;
 	  for (int i = 0; i < 10; i++) {
 		  for (int j = 0; j < 15; j++) {
 			  my_img[i][j] = BLACK;
@@ -662,11 +662,30 @@ void ofApp::update() {
 				}
 			}
 		}
-
+		myKinect.detect_body();
+		bool open_hand = myKinect.openhand();  
 		float point = myKinect.get_depth();
-		if (point>1.0) {
+		if (point<1.0) {
 			change_status("READY");
 			cout << "start game" << endl;
+		}
+		
+		if (open_hand == false) {
+			int random = (int)ofRandom(0, 4);
+			switch (random) {
+			case 0:
+				change_status("TEST");
+				break;
+			case 1:
+				change_status("TEST2");
+				break;
+			case 2:
+				change_status("TEST3");
+				break;
+			case 3:
+				change_status("TEST4");
+				break;
+			}
 		}
 	} 
 

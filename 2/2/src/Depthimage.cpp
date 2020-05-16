@@ -10,7 +10,9 @@ bool depthimage::InitialKinectV2() {
 	mindepth = 0;
 	maxwidth= 0.5;
 
-
+	depth = maxdepth;
+	pos = 10;
+	up_open = true;
 
 	if (GetDefaultKinectSensor(&kinectsensor) != S_OK) {
 		std::cout << "can not get sensor" << std::endl;
@@ -79,6 +81,58 @@ void depthimage::UpdateKinectV2() {
 			depthframe->Release();
 		}
 	}
+}
+
+void depthimage::detect_body() {
+
+	depth = maxdepth;
+	pos = 10;
+	up_open =true;
+
+	IBodyFrame* bodyframe = nullptr;
+	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
+		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
+			for (int i = 0; i < iBodyCount; i++) {
+				IBody* body = BodyData[i];
+				BOOLEAN track = false;
+				if ((body->get_IsTracked(&track) == S_OK) && track) {
+					Joint joints[JointType::JointType_Count];
+					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+						float check_depth = joints[JointType_Head].Position.Z;
+						float check_pos = joints[JointType_Head].Position.X;
+						//		cout << check << " , " << pos << endl;
+						if (check_depth > mindepth&&check_depth < maxdepth&&abs(check_pos) < maxwidth) {
+							depth = check_depth;
+							pos = check_pos;
+
+							HandState left_hand;
+							HandState right_hand;
+							if (body->get_HandLeftState(&left_hand) == S_OK&&body->get_HandRightState(&right_hand)==S_OK) {
+								//	cout << "check!!!" << endl;
+								float head_y = joints[JointType_Head].Position.Y;
+								float left_y = joints[JointType_HandLeft].Position.Y;
+								float right_y = joints[JointType_HandRight].Position.Y;
+								if ((left_hand == HandState_Closed && left_y > head_y)||(right_hand == HandState_Closed && right_y > head_y)) {
+									up_open = false;
+								}
+							}
+							else {
+								cout << "wrong" << endl;
+							}
+
+						}
+					}
+					else {
+						std::cout << "can not read body data" << std::endl;
+					}
+				}
+			}
+		}
+		else {
+			std::cout << "can not update body frame" << std::endl;
+		}
+		bodyframe->Release();
+	}	
 }
 
 int depthimage::get_elbow_direction(string	words) {
@@ -157,71 +211,10 @@ int depthimage::get_elbow_direction(string	words) {
 }
 
 float depthimage::get_depth() {
-	float depth = maxdepth;
-	IBodyFrame* bodyframe = nullptr;
-	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
-		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
-			for (int i = 0; i < iBodyCount; i++) {
-				IBody* body = BodyData[i];
-				BOOLEAN track = false;
-				if ((body->get_IsTracked(&track) == S_OK) && track) {
-					Joint joints[JointType::JointType_Count];
-					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						float check= joints[JointType_Head].Position.Z;
-						float pos = joints[JointType_Head].Position.X;
-				//		cout << check << " , " << pos << endl;
-						if (check > mindepth&&check < maxdepth&&abs(pos)<maxwidth) {
-							depth = check;
-						}
-					}
-					else {
-						std::cout << "can not read body data" << std::endl;
-					}
-				}
-			}
-		}
-		else {
-			std::cout << "can not update body frame" << std::endl;
-		}
-		bodyframe->Release();
-	}
-	/*else {
-		std::cout << "can not read body frame" << std::endl;
-	}
-	std::cout << "finish update" << std::endl;*/
-	//std::cout << "depth:" << depth << std::endl;
 	return depth;
 }
 
 float depthimage::get_pos() {
-	float pos =10;
-	IBodyFrame* bodyframe = nullptr;
-	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
-		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
-			for (int i = 0; i < iBodyCount; i++) {
-				IBody* body = BodyData[i];
-				BOOLEAN track = false;
-				if ((body->get_IsTracked(&track) == S_OK) && track) {
-					Joint joints[JointType::JointType_Count];
-					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						float check = joints[JointType_Head].Position.Z;
-						float check_pos = joints[JointType_Head].Position.X;
-						if (check > mindepth&&check < maxdepth&&abs(check_pos) < maxwidth) {
-							pos = check_pos;
-						}
-					}
-					else {
-						std::cout << "can not read body data" << std::endl;
-					}
-				}
-			}
-		}
-		else {
-			std::cout << "can not update body frame" << std::endl;
-		}
-		bodyframe->Release();
-	}
-	
 	return pos;
 }
 
@@ -236,6 +229,7 @@ string depthimage::choose_hand() {
 				if ((body->get_IsTracked(&track) == S_OK) && track) {
 					Joint joints[JointType::JointType_Count];
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+
 						float check = joints[JointType_Head].Position.Z;
 						float pos = joints[JointType_Head].Position.X;
 				//		cout << check << " , " << pos<< endl;
@@ -298,44 +292,7 @@ string depthimage::choose_hand() {
 }
 
 bool depthimage::openhand() {
-	bool open = false;
-	IBodyFrame* bodyframe = nullptr;
-	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
-		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
-			for (int i = 0; i < iBodyCount; i++) {
-				IBody* body = BodyData[i];
-				BOOLEAN track = false;
-				if ((body->get_IsTracked(&track) == S_OK) && track) {
-					Joint joints[JointType::JointType_Count];
-					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-						float check = joints[JointType_Head].Position.Z;
-						float pos = joints[JointType_Head].Position.X;
-						//		cout << check << " , " << pos << endl;
-						if (check > mindepth&&check < maxdepth&&abs(pos) < maxwidth) {
-							HandState left;
-							if (body->get_HandLeftState(&left) == S_OK) {
-								//	cout << "check!!!" << endl;
-								if (left == HandState_Open) {
-									open = true;
-								}
-							}
-							else {
-								cout << "wrong" << endl;
-							}
-						}
-					}
-					else {
-						std::cout << "can not read body data" << std::endl;
-					}
-				}
-			}
-		}
-		else {
-			std::cout << "can not update body frame" << std::endl;
-		}
-		bodyframe->Release();
-	}
-	return open;
+	return up_open;
 }
 
 void depthimage::exit() {
