@@ -51,7 +51,13 @@ void ofApp::change_status(string new_status) {
 		mypixels.change_v(0, 0, 1);
 	}
 	else if (new_status == "FOLLOW") {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				my_img[i][j] = BLACK;
+			}
+		}
 		game_state = "FOLLOW";
+		ofSetFrameRate(10);
 	}
 	else if (new_status == "OVER") {
 		game_state = "OVER";
@@ -608,21 +614,21 @@ void ofApp::update() {
 		}
 	}  */
 	else if (game_state == "FOLLOW") {
-	float pos = myKinect.get_pos();
-	cout << pos << endl;
-	for (int x0 = 0; x0 < 15; x0++) {
-		for (int y0 = 0; y0 < 10; y0++) {
-			mycircles[x0][y0].setcolor(BLACK);
-		}
-	}
-	if (pos != 10) {
+	  float pos = myKinect.get_pos();
+	  cout << pos << endl;
+	  for (int i = 0; i < 10; i++) {
+		  for (int j = 0; j < 15; j++) {
+			  my_img[i][j] = BLACK;
+		  }
+	  }
+	  if (pos != 10) {
 		float remap = ofMap(pos, -0.5, 0.5, 0, 14);
 		int change = (int)remap;
-		mycircles[change][5].setcolor(RED);
-	}
-	else {
-		mycircles[7][5].setcolor(RED);
-	}
+		my_img[5][change]=RED;
+	   }
+	  else {
+		  my_img[5][7] = RED;
+	  }
      }
 	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
 		
@@ -688,6 +694,7 @@ void ofApp::draw(){
 	else if (game_state == "FOLLOW") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
+				mycircles[x0][y0].setcolor(my_img[y0][x0]);
 				mycircles[x0][y0].draw();
 			}
 		}

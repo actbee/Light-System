@@ -204,10 +204,11 @@ float depthimage::get_pos() {
 				if ((body->get_IsTracked(&track) == S_OK) && track) {
 					Joint joints[JointType::JointType_Count];
 					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
-
+						float check = joints[JointType_Head].Position.Z;
 						float check_pos = joints[JointType_Head].Position.X;
+						if (check > mindepth&&check < maxdepth&&abs(check_pos) < maxwidth) {
 							pos = check_pos;
-						
+						}
 					}
 					else {
 						std::cout << "can not read body data" << std::endl;
