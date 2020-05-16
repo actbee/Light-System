@@ -12,7 +12,7 @@ public:
 	float get_depth();
 	string choose_hand();
 	bool openhand();
-
+	float get_pos();
 
 
 private:

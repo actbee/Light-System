@@ -59,12 +59,9 @@ void DrawCircle(cv::Mat& rImg, const Joint& rJ1, ICoordinateMapper* pCMapper, in
 	ColorSpacePoint ptJ1;
 	pCMapper->MapCameraPointToColorSpace(rJ1.Position, &ptJ1);
 	if (dir == 1) {
-		cout << "draw circle 1" << endl;
-		cout << ptJ1.X << "," << ptJ1.Y << endl;
 		cv::circle(rImg, cv::Point(ptJ1.X, ptJ1.Y), 100, cv::Vec3b(250, 0, 0),15);
 	}
 	else if (dir == 2) {
-		cout << "draw circle 2" << endl;
 		cv::circle(rImg, cv::Point(ptJ1.X, ptJ1.Y), 100, cv::Vec3b(0, 0,250),15);
 	}
 }

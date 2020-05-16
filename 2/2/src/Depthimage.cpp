@@ -193,6 +193,37 @@ float depthimage::get_depth() {
 	return depth;
 }
 
+float depthimage::get_pos() {
+	float pos =10;
+	IBodyFrame* bodyframe = nullptr;
+	if (bodyframereader->AcquireLatestFrame(&bodyframe) == S_OK) {
+		if (bodyframe->GetAndRefreshBodyData(iBodyCount, BodyData) == S_OK) {
+			for (int i = 0; i < iBodyCount; i++) {
+				IBody* body = BodyData[i];
+				BOOLEAN track = false;
+				if ((body->get_IsTracked(&track) == S_OK) && track) {
+					Joint joints[JointType::JointType_Count];
+					if (body->GetJoints(JointType::JointType_Count, joints) == S_OK) {
+
+						float check_pos = joints[JointType_Head].Position.X;
+							pos = check_pos;
+						
+					}
+					else {
+						std::cout << "can not read body data" << std::endl;
+					}
+				}
+			}
+		}
+		else {
+			std::cout << "can not update body frame" << std::endl;
+		}
+		bodyframe->Release();
+	}
+	
+	return pos;
+}
+
 string depthimage::choose_hand() {
 	string hand="NO";
 	IBodyFrame* bodyframe = nullptr;

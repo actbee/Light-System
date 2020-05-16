@@ -50,7 +50,9 @@ void ofApp::change_status(string new_status) {
 		mypixels.setboard(0, 0, 0, 0);
 		mypixels.change_v(0, 0, 1);
 	}
-
+	else if (new_status == "FOLLOW") {
+		game_state = "FOLLOW";
+	}
 	else if (new_status == "OVER") {
 		game_state = "OVER";
 		time = 0;
@@ -400,7 +402,7 @@ void ofApp::setup(){
 		}
 	}
 	hand = "LEFT";
-	change_status("READY");
+	change_status("FOLLOW");
 //	create_pixel_fly();
 }
 
@@ -605,6 +607,23 @@ void ofApp::update() {
 			}
 		}
 	}  */
+	else if (game_state == "FOLLOW") {
+	float pos = myKinect.get_pos();
+	cout << pos << endl;
+	for (int x0 = 0; x0 < 15; x0++) {
+		for (int y0 = 0; y0 < 10; y0++) {
+			mycircles[x0][y0].setcolor(BLACK);
+		}
+	}
+	if (pos != 10) {
+		float remap = ofMap(pos, -0.5, 0.5, 0, 14);
+		int change = (int)remap;
+		mycircles[change][5].setcolor(RED);
+	}
+	else {
+		mycircles[7][5].setcolor(RED);
+	}
+     }
 	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
 		
 		time += 1;
@@ -660,6 +679,13 @@ void ofApp::draw(){
 	if (game_state == "START") {
 		draw_target();
 		draw_snack();
+		for (int x0 = 0; x0 < 15; x0++) {
+			for (int y0 = 0; y0 < 10; y0++) {
+				mycircles[x0][y0].draw();
+			}
+		}
+	}
+	else if (game_state == "FOLLOW") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].draw();
