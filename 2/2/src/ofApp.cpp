@@ -216,6 +216,22 @@ void ofApp::change_status(string new_status) {
 	   mypixels.setboard(1, 1, 2, 2);
 	   mypixels.change_v(1, 0, 5);
 }
+	else if (new_status == "GAME OF LIFE") {
+	   game_state = "GAME OF LIFE";
+	   for (int i = 0; i < 10; i++) {
+		   for (int j = 0; j < 15; j++) {
+			   my_img[i][j] = BLACK;
+		   }
+	   }
+	   int random_num = (int)ofRandom(5, 10);
+	   cout << random_num << endl;
+	   for (int i = 0; i < random_num; i++) {
+		   int row = (int)ofRandom(0, 15);
+		   int col = (int)ofRandom(0, 10);
+		   my_img[col][row] = PURPLE;
+	   }
+	   ofSetFrameRate(5);
+     }
 }
 //--------------------------------------------------------------
 
@@ -408,7 +424,7 @@ void ofApp::setup(){
 		}
 	}
 	hand = "LEFT";
-	change_status("FOLLOW");
+	change_status("GAME OF LIFE");
 //	create_pixel_fly();
 }
 
@@ -685,11 +701,99 @@ void ofApp::update() {
 			case 3:
 				change_status("TEST4");
 				break;
-			}
+			}  
+		
 		}
 	} 
+	else if (game_state == "GAME OF LIFE") {
+	int check[10][15];
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			check[i][j] = 0;
+		}
+	}
+	for (int i = 0; i < 10; i++) {
+		   for (int j = 0; j < 15; j++) {
+			   int ysub = i - 1;
+			   int yadd = i + 1;
+			   int xsub = j - 1;
+			   int xadd = j + 1;
+			   if (ysub>= 0&&xsub>=0) {
+				   if (my_img[ysub][xsub] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (ysub >= 0) {
+				   if (my_img[ysub][j] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (xadd<15&&ysub >= 0) {
+				   if (my_img[ysub][xadd] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (xsub >=0) {
+				   if (my_img[i][xsub] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (xadd<15) {
+				   if (my_img[i][xadd] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (xsub>=0&&yadd<10) {
+				   if (my_img[yadd][xsub] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (yadd < 10) {
+				   if (my_img[yadd][j] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+			   if (xadd<15&&yadd < 10) {
+				   if (my_img[yadd][xadd] != BLACK) {
+					   check[i][j]++;
+				   }
+			   }
+		   }
+		 }
+	bool no = true;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			if (check[i][j] ==3) {
+				my_img[i][j] = PURPLE;
+				no = false;
+			}
+			else if (check[i][j] < 2 || check[i][j] >=4) {
+				my_img[i][j] = BLACK;
+			}
+		}
+	}
+  
+		for (int i = 0; i < 5; i++) {
+			int random_col = (int)ofRandom(2, 13);
+			int random_row = (int)ofRandom(1, 8);
+			my_img[random_row][random_col] = PURPLE;
+		}
 
 	
+		for (int i = 0; i < 3; i++) {
+			int lucky_col = (int)ofRandom(0, 15);
+			int lucky_row = (int)ofRandom(0, 10);
+			my_img[lucky_row][0] = BLACK;
+			my_img[0][lucky_col] = BLACK;
+		}
+		for (int i = 0; i < 3; i++) {
+			int lucky_col = (int)ofRandom(0, 15);
+			int lucky_row = (int)ofRandom(0, 10);
+			my_img[lucky_row][14] = BLACK;
+			my_img[9][lucky_col] = BLACK;
+		}
+	
+   }
 }
 
 //--------------------------------------------------------------
@@ -710,7 +814,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "FOLLOW") {
+	else if (game_state == "FOLLOW"||game_state=="GAME OF LIFE") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);

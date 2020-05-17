@@ -20,6 +20,7 @@
 // Kinect for Windows SDK Header
 #include <Kinect.h>
 
+
 #pragma comment(lib,"ws2_32.lib")
 
 //#define num_circles 150
