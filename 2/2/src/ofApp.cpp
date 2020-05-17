@@ -218,6 +218,7 @@ void ofApp::change_status(string new_status) {
 }
 	else if (new_status == "GAME OF LIFE") {
 	   game_state = "GAME OF LIFE";
+	   /*
 	   for (int i = 0; i < 10; i++) {
 		   for (int j = 0; j < 15; j++) {
 			   my_img[i][j] = BLACK;
@@ -229,7 +230,7 @@ void ofApp::change_status(string new_status) {
 		   int row = (int)ofRandom(0, 15);
 		   int col = (int)ofRandom(0, 10);
 		   my_img[col][row] = PURPLE;
-	   }
+	   }*/
 	   ofSetFrameRate(5);
      }
 }
@@ -424,7 +425,8 @@ void ofApp::setup(){
 		}
 	}
 	hand = "LEFT";
-	change_status("GAME OF LIFE");
+	open = true;
+	change_status("READY");
 //	create_pixel_fly();
 }
 
@@ -483,6 +485,7 @@ void ofApp::update() {
 					if (mysnack.getlength() == 0) {
 						change_status("OVER");
 						update();
+						return;
 					}
 				}
 			}
@@ -684,10 +687,11 @@ void ofApp::update() {
 		if (point<1.0) {
 			change_status("READY");
 			cout << "start game" << endl;
+			return;
 		}
 		
-		if (open_hand == false) {
-			int random = (int)ofRandom(0, 4);
+		if (open==true&&open_hand==false) {
+	/*		int random = (int)ofRandom(0, 4);
 			switch (random) {
 			case 0:
 				change_status("TEST");
@@ -701,11 +705,46 @@ void ofApp::update() {
 			case 3:
 				change_status("TEST4");
 				break;
-			}  
-		
+			}  */
+			open =open_hand;
+			change_status("GAME OF LIFE");
+			return;
 		}
+		open = open_hand;
 	} 
 	else if (game_state == "GAME OF LIFE") {
+	myKinect.detect_body();
+	bool open_hand = myKinect.openhand();
+	float point = myKinect.get_depth();
+	if (point < 1.0) {
+		change_status("READY");
+		cout << "start game" << endl;
+		return;
+	}
+
+	if (open_hand == false&&open==true) {
+		open = open_hand;
+       	int random = (int)ofRandom(0, 4);
+				switch (random) {
+				case 0:
+					change_status("TEST");
+					break;
+				case 1:
+					change_status("TEST2");
+					break;
+				case 2:
+					change_status("TEST3");
+					break;
+				case 3:
+					change_status("TEST4");
+					break;
+				}
+				update();
+				return;
+	}
+	open = open_hand;
+
+
 	int check[10][15];
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {

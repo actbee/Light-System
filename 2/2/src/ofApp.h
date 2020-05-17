@@ -77,5 +77,6 @@ class ofApp : public ofBaseApp{
 		pixel_image mypixels;
 		depthimage myKinect;
 		string hand;
+		bool open;
 		sender mysender;
 };
