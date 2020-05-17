@@ -35,6 +35,7 @@ const ofColor BLUE(57,189,255);
 class ofApp : public ofBaseApp{
 
 	public:
+		~ofApp();
 		void setup();
 		void update();
 		void draw();
@@ -61,7 +62,7 @@ class ofApp : public ofBaseApp{
 		void create_pixel_bubble();
 		void create_pixel_acaleph();
 
-		void change_status(string new_statue);
+		void change_status(string new_status);
 		void send_messages();
 
 		circle mycircles[15][10];

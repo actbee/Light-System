@@ -240,7 +240,7 @@ void ofApp::send_messages() {
 	string message;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
-				ofColor color = mycircles[i][j].getcolor();
+				ofColor color = mycircles[j][i].getcolor();
 				if (color == BLACK) {
 					message += "0";
 				}
@@ -255,8 +255,8 @@ void ofApp::send_messages() {
 				}
 			}
 		}
+		cout << message << endl;
 		mysender.senddata(message);
-//	cout << "send it:" << message << endl;
 }
 
 //--------------------------------------------------------------
@@ -1034,4 +1034,9 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+//--------------------------------------------------------------
+ofApp::~ofApp() {
+	mysender.~sender();
+	myKinect.~depthimage();
 }
