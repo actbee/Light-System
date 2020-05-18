@@ -812,10 +812,10 @@ void ofApp::update() {
 		}
 	}
   
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i <3; i++) {
 			int random_col = (int)ofRandom(2, 13);
 			int random_row = (int)ofRandom(1, 8);
-			my_img[random_row][random_col] = PURPLE;
+			my_img[random_row][random_col] = BLUE;
 		}
 
 	
