@@ -182,7 +182,7 @@ void go_kinect(void *) {
 	while (true)
 	{
 		
-		 
+	
 
 		// 4a. Get last frame
 		IColorFrame* pColorFrame = nullptr;
@@ -199,7 +199,7 @@ void go_kinect(void *) {
 		}
 		
 		cv::Mat mImg = mColorImg.clone();
-
+		
 		// 4b. Get body data
 		IBodyFrame* pBodyFrame = nullptr;
 		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)

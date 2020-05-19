@@ -174,6 +174,12 @@ int pixel_image::gettimeflow() {
 	return timeflow;
 }
 
+ofPoint pixel_image::center() {
+	int x = (int)((2 * topleft.x + width - 1) / 2);
+	int y = (int)((2 * topleft.y + height - 1) / 2);
+	return ofPoint(x, y);
+}
+
 
 
 

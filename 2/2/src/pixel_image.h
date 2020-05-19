@@ -21,6 +21,7 @@ public:
 	void change_v(int x,int y,int mid);
 	void setboard(int x1, int x2, int y1, int y2); //set the distance of the pixel to each boardline.
 	int gettimeflow();
+	ofPoint center();
 
 private:
 	int*** images;

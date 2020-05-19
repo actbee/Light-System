@@ -660,7 +660,7 @@ void ofApp::update() {
 		bool open_hand = myKinect.openhand();  
 		float point = myKinect.get_depth();
 
-		if (point<1.0) {
+		if (point<1.25) {
 			open = true;
 			change_status("READY");
 			cout << "start game" << endl;
@@ -686,6 +686,42 @@ refresh:
 		else if (time > timemax) {
 			t = 2 * timemax - time;
 		}
+		// next is the attract part
+		float pos = myKinect.get_pos();
+		float height = myKinect.get_height();
+		if (pos > 0.6) {
+			height = 0.6;
+		}
+		else if (pos < -0.6) {
+			height = -0.6;
+		}
+
+		if (height > 0.4) {
+			height = 0.4;
+		}
+		else if (height < -0.1) {
+			height = -0.1;
+		}
+		if (pos != 10) {
+			float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
+			float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
+			int col = (int)remap_x;
+			int row = (int)remap_y;
+			ofPoint center = mypixels.center();
+			int direction = col - center.x;
+			if (direction > 0) {
+				mypixels.move_right();
+			}
+			else if(direction<0) {
+				mypixels.move_left();
+			}
+		}
+
+		
+
+
+
+
 		mypixels.update();
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
