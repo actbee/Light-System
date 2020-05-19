@@ -241,6 +241,37 @@ void ofApp::change_status(string new_status) {
 }
 //--------------------------------------------------------------
 
+bool ofApp::body_info(int&row,int&col) {
+	float pos = myKinect.get_pos();
+	float height = myKinect.get_height();
+	if (pos > 0.6&&pos != 10) {
+		pos = 0.6;
+	}
+	else if (pos < -0.6) {
+		pos = -0.6;
+	}
+	if (height > 0.4) {
+		height = 0.4;
+	}
+	else if (height < -0.1) {
+		height = -0.1;
+	}
+	if (pos != 10) {
+		float remap_x = ofMap(pos, -0.6, 0.6, 0, 17);      //define the width of the check area
+		float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
+		col = (int)remap_x;
+		row = (int)remap_y;
+		if (col >14) col = 14;
+		if (row >9) row = 9;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+//--------------------------------------------------------------
+
 void ofApp::send_messages() {
 	string message;
 		for (int i = 0; i < 10; i++) {
@@ -431,7 +462,7 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
-	change_status("WAVE");
+	change_status("READY");
 //	create_pixel_fly();
 }
 
@@ -638,43 +669,28 @@ void ofApp::update() {
 		}
 	}  */
 	else if (game_state == "FOLLOW") {
-		myKinect.detect_body();
-		float pos = myKinect.get_pos();
-		float height = myKinect.get_height();
-		if (pos > 0.6) {
-			height = 0.6;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] = BLACK;
 		}
-		else if (pos < -0.6) {
-			height = -0.6;
-		}
-
-		if (height > 0.4) {
-			height = 0.4;
-		}
-		else if (height < -0.1) {
-			height = -0.1;
-		}
-
-		cout << height << endl;
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 15; j++) {
-				my_img[i][j] = BLACK;
-			}
-		}
-		if (pos != 10) {
-			float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
-			float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
-			int col = (int)remap_x;
-			int row = (int)remap_y;
-			my_img[row][col] = RED;
-		}
+	}
+	int row = 0;
+	int col = 0;
+	myKinect.detect_body();
+	bool track = body_info(row, col);
+	if (track == true) {
+		my_img[row][col] = RED;
+	}
 		else {
 			my_img[5][7] = RED;
 		}
 	}
 	else if (game_state == "TEST" || game_state == "TEST2" || game_state == "TEST3" || game_state == "TEST4") {
 
-		myKinect.detect_body();
+	   int row = 0;
+	   int col = 0;
+	   myKinect.detect_body();
+	   bool track = body_info(row, col);
 		bool open_hand = myKinect.openhand();
 		float point = myKinect.get_depth();
 
@@ -705,26 +721,7 @@ void ofApp::update() {
 			t = 2 * timemax - time;
 		}
 		// next is the attract part
-		float pos = myKinect.get_pos();
-		float height = myKinect.get_height();
-		if (pos > 0.6) {
-			height = 0.6;
-		}
-		else if (pos < -0.6) {
-			height = -0.6;
-		}
-
-		if (height > 0.4) {
-			height = 0.4;
-		}
-		else if (height < -0.1) {
-			height = -0.1;
-		}
-		if (pos != 10) {
-			float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
-			float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
-			int col = (int)remap_x;
-			int row = (int)remap_y;
+		if (track==true) {
 			ofPoint center = mypixels.center();
 			int direction = col - center.x;
 			if (direction > 0) {
@@ -734,12 +731,6 @@ void ofApp::update() {
 				mypixels.move_left();
 			}
 		}
-
-
-
-
-
-
 		mypixels.update();
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
@@ -762,7 +753,10 @@ void ofApp::update() {
 
 	}
 	else if (game_state == "GAME OF LIFE") {
-		myKinect.detect_body();
+	   int row = 0;
+	   int col = 0;
+	   myKinect.detect_body();
+	   bool track = body_info(row, col);
 		bool open_hand = myKinect.openhand();
 		float point = myKinect.get_depth();
 		if (point < 1.25) {
@@ -773,8 +767,8 @@ void ofApp::update() {
 		}
 
 		if (open_hand == false && open == true) {
-			//open = open_hand;
-			open = false;
+			open = open_hand;
+			//open = false;
 			int random = (int)ofRandom(0, 4);
 			switch (random) {
 			case 0:
@@ -790,7 +784,7 @@ void ofApp::update() {
 				change_status("TEST4");
 				break;
 			}
-			//	update();
+		//	update();
 			goto refresh;   //not a very good way, but fine, needs to improve here!
 			return;
 		}
@@ -864,26 +858,7 @@ void ofApp::update() {
 			}
 		}
 
-		float pos = myKinect.get_pos();
-		float height = myKinect.get_height();
-		if (pos > 0.6) {
-			height = 0.6;
-		}
-		else if (pos < -0.6) {
-			height = -0.6;
-		}
-
-		if (height > 0.4) {
-			height = 0.4;
-		}
-		else if (height < -0.1) {
-			height = -0.1;
-		}
-		if (pos != 10) {
-			float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
-			float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
-			int col = (int)remap_x;
-			int row = (int)remap_y;
+		if (track == true) {
 			int blue_max = (int)ofRandom(2, 5);
 			for (int i = 0; i < blue_max; i++) {
 				int x_min = col - 2;
@@ -934,56 +909,18 @@ void ofApp::update() {
 	else if (game_state == "WAVE") {
 
 		myKinect.detect_body();
-		float pos = myKinect.get_pos();
-		float height = myKinect.get_height();
-		if (pos > 0.6&&pos!=10) {
-			pos= 0.6;
-		}
-		else if (pos < -0.6) {
-			pos = -0.6;
-		}
-
-		if (pos != 10) {
-			float remap_x = ofMap(pos, -0.6, 0.6, 0, 15);      //define the width of the check area
-			float remap_y = ofMap(height, -0.1, 0.4, 10, 0);   //define the height of the check area
-			int col = (int)remap_x;
-			int row = (int)remap_y;
-			if (col == 15) col = 14;
-			if (row == 10) row = 9;
-
+		int row = 0;
+		int col = 0;
+		bool track = body_info(row, col);
+		if (track ==true) {
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < col; j++) {
-					if (my_img[i][j] == RED) {
-						my_img[i][j] = PURPLE;
-					}
-					else if (my_img[i][j] == PURPLE) {
-						my_img[i][j] = BLUE;
-					}
-					else if (my_img[i][j] == BLUE) {
-						my_img[i][j] = RED;
-					}
-					else if (my_img[i][j] == BLACK) {
-						if (j == 0) {
-							my_img[i][j] = RED;
-						}
-						else {
-							if (my_img[i][j - 1] == RED) {
-								my_img[i][j] = PURPLE;
-							}
-							else if (my_img[i][j - 1] == PURPLE){
-								my_img[i][j] = BLUE;
-								}
-							else if (my_img[i][j - 1] == BLUE) {
-								my_img[i][j] = RED;
-							}
-						}
-
-						}
-					}
+					my_img[i][j] = BLUE;
 				}
+			}
 			for (int i = 0; i < 10; i++) {
 					for (int j = col; j < 15; j++) {
-						my_img[i][j] = BLACK;
+						my_img[i][j] = PURPLE;
 					}
 				}
 			}

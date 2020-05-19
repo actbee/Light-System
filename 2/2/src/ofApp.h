@@ -69,6 +69,7 @@ class ofApp : public ofBaseApp{
 		snack mysnack;
 		target mytarget;
 		vector<character> mycharacters;
+		bool body_info(int& row,int& col); //transfer the body position to the screen 
 		//game system
 
 		int score;
