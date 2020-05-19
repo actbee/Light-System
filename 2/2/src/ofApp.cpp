@@ -220,6 +220,24 @@ void ofApp::change_status(string new_status) {
 	   game_state = "GAME OF LIFE";
 	   ofSetFrameRate(5);
      }
+	else if (new_status == "WAVE") {
+	  game_state = "WAVE";
+	  for (int i = 0; i < 10; i++) {
+		  for (int j = 0; j < 15; j++) {
+			  int choice = j % 3;
+			  if (choice == 0) {
+				  my_img[i][j] = RED;
+			  }
+			  else if (choice == 1) {
+				  my_img[i][j] = PURPLE;
+			  }
+			  else {
+				  my_img[i][j] = BLUE;
+			  }
+		  }
+	  }
+	   ofSetFrameRate(5);
+     }
 }
 //--------------------------------------------------------------
 
@@ -413,7 +431,7 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
-	change_status("READY");
+	change_status("WAVE");
 //	create_pixel_fly();
 }
 
@@ -427,55 +445,55 @@ void ofApp::update() {
 
 	if (game_state == "START")
 	{
-			if (mysnack.dead() != true) {
-				if (score < 2) {
-					ofSetFrameRate(3);
-				}
-				else if (score < 9) {
-					ofSetFrameRate(6);
-				}
-				else if (score < 12) {
-					ofSetFrameRate(9);
-				}
-				else if (score < 15) {
-					ofSetFrameRate(12);
-				}
-				else {
-					ofSetFrameRate(15);
-				}
-				int control = myKinect.get_elbow_direction(hand);
-				//cout << control << endl;
-				//control = 1;
-				switch (control) {
-				case 1:
-					keyPressed(OF_KEY_RIGHT);
-					break;
-				case 2:
-					keyPressed(OF_KEY_UP);
-					break;
-				case 3:
-					keyPressed(OF_KEY_LEFT);
-					break;
-				case 4:
-					keyPressed(OF_KEY_DOWN);
-					break;
-				}
-				check_snack_and_target();
-				/*change_status("OVER");
-				update();*/
+		if (mysnack.dead() != true) {
+			if (score < 2) {
+				ofSetFrameRate(3);
+			}
+			else if (score < 9) {
+				ofSetFrameRate(6);
+			}
+			else if (score < 12) {
+				ofSetFrameRate(9);
+			}
+			else if (score < 15) {
+				ofSetFrameRate(12);
 			}
 			else {
-				ofSetFrameRate(5);
-				time++;
-				if (time > 5) {
-					mysnack.sublength();
-					if (mysnack.getlength() == 0) {
-						change_status("OVER");
-						update();
-						return;
-					}
+				ofSetFrameRate(15);
+			}
+			int control = myKinect.get_elbow_direction(hand);
+			//cout << control << endl;
+			//control = 1;
+			switch (control) {
+			case 1:
+				keyPressed(OF_KEY_RIGHT);
+				break;
+			case 2:
+				keyPressed(OF_KEY_UP);
+				break;
+			case 3:
+				keyPressed(OF_KEY_LEFT);
+				break;
+			case 4:
+				keyPressed(OF_KEY_DOWN);
+				break;
+			}
+			check_snack_and_target();
+			/*change_status("OVER");
+			update();*/
+		}
+		else {
+			ofSetFrameRate(5);
+			time++;
+			if (time > 5) {
+				mysnack.sublength();
+				if (mysnack.getlength() == 0) {
+					change_status("OVER");
+					update();
+					return;
 				}
 			}
+		}
 	}
 	else if (game_state == "READY") {
 		if (time > 7) {
@@ -483,7 +501,7 @@ void ofApp::update() {
 			return;
 		}
 		string newchoose = myKinect.choose_hand();
-		if(newchoose == "NO") {
+		if (newchoose == "NO") {
 			for (int i = 0; i < 10; i++) {
 				for (int j = 0; j < 15; j++) {
 					int check = mypixels.getposition(0, j, i);
@@ -517,7 +535,7 @@ void ofApp::update() {
 						my_img[i][j] = BLACK;
 					}
 					else if (check == 2) {
-						if(hand=="LEFT"){
+						if (hand == "LEFT") {
 							if (j < 6) {
 								my_img[i][j] = BLUE;
 							}
@@ -553,7 +571,7 @@ void ofApp::update() {
 		}
 		ofPoint topright = mycharacters.back().get_topright();
 		if (topright.x < 0) {
-		//	resetall();
+			//	resetall();
 
 			int random = (int)ofRandom(0, 4);
 			switch (random) {
@@ -620,60 +638,60 @@ void ofApp::update() {
 		}
 	}  */
 	else if (game_state == "FOLLOW") {
-	  myKinect.detect_body();
-	  float pos = myKinect.get_pos();
-	  float height = myKinect.get_height();
-	  if (pos > 0.6) {
-		  height = 0.6;
-	  }
-	  else if (pos < -0.6) {
-		  height = -0.6;
-	  }
-
-	  if (height > 0.4) {
-		  height = 0.4;
-	  }
-	  else if (height < -0.1) {
-		  height = -0.1;
-	  }
-
-	  cout << height << endl;
-	  for (int i = 0; i < 10; i++) {
-		  for (int j = 0; j < 15; j++) {
-			  my_img[i][j] = BLACK;
-		  }
-	  }
-	  if (pos != 10) {
-		float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
-		float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
-		int col= (int)remap_x;
-		int row = (int)remap_y;
-		my_img[row][col]=RED;
-	   }
-	  else {
-		  my_img[5][7] = RED;
-	  }
-     }
-	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
-		
 		myKinect.detect_body();
-		bool open_hand = myKinect.openhand();  
+		float pos = myKinect.get_pos();
+		float height = myKinect.get_height();
+		if (pos > 0.6) {
+			height = 0.6;
+		}
+		else if (pos < -0.6) {
+			height = -0.6;
+		}
+
+		if (height > 0.4) {
+			height = 0.4;
+		}
+		else if (height < -0.1) {
+			height = -0.1;
+		}
+
+		cout << height << endl;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				my_img[i][j] = BLACK;
+			}
+		}
+		if (pos != 10) {
+			float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
+			float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
+			int col = (int)remap_x;
+			int row = (int)remap_y;
+			my_img[row][col] = RED;
+		}
+		else {
+			my_img[5][7] = RED;
+		}
+	}
+	else if (game_state == "TEST" || game_state == "TEST2" || game_state == "TEST3" || game_state == "TEST4") {
+
+		myKinect.detect_body();
+		bool open_hand = myKinect.openhand();
 		float point = myKinect.get_depth();
 
-		if (point<1.25) {
+		if (point < 1.25) {
 			open = true;
 			change_status("READY");
 			cout << "start game" << endl;
 			return;
 		}
-	
-		if (open==true&&open_hand==false) {
-			open =open_hand;
+
+		if (open == true && open_hand == false) {
+			open = open_hand;
 			change_status("GAME OF LIFE");
 			return;
 		}
 		open = open_hand;
-refresh:
+	refresh:
 		time += 1;
 		int timemax = mypixels.gettimeflow();
 		if (time > 2 * timemax) {
@@ -712,12 +730,12 @@ refresh:
 			if (direction > 0) {
 				mypixels.move_right();
 			}
-			else if(direction<0) {
+			else if (direction < 0) {
 				mypixels.move_left();
 			}
 		}
 
-		
+
 
 
 
@@ -742,156 +760,156 @@ refresh:
 		}
 
 
-	} 
+	}
 	else if (game_state == "GAME OF LIFE") {
-	myKinect.detect_body();
-	bool open_hand = myKinect.openhand();
-	float point = myKinect.get_depth();
-	if (point < 1.25) {
-		open = true;
-		change_status("READY");
-		cout << "start game" << endl;
-		return;
-	}
+		myKinect.detect_body();
+		bool open_hand = myKinect.openhand();
+		float point = myKinect.get_depth();
+		if (point < 1.25) {
+			open = true;
+			change_status("READY");
+			cout << "start game" << endl;
+			return;
+		}
 
-	if (open_hand == false&&open==true) {
-		//open = open_hand;
-		open = false;
-       	int random = (int)ofRandom(0, 4);
-				switch (random) {
-				case 0:
-					change_status("TEST");
-					break;
-				case 1:
-					change_status("TEST2");
-					break;
-				case 2:
-					change_status("TEST3");
-					break;
-				case 3:
-					change_status("TEST4");
-					break;
-				}
+		if (open_hand == false && open == true) {
+			//open = open_hand;
+			open = false;
+			int random = (int)ofRandom(0, 4);
+			switch (random) {
+			case 0:
+				change_status("TEST");
+				break;
+			case 1:
+				change_status("TEST2");
+				break;
+			case 2:
+				change_status("TEST3");
+				break;
+			case 3:
+				change_status("TEST4");
+				break;
+			}
 			//	update();
-				goto refresh;   //not a very good way, but fine, needs to improve here!
-				return;
-	}
-	open = open_hand;
-
-
-	int check[10][15];
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 15; j++) {
-			check[i][j] = 0;
+			goto refresh;   //not a very good way, but fine, needs to improve here!
+			return;
 		}
-	}
-	for (int i = 0; i < 10; i++) {
-		   for (int j = 0; j < 15; j++) {
-			   int ysub = i - 1;
-			   int yadd = i + 1;
-			   int xsub = j - 1;
-			   int xadd = j + 1;
-			   if (ysub>= 0&&xsub>=0) {
-				   if (my_img[ysub][xsub] !=BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (ysub >= 0) {
-				   if (my_img[ysub][j] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (xadd<15&&ysub >= 0) {
-				   if (my_img[ysub][xadd] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (xsub >=0) {
-				   if (my_img[i][xsub] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (xadd<15) {
-				   if (my_img[i][xadd] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (xsub>=0&&yadd<10) {
-				   if (my_img[yadd][xsub] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (yadd < 10) {
-				   if (my_img[yadd][j] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-			   if (xadd<15&&yadd < 10) {
-				   if (my_img[yadd][xadd] != BLACK) {
-					   check[i][j]++;
-				   }
-			   }
-		   }
-		 }
-	bool no = true;
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 15; j++) {
-			if (check[i][j] ==3) {
-				my_img[i][j] = PURPLE;
-				no = false;
-			}
-			else if (check[i][j] < 2 || check[i][j] >=4) {
-				my_img[i][j] = BLACK;
+		open = open_hand;
+
+
+		int check[10][15];
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				check[i][j] = 0;
 			}
 		}
-	}
-
-	float pos = myKinect.get_pos();
-	float height = myKinect.get_height();
-	if (pos > 0.6) {
-		height = 0.6;
-	}
-	else if (pos < -0.6) {
-		height = -0.6;
-	}
-
-	if (height > 0.4) {
-		height = 0.4;
-	}
-	else if (height < -0.1) {
-		height = -0.1;
-	}
-	if (pos != 10) {
-		float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
-		float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
-		int col = (int)remap_x;
-		int row = (int)remap_y;
-		int blue_max = (int)ofRandom(2, 5);
-		for (int i = 0; i < blue_max; i++) {
-			int x_min = col - 2;
-			int x_max = col + 2;
-			int y_min = row - 2;
-			int y_max = row + 2;
-			if (x_min < 0) x_min = 0;
-			if (x_max > 14) x_max = 14;
-			if (y_min < 0) y_min = 0;
-			if (y_max > 9) y_max = 9;
-
-			int random_col = (int)ofRandom(x_min, x_max);
-			int random_row = (int)ofRandom(y_min, y_max);
-			my_img[random_row][random_col] = BLUE;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				int ysub = i - 1;
+				int yadd = i + 1;
+				int xsub = j - 1;
+				int xadd = j + 1;
+				if (ysub >= 0 && xsub >= 0) {
+					if (my_img[ysub][xsub] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (ysub >= 0) {
+					if (my_img[ysub][j] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (xadd < 15 && ysub >= 0) {
+					if (my_img[ysub][xadd] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (xsub >= 0) {
+					if (my_img[i][xsub] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (xadd < 15) {
+					if (my_img[i][xadd] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (xsub >= 0 && yadd < 10) {
+					if (my_img[yadd][xsub] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (yadd < 10) {
+					if (my_img[yadd][j] != BLACK) {
+						check[i][j]++;
+					}
+				}
+				if (xadd < 15 && yadd < 10) {
+					if (my_img[yadd][xadd] != BLACK) {
+						check[i][j]++;
+					}
+				}
+			}
+		}
+		bool no = true;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 15; j++) {
+				if (check[i][j] == 3) {
+					my_img[i][j] = PURPLE;
+					no = false;
+				}
+				else if (check[i][j] < 2 || check[i][j] >= 4) {
+					my_img[i][j] = BLACK;
+				}
+			}
 		}
 
-
-	}
-	else {
-		int blue_max = (int)ofRandom(2, 5);
-		for (int i = 0; i < blue_max; i++) {
-			int random_col = (int)ofRandom(2, 13);
-			int random_row = (int)ofRandom(1, 8);
-			my_img[random_row][random_col] = BLUE;
+		float pos = myKinect.get_pos();
+		float height = myKinect.get_height();
+		if (pos > 0.6) {
+			height = 0.6;
 		}
-	}
+		else if (pos < -0.6) {
+			height = -0.6;
+		}
+
+		if (height > 0.4) {
+			height = 0.4;
+		}
+		else if (height < -0.1) {
+			height = -0.1;
+		}
+		if (pos != 10) {
+			float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
+			float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
+			int col = (int)remap_x;
+			int row = (int)remap_y;
+			int blue_max = (int)ofRandom(2, 5);
+			for (int i = 0; i < blue_max; i++) {
+				int x_min = col - 2;
+				int x_max = col + 2;
+				int y_min = row - 2;
+				int y_max = row + 2;
+				if (x_min < 0) x_min = 0;
+				if (x_max > 14) x_max = 14;
+				if (y_min < 0) y_min = 0;
+				if (y_max > 9) y_max = 9;
+
+				int random_col = (int)ofRandom(x_min, x_max);
+				int random_row = (int)ofRandom(y_min, y_max);
+				my_img[random_row][random_col] = BLUE;
+			}
+
+
+		}
+		else {
+			int blue_max = (int)ofRandom(2, 5);
+			for (int i = 0; i < blue_max; i++) {
+				int random_col = (int)ofRandom(2, 13);
+				int random_row = (int)ofRandom(1, 8);
+				my_img[random_row][random_col] = BLUE;
+			}
+		}
 
 		for (int i = 0; i < 3; i++) {
 			int lucky_col = (int)ofRandom(0, 15);
@@ -909,10 +927,85 @@ refresh:
 			for (int i = 0; i < 10; i++) {
 				int random_col = (int)ofRandom(2, 13);
 				int random_row = (int)ofRandom(1, 8);
-				my_img[random_row][random_col] =PURPLE;
+				my_img[random_row][random_col] = PURPLE;
 			}
-	  }
-   }
+		}
+	}
+	else if (game_state == "WAVE") {
+
+		myKinect.detect_body();
+		float pos = myKinect.get_pos();
+		float height = myKinect.get_height();
+		if (pos > 0.6&&pos!=10) {
+			pos= 0.6;
+		}
+		else if (pos < -0.6) {
+			pos = -0.6;
+		}
+
+		if (pos != 10) {
+			float remap_x = ofMap(pos, -0.6, 0.6, 0, 15);      //define the width of the check area
+			float remap_y = ofMap(height, -0.1, 0.4, 10, 0);   //define the height of the check area
+			int col = (int)remap_x;
+			int row = (int)remap_y;
+			if (col == 15) col = 14;
+			if (row == 10) row = 9;
+
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < col; j++) {
+					if (my_img[i][j] == RED) {
+						my_img[i][j] = PURPLE;
+					}
+					else if (my_img[i][j] == PURPLE) {
+						my_img[i][j] = BLUE;
+					}
+					else if (my_img[i][j] == BLUE) {
+						my_img[i][j] = RED;
+					}
+					else if (my_img[i][j] == BLACK) {
+						if (j == 0) {
+							my_img[i][j] = RED;
+						}
+						else {
+							if (my_img[i][j - 1] == RED) {
+								my_img[i][j] = PURPLE;
+							}
+							else if (my_img[i][j - 1] == PURPLE){
+								my_img[i][j] = BLUE;
+								}
+							else if (my_img[i][j - 1] == BLUE) {
+								my_img[i][j] = RED;
+							}
+						}
+
+						}
+					}
+				}
+			for (int i = 0; i < 10; i++) {
+					for (int j = col; j < 15; j++) {
+						my_img[i][j] = BLACK;
+					}
+				}
+			}
+
+		else {
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 15; j++) {
+					int choice = j % 3;
+					if (choice == 0) {
+						my_img[i][j] = RED;
+					}
+					else if (choice == 1) {
+						my_img[i][j] = PURPLE;
+					}
+					else {
+						my_img[i][j] = BLUE;
+					}
+				}
+			}
+		}
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -933,7 +1026,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "FOLLOW"||game_state=="GAME OF LIFE") {
+	else if (game_state == "FOLLOW"||game_state=="GAME OF LIFE"||game_state=="WAVE") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);
