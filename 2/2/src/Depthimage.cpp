@@ -87,6 +87,7 @@ void depthimage::detect_body() {
 
 	depth = maxdepth;
 	pos = 10;
+	height = 10;
 	up_open =true;
 
 	IBodyFrame* bodyframe = nullptr;
@@ -104,6 +105,7 @@ void depthimage::detect_body() {
 						if (check_depth > mindepth&&check_depth < maxdepth&&abs(check_pos) < maxwidth) {
 							depth = check_depth;
 							pos = check_pos;
+							height= joints[JointType_Head].Position.Y;
 
 							HandState left_hand;
 							HandState right_hand;
@@ -293,6 +295,10 @@ string depthimage::choose_hand() {
 
 bool depthimage::openhand() {
 	return up_open;
+}
+
+float depthimage::get_height() {
+	return height;
 }
 
 void depthimage::exit() {

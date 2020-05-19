@@ -13,6 +13,7 @@ public:
 	string choose_hand();
 	bool openhand();
 	float get_pos();
+	float get_height();
 	void detect_body();
 
 
@@ -33,5 +34,6 @@ private:
 
 	float pos;
 	float depth;
+	float height;
 	bool up_open;  //to detect if left or right hand is closed while over the head
 };

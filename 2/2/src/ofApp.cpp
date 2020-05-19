@@ -188,7 +188,7 @@ void ofApp::change_status(string new_status) {
 		ofSetFrameRate(3);
 		mypixels.settopleft(1, 3);
 		mypixels.setboard(0, 0, 2, 2);
-		mypixels.change_v(0, 0, 1);
+		mypixels.change_v(0, 1, 1);
 }
 	else if (new_status == "TEST3") {
 	for (int i = 0; i < 10; i++) {
@@ -413,7 +413,7 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
-	change_status("READY");
+	change_status("FOLLOW");
 //	create_pixel_fly();
 }
 
@@ -622,15 +622,33 @@ void ofApp::update() {
 	else if (game_state == "FOLLOW") {
 	  myKinect.detect_body();
 	  float pos = myKinect.get_pos();
+	  float height = myKinect.get_height();
+	  if (pos > 0.6) {
+		  height = 0.6;
+	  }
+	  else if (pos < -0.6) {
+		  height = -0.6;
+	  }
+
+	  if (height > 0.4) {
+		  height = 0.4;
+	  }
+	  else if (height < -0.1) {
+		  height = -0.1;
+	  }
+
+	  cout << height << endl;
 	  for (int i = 0; i < 10; i++) {
 		  for (int j = 0; j < 15; j++) {
 			  my_img[i][j] = BLACK;
 		  }
 	  }
 	  if (pos != 10) {
-		float remap = ofMap(pos, -0.5, 0.5, 0, 14);
-		int change = (int)remap;
-		my_img[5][change]=RED;
+		float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
+		float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
+		int col= (int)remap_x;
+		int row = (int)remap_y;
+		my_img[row][col]=RED;
 	   }
 	  else {
 		  my_img[5][7] = RED;
