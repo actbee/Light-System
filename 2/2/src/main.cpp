@@ -393,7 +393,7 @@ int main()
 
 	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
 	
-//	_beginthread(go_kinect,1024*1024,NULL);
+	_beginthread(go_kinect,1024*1024,NULL);
 	ofRunApp(new ofApp());
 	
 

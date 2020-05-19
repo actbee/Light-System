@@ -218,19 +218,6 @@ void ofApp::change_status(string new_status) {
 }
 	else if (new_status == "GAME OF LIFE") {
 	   game_state = "GAME OF LIFE";
-	   /*
-	   for (int i = 0; i < 10; i++) {
-		   for (int j = 0; j < 15; j++) {
-			   my_img[i][j] = BLACK;
-		   }
-	   }
-	   int random_num = (int)ofRandom(5, 10);
-	   cout << random_num << endl;
-	   for (int i = 0; i < random_num; i++) {
-		   int row = (int)ofRandom(0, 15);
-		   int col = (int)ofRandom(0, 10);
-		   my_img[col][row] = PURPLE;
-	   }*/
 	   ofSetFrameRate(5);
      }
 }
@@ -255,7 +242,7 @@ void ofApp::send_messages() {
 				}
 			}
 		}
-		cout << message << endl;
+	//	cout << message << endl;
 		mysender.senddata(message);
 }
 
@@ -651,9 +638,27 @@ void ofApp::update() {
      }
 	else if (game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
 		
+		myKinect.detect_body();
+		bool open_hand = myKinect.openhand();  
+		float point = myKinect.get_depth();
+
+		if (point<1.0) {
+			open = true;
+			change_status("READY");
+			cout << "start game" << endl;
+			return;
+		}
+	
+		if (open==true&&open_hand==false) {
+			open =open_hand;
+			change_status("GAME OF LIFE");
+			return;
+		}
+		open = open_hand;
+refresh:
 		time += 1;
-		int timemax =mypixels.gettimeflow();
-		if (time > 2*timemax) {
+		int timemax = mypixels.gettimeflow();
+		if (time > 2 * timemax) {
 			time = 1;
 		}
 		int t;
@@ -661,7 +666,7 @@ void ofApp::update() {
 			t = time - 1;
 		}
 		else if (time > timemax) {
-			t = 2 * timemax -time;
+			t = 2 * timemax - time;
 		}
 		mypixels.update();
 		for (int i = 0; i < 10; i++) {
@@ -681,49 +686,23 @@ void ofApp::update() {
 				}
 			}
 		}
-		myKinect.detect_body();
-		bool open_hand = myKinect.openhand();  
-		float point = myKinect.get_depth();
-		if (point<1.0) {
-			change_status("READY");
-			cout << "start game" << endl;
-			return;
-		}
-		
-		if (open==true&&open_hand==false) {
-	/*		int random = (int)ofRandom(0, 4);
-			switch (random) {
-			case 0:
-				change_status("TEST");
-				break;
-			case 1:
-				change_status("TEST2");
-				break;
-			case 2:
-				change_status("TEST3");
-				break;
-			case 3:
-				change_status("TEST4");
-				break;
-			}  */
-			open =open_hand;
-			change_status("GAME OF LIFE");
-			return;
-		}
-		open = open_hand;
+
+
 	} 
 	else if (game_state == "GAME OF LIFE") {
 	myKinect.detect_body();
 	bool open_hand = myKinect.openhand();
 	float point = myKinect.get_depth();
 	if (point < 1.0) {
+		open = true;
 		change_status("READY");
 		cout << "start game" << endl;
 		return;
 	}
 
 	if (open_hand == false&&open==true) {
-		open = open_hand;
+		//open = open_hand;
+		open = false;
        	int random = (int)ofRandom(0, 4);
 				switch (random) {
 				case 0:
@@ -739,7 +718,8 @@ void ofApp::update() {
 					change_status("TEST4");
 					break;
 				}
-				update();
+			//	update();
+				goto refresh;   //not a very good way, but fine, needs to improve here!
 				return;
 	}
 	open = open_hand;
@@ -758,7 +738,7 @@ void ofApp::update() {
 			   int xsub = j - 1;
 			   int xadd = j + 1;
 			   if (ysub>= 0&&xsub>=0) {
-				   if (my_img[ysub][xsub] != BLACK) {
+				   if (my_img[ysub][xsub] !=BLACK) {
 					   check[i][j]++;
 				   }
 			   }
@@ -811,8 +791,8 @@ void ofApp::update() {
 			}
 		}
 	}
-  
-		for (int i = 0; i <3; i++) {
+	int blue_max = (int)ofRandom(2, 5);
+		for (int i = 0; i <blue_max; i++) {
 			int random_col = (int)ofRandom(2, 13);
 			int random_row = (int)ofRandom(1, 8);
 			my_img[random_row][random_col] = BLUE;
@@ -831,7 +811,13 @@ void ofApp::update() {
 			my_img[lucky_row][14] = BLACK;
 			my_img[9][lucky_col] = BLACK;
 		}
-	
+		if (no == true) {
+			for (int i = 0; i < 10; i++) {
+				int random_col = (int)ofRandom(2, 13);
+				int random_row = (int)ofRandom(1, 8);
+				my_img[random_row][random_col] =PURPLE;
+			}
+	  }
    }
 }
 
