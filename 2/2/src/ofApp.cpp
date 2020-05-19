@@ -413,7 +413,7 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
-	change_status("FOLLOW");
+	change_status("READY");
 //	create_pixel_fly();
 }
 
@@ -711,7 +711,7 @@ refresh:
 	myKinect.detect_body();
 	bool open_hand = myKinect.openhand();
 	float point = myKinect.get_depth();
-	if (point < 1.0) {
+	if (point < 1.25) {
 		open = true;
 		change_status("READY");
 		cout << "start game" << endl;
@@ -809,14 +809,54 @@ refresh:
 			}
 		}
 	}
-	int blue_max = (int)ofRandom(2, 5);
-		for (int i = 0; i <blue_max; i++) {
+
+	float pos = myKinect.get_pos();
+	float height = myKinect.get_height();
+	if (pos > 0.6) {
+		height = 0.6;
+	}
+	else if (pos < -0.6) {
+		height = -0.6;
+	}
+
+	if (height > 0.4) {
+		height = 0.4;
+	}
+	else if (height < -0.1) {
+		height = -0.1;
+	}
+	if (pos != 10) {
+		float remap_x = ofMap(pos, -0.6, 0.6, 0, 14);      //define the width of the check area
+		float remap_y = ofMap(height, -0.1, 0.4, 9, 0);   //define the height of the check area
+		int col = (int)remap_x;
+		int row = (int)remap_y;
+		int blue_max = (int)ofRandom(2, 5);
+		for (int i = 0; i < blue_max; i++) {
+			int x_min = col - 2;
+			int x_max = col + 2;
+			int y_min = row - 2;
+			int y_max = row + 2;
+			if (x_min < 0) x_min = 0;
+			if (x_max > 14) x_max = 14;
+			if (y_min < 0) y_min = 0;
+			if (y_max > 9) y_max = 9;
+
+			int random_col = (int)ofRandom(x_min, x_max);
+			int random_row = (int)ofRandom(y_min, y_max);
+			my_img[random_row][random_col] = BLUE;
+		}
+
+
+	}
+	else {
+		int blue_max = (int)ofRandom(2, 5);
+		for (int i = 0; i < blue_max; i++) {
 			int random_col = (int)ofRandom(2, 13);
 			int random_row = (int)ofRandom(1, 8);
 			my_img[random_row][random_col] = BLUE;
 		}
+	}
 
-	
 		for (int i = 0; i < 3; i++) {
 			int lucky_col = (int)ofRandom(0, 15);
 			int lucky_row = (int)ofRandom(0, 10);

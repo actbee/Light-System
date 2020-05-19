@@ -6,9 +6,9 @@ bool depthimage::InitialKinectV2() {
 	iBodyCount = 0;
 	bodyframesource = nullptr;
 	kinectsensor = nullptr;
-	maxdepth = 9999;
+	maxdepth = 2;
 	mindepth = 0;
-	maxwidth= 0.5;
+	maxwidth= 0.6;
 
 	depth = maxdepth;
 	pos = 10;
