@@ -81,4 +81,5 @@ class ofApp : public ofBaseApp{
 		string hand;
 		bool open;
 		sender mysender;
+		ofPoint player_center;
 };

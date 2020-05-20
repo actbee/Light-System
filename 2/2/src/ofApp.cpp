@@ -173,7 +173,7 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST";
 		create_pixel_fly();
 		ofSetFrameRate(3);
-		mypixels.settopleft(3, 1);
+		mypixels.settopleft(player_center.x,1);
 		mypixels.setboard(2, 2, 3, 3);
 		mypixels.change_v(0, 0,1);
 }
@@ -186,7 +186,7 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST2";
 		create_pixel_alien();
 		ofSetFrameRate(3);
-		mypixels.settopleft(1, 3);
+		mypixels.settopleft(player_center.x, 1);
 		mypixels.setboard(0, 0, 2, 2);
 		mypixels.change_v(0, 1, 1);
 }
@@ -199,7 +199,7 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST3";
 	     create_pixel_bubble();
 		 ofSetFrameRate(3);
-		 mypixels.settopleft(1, 1);
+		 mypixels.settopleft(player_center.x,1);
 		 mypixels.setboard(0, 0, 2, 2);
 		 mypixels.change_v(0,0,1);
 }
@@ -212,7 +212,7 @@ void ofApp::change_status(string new_status) {
 	   game_state = "TEST4";
 	   create_pixel_acaleph();
 	   ofSetFrameRate(10);
-	   mypixels.settopleft(1, 1);
+	   mypixels.settopleft(player_center.x,1);
 	   mypixels.setboard(1, 1, 2, 2);
 	   mypixels.change_v(1, 0, 5);
 }
@@ -462,6 +462,7 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
+	player_center =ofPoint (7, 5);
 	change_status("READY");
 //	create_pixel_fly();
 }
@@ -621,53 +622,6 @@ void ofApp::update() {
 			}
 		}
 	}
-	/*else if (game_state == "TEST") {
-		ofSetFrameRate(3);
-		time += 1;
-		time = time % 18;
-		int move = time - 4;
-		if (move > 4) {
-			move = 9 - move;
-		}
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 15; j++) {
-				my_img[i][j] = BLACK;
-			}
-		}
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 15; j++) {
-				if (i + move < 11 && i + move >= 0) {
-					int num;
-					if (time % 6 == 0 || time % 6 == 2 || time % 6 == 4 || time % 6 == 5) {
-						num = pixel_alien[i + move][j];
-					}
-					else if (time % 6 == 1) {
-						num = pixel_alien_l[i + move][j];
-					}
-					else if (time % 6 == 3) {
-						num = pixel_alien_r[i + move][j];
-					}
-					switch (num) {
-					case 0: {
-						my_img[i][j] = BLACK;
-						break;
-					}
-					case 1: {
-						my_img[i][j] = RED;
-						break;
-					}
-					case 2: {
-						my_img[i][j] = PURPLE;
-						break;
-					}
-					default: {
-						cout << "something is wrong!" << endl;
-					}
-					}
-				}
-			}
-		}
-	}  */
 	else if (game_state == "FOLLOW") {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
@@ -722,6 +676,7 @@ void ofApp::update() {
 		}
 		// next is the attract part
 		if (track==true) {
+			player_center = ofPoint(col, row);
 			ofPoint center = mypixels.center();
 			int direction = col - center.x;
 			if (direction > 0) {
@@ -859,6 +814,7 @@ void ofApp::update() {
 		}
 
 		if (track == true) {
+			player_center = ofPoint(col, row);
 			int blue_max = (int)ofRandom(2, 5);
 			for (int i = 0; i < blue_max; i++) {
 				int x_min = col - 2;
