@@ -57,11 +57,11 @@ class ofApp : public ofBaseApp{
 		void beback();
 		void check_snack_and_target();
 
-		void create_pixel_fly();
-		void create_pixel_alien();
-		void create_pixel_bubble();
-		void create_pixel_acaleph();
-
+		/*void create_pixel_fly(pixel_image& mypixels);
+		void create_pixel_alien(pixel_image& mypixels);
+		void create_pixel_bubble(pixel_image& mypixels);
+		void create_pixel_acaleph(pixel_image& mypixels);
+		*/
 		void change_status(string new_status);
 		void send_messages();
 
