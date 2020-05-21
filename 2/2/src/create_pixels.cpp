@@ -105,7 +105,7 @@ void create_pixel_bubble(pixel_image& mypixels) {
 //--------------------------------------------------------------
 
 void create_pixel_evil(pixel_image& mypixels) {
-	mypixels.changesize(3, 8, 12);
+	mypixels.changesize(5, 8, 12);
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 12; j++) {
 			mypixels.setpixels(0, i, j, pixel_evil_1[i][j]);
@@ -119,6 +119,16 @@ void create_pixel_evil(pixel_image& mypixels) {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 12; j++) {
 			mypixels.setpixels(2, i, j, pixel_evil_3[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 12; j++) {
+			mypixels.setpixels(3, i, j, pixel_evil_4[i][j]);
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 12; j++) {
+			mypixels.setpixels(4, i, j, pixel_evil_5[i][j]);
 		}
 	}
 }
