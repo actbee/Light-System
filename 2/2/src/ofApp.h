@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-//#include"ofxKinectForWindows2.h"
 #include"circle.h"
 #include"snack.h"
 #include"target.h"
@@ -17,7 +16,6 @@
 #include"ofApp.h"
 #include<winsock.h>
 
-// Kinect for Windows SDK Header
 #include <Kinect.h>
 
 
@@ -57,11 +55,6 @@ class ofApp : public ofBaseApp{
 		void beback();
 		void check_snack_and_target();
 
-		/*void create_pixel_fly(pixel_image& mypixels);
-		void create_pixel_alien(pixel_image& mypixels);
-		void create_pixel_bubble(pixel_image& mypixels);
-		void create_pixel_acaleph(pixel_image& mypixels);
-		*/
 		void change_status(string new_status);
 		void send_messages();
 

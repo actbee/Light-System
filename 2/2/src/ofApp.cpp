@@ -164,7 +164,7 @@ void ofApp::change_status(string new_status) {
 			}
 		}
 	}
-	else if (new_status == "TEST") {
+	else if (new_status == "TEST") {    //red and purple
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
 			my_img[i][j] = BLACK;
@@ -177,7 +177,7 @@ void ofApp::change_status(string new_status) {
 		mypixels.setboard(2, 2, 3, 3);
 		mypixels.change_v(0, 0,1);
 }
-	else if (new_status == "TEST2") {
+	else if (new_status == "TEST2") {   //mainly purple
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
 			my_img[i][j] = BLACK;
@@ -190,8 +190,8 @@ void ofApp::change_status(string new_status) {
 		mypixels.setboard(0, 0, 2, 2);
 		mypixels.change_v(0, 1, 1);
 }
-	else if (new_status == "TEST3") {
-	for (int i = 0; i < 10; i++) {
+	else if (new_status == "TEST3") {   //mainly red
+	for (int i = 0; i < 10; i++) {  
 		for (int j = 0; j < 15; j++) {
 			my_img[i][j] = BLACK;
 		}
@@ -203,7 +203,7 @@ void ofApp::change_status(string new_status) {
 		 mypixels.setboard(0, 0, 2, 2);
 		 mypixels.change_v(0,0,1);
 }
-	else if (new_status == "TEST4") {
+	else if (new_status == "TEST4") {  //mainly blue
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
 			my_img[i][j] = BLACK;
@@ -216,7 +216,7 @@ void ofApp::change_status(string new_status) {
 	   mypixels.setboard(1, 1, 2, 2);
 	   mypixels.change_v(1, 0, 5);
 }
-	else if (new_status == "TEST5") {
+	else if (new_status == "TEST5") {    //mainly red
 	  for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
 			my_img[i][j] = BLACK;
@@ -227,7 +227,7 @@ void ofApp::change_status(string new_status) {
 	  ofSetFrameRate(3);
 	  mypixels.settopleft(player_center.x, 1);
 	  mypixels.setboard(1, 1, 2, 2);
-	  mypixels.change_v(0, 1, 1);
+	  mypixels.change_v(0, 1, 3);
     }
 	else if (new_status == "GAME OF LIFE") {
 	   game_state = "GAME OF LIFE";
@@ -635,7 +635,7 @@ void ofApp::update() {
 		if (open_hand == false && open == true) {
 			open = open_hand;
 			//open = false;
-			int random = (int)ofRandom(0, 4);
+			int random = (int)ofRandom(0, 5);
 			switch (random) {
 			case 0:
 				change_status("TEST");
@@ -648,6 +648,9 @@ void ofApp::update() {
 				break;
 			case 3:
 				change_status("TEST4");
+				break;
+			case 4:
+				change_status("TEST5");
 				break;
 			}
 		//	update();
