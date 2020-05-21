@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include"make_dll.h"
-void ofApp::change_status(string new_status) {
+#include<string>
+void ofApp::change_status(string new_status,string add_info) {
 	if (new_status == "START") {
 		game_state = "START";
 		ofSetFrameRate(60);
@@ -173,11 +174,12 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST";
 		create_pixel_fly(mypixels);
 		ofSetFrameRate(3);
-		mypixels.settopleft(player_center.x,1);
+		int width = mypixels.get_width();
+		mypixels.settopleft(player_center.x - width / 2, 1);
 		mypixels.setboard(2, 2, 3, 3);
 		mypixels.change_v(0, 0,1);
 }
-	else if (new_status == "TEST2") {   //mainly purple
+	else if (new_status == "TEST2") {   //mainly purple, also some red
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 15; j++) {
 			my_img[i][j] = BLACK;
@@ -186,7 +188,8 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST2";
 		create_pixel_alien(mypixels);
 		ofSetFrameRate(3);
-		mypixels.settopleft(player_center.x, 1);
+		int width = mypixels.get_width();
+		mypixels.settopleft(player_center.x - width / 2, 1);
 		mypixels.setboard(0, 0, 2, 2);
 		mypixels.change_v(0, 1, 1);
 }
@@ -199,7 +202,8 @@ void ofApp::change_status(string new_status) {
 	    game_state = "TEST3";
 	     create_pixel_bubble(mypixels);
 		 ofSetFrameRate(3);
-		 mypixels.settopleft(player_center.x,1);
+		 int width = mypixels.get_width();
+		 mypixels.settopleft(player_center.x - width / 2, 1);
 		 mypixels.setboard(0, 0, 2, 2);
 		 mypixels.change_v(0,0,1);
 }
@@ -212,7 +216,8 @@ void ofApp::change_status(string new_status) {
 	   game_state = "TEST4";
 	   create_pixel_acaleph(mypixels);
 	   ofSetFrameRate(10);
-	   mypixels.settopleft(player_center.x,1);
+	   int width = mypixels.get_width();
+	   mypixels.settopleft(player_center.x - width / 2, 1);
 	   mypixels.setboard(1, 1, 2, 2);
 	   mypixels.change_v(1, 0, 5);
 }
@@ -225,8 +230,9 @@ void ofApp::change_status(string new_status) {
 	  game_state = "TEST5";
 	  create_pixel_evil(mypixels);
 	  ofSetFrameRate(3);
-	  mypixels.settopleft(player_center.x, 1);
-	  mypixels.setboard(1, 1, 2, 2);
+	  int width=mypixels.get_width();
+	  mypixels.settopleft(player_center.x-width/2, 1);
+	  mypixels.setboard(1, 1, 2, 4);
 	  mypixels.change_v(0, 1, 3);
     }
 	else if (new_status == "GAME OF LIFE") {
@@ -251,6 +257,21 @@ void ofApp::change_status(string new_status) {
 		  }
 	  }
 	   ofSetFrameRate(5);
+     }
+	else if (new_status == "CREATE") {     
+	      game_state = "CREATE";
+		  time = 0;
+		  next_state = add_info;
+		  if (add_info == "TEST" || add_info=="TEST2") {    //problem here, when "add_info=="TEST1"||add_info=="TEST2" ",something is wrong
+			  next = PURPLE;
+		  }
+		  else if (add_info == "TEST3" || add_info=="TEST5") {
+			  next = RED;
+		  }
+		  else if(add_info=="TEST4"){
+			  next = BLUE;
+		  }
+		  ofSetFrameRate(5);
      }
 }
 //--------------------------------------------------------------
@@ -376,7 +397,7 @@ void ofApp::setup(){
 	open = true;
 	last = BLACK;
 	next = BLACK;
-	player_center =ofPoint (2, 5);
+	player_center =ofPoint (7, 5);
 	change_status("TEST5");
 //	create_pixel_fly();
 }
@@ -649,23 +670,22 @@ void ofApp::update() {
 			int random = (int)ofRandom(0, 5);
 			switch (random) {
 			case 0:
-				change_status("TEST");
+				change_status("CREATE","TEST");
 				break;
 			case 1:
-				change_status("TEST2");
+				change_status("CREATE","TEST2");
 				break;
 			case 2:
-				change_status("TEST3");
+				change_status("CREATE","TEST3");
 				break;
 			case 3:
-				change_status("TEST4");
+				change_status("CREATE","TEST4");
 				break;
 			case 4:
-				change_status("TEST5");
+				change_status("CREATE","TEST5");
 				break;
 			}
 		//	update();
-			goto refresh;   //not a very good way, but fine, needs to improve here!
 			return;
 		}
 		open = open_hand;
@@ -810,6 +830,53 @@ void ofApp::update() {
 			}
 		}
 	}
+	else if (game_state == "CREATE") {
+	    if (time < create_time) {
+			time++;
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 15; j++) {
+					if (j>player_center.x-5&&j<player_center.x+5) {
+						if (my_img[i][j] != BLACK) {
+							float chance = ofRandom(0, 2);
+							if (chance < 1) {
+								my_img[i][j] = BLACK;
+							}
+						}
+						else{
+							float chance = ofRandom(0, 3);
+							if (next_state == "TEST2") {
+								if (chance < 1) {
+									float chance2 = ofRandom(0, 2);
+									if (chance2 < 1) {
+										my_img[i][j] = RED;
+									}
+									else {
+										my_img[i][j] = PURPLE;
+									}
+								}
+							}
+							else if (chance < 1) {
+								my_img[i][j] = next;
+							}
+						}
+					}
+					else {
+						if(my_img[i][j]!=BLACK){
+							float chance = ofRandom(0, 2);
+							if (chance < 1) {
+								my_img[i][j] = BLACK;
+							}
+						}
+					}
+				}
+			}
+		 }
+		else {
+			change_status(next_state);
+			goto refresh;   //not a very good way, but fine, needs to improve here!
+			return;
+		}
+    }
 	else if (game_state == "WAVE") {
 
 		myKinect.detect_body();
@@ -867,7 +934,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state == "FOLLOW"||game_state=="GAME OF LIFE"||game_state=="WAVE") {
+	else if (game_state == "FOLLOW"||game_state=="GAME OF LIFE"||game_state=="WAVE"||game_state=="CREATE") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);

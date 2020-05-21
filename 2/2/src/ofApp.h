@@ -23,6 +23,7 @@
 
 #define distance_to_start 1
 #define boom_time 5
+#define create_time 3
 //#define num_circles 150
 const ofColor BLACK(0, 0, 0);
 const ofColor WHITE(255, 255, 255);
@@ -57,7 +58,7 @@ class ofApp : public ofBaseApp{
 		void beback();
 		void check_snack_and_target();
 
-		void change_status(string new_status);
+		void change_status(string new_status,string add_info="NA");
 		void send_messages();
 
 		circle mycircles[15][10];
@@ -69,6 +70,7 @@ class ofApp : public ofBaseApp{
 
 		int score;
 		string game_state;
+		string next_state;    //only used when Game of Life changes to Create
 		int time;
 		ofColor my_img[10][15];
 		pixel_image mypixels;

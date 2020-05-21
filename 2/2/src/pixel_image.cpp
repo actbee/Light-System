@@ -180,6 +180,14 @@ ofPoint pixel_image::center() {
 	return ofPoint(x, y);
 }
 
+int pixel_image::get_height() {
+	return height;
+}
+
+int pixel_image::get_width() {
+	return width;
+}
+
 
 
 
