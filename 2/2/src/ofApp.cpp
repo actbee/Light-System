@@ -216,6 +216,19 @@ void ofApp::change_status(string new_status) {
 	   mypixels.setboard(1, 1, 2, 2);
 	   mypixels.change_v(1, 0, 5);
 }
+	else if (new_status == "TEST5") {
+	  for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			my_img[i][j] = BLACK;
+		}
+	  }
+	  game_state = "TEST5";
+	  create_pixel_evil(mypixels);
+	  ofSetFrameRate(3);
+	  mypixels.settopleft(player_center.x, 1);
+	  mypixels.setboard(1, 1, 2, 2);
+	  mypixels.change_v(0, 1, 1);
+    }
 	else if (new_status == "GAME OF LIFE") {
 	   game_state = "GAME OF LIFE";
 	   ofSetFrameRate(5);
@@ -360,8 +373,8 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
-	player_center =ofPoint (7, 5);
-	change_status("READY");
+	player_center =ofPoint (2, 5);
+	change_status("TEST5");
 //	create_pixel_fly();
 }
 
@@ -537,7 +550,7 @@ void ofApp::update() {
 			my_img[5][7] = RED;
 		}
 	}
-	else if (game_state == "TEST" || game_state == "TEST2" || game_state == "TEST3" || game_state == "TEST4") {
+	else if (game_state == "TEST" || game_state == "TEST2" || game_state == "TEST3" || game_state == "TEST4"||game_state=="TEST5") {
 
 	   int row = 0;
 	   int col = 0;
@@ -856,7 +869,7 @@ void ofApp::draw(){
 			}
 		}
 	}
-	else if (game_state=="READY"||game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4") {
+	else if (game_state=="READY"||game_state == "TEST"||game_state=="TEST2"||game_state=="TEST3"||game_state=="TEST4"||game_state=="TEST5") {
 		for (int x0 = 0; x0 < 15; x0++) {
 			for (int y0 = 0; y0 < 10; y0++) {
 				mycircles[x0][y0].setcolor(my_img[y0][x0]);
