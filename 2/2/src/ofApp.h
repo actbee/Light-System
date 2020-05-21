@@ -21,6 +21,8 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
+#define distance_to_start 1
+#define boom_time 5
 //#define num_circles 150
 const ofColor BLACK(0, 0, 0);
 const ofColor WHITE(255, 255, 255);
@@ -75,4 +77,6 @@ class ofApp : public ofBaseApp{
 		bool open;
 		sender mysender;
 		ofPoint player_center;
+		ofColor last;
+		ofColor next;
 };

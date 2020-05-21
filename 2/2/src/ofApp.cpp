@@ -231,6 +231,7 @@ void ofApp::change_status(string new_status) {
     }
 	else if (new_status == "GAME OF LIFE") {
 	   game_state = "GAME OF LIFE";
+	   time = 0;
 	   ofSetFrameRate(5);
      }
 	else if (new_status == "WAVE") {
@@ -373,6 +374,8 @@ void ofApp::setup(){
 	}
 	hand = "LEFT";
 	open = true;
+	last = BLACK;
+	next = BLACK;
 	player_center =ofPoint (2, 5);
 	change_status("TEST5");
 //	create_pixel_fly();
@@ -381,10 +384,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	/*for (int i = 0; i < num_circles; i++) {
-		mycircles[i].update();
-	}*/
-	//myKinect.UpdateKinectV2();
 
 	if (game_state == "START")
 	{
@@ -559,7 +558,7 @@ void ofApp::update() {
 		bool open_hand = myKinect.openhand();
 		float point = myKinect.get_depth();
 
-		if (point < 1.25) {
+		if (point <distance_to_start) {
 			open = true;
 			change_status("READY");
 			cout << "start game" << endl;
@@ -568,6 +567,15 @@ void ofApp::update() {
 
 		if (open == true && open_hand == false) {
 			open = open_hand;
+			if (game_state == "TEST" || game_state == "TEST2") {
+				last = PURPLE;
+			}
+			else if (game_state == "TEST3" || game_state == "TEST5") {
+				last = RED;
+			}
+			else {
+				last = BLUE;
+			}
 			change_status("GAME OF LIFE");
 			return;
 		}
@@ -619,13 +627,16 @@ void ofApp::update() {
 
 	}
 	else if (game_state == "GAME OF LIFE") {
+	if (time < boom_time) {
+		time++;
+	}
 	   int row = 0;
 	   int col = 0;
 	   myKinect.detect_body();
 	   bool track = body_info(row, col);
 		bool open_hand = myKinect.openhand();
 		float point = myKinect.get_depth();
-		if (point < 1.25) {
+		if (point < distance_to_start) {     
 			open = true;
 			change_status("READY");
 			cout << "start game" << endl;
@@ -718,11 +729,34 @@ void ofApp::update() {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 15; j++) {
 				if (check[i][j] == 3) {
-					my_img[i][j] = PURPLE;
-					no = false;
+					if (my_img[i][j] ==RED) {
+						float chance = ofRandom(0, 2);
+						if (chance < 1) {
+							my_img[i][j] = PURPLE;
+							no = false;
+						}
+						else {
+							my_img[i][j] = last;
+						}
+					}
+					else {
+						my_img[i][j] = PURPLE;
+						no = false;
+					}
 				}
 				else if (check[i][j] < 2 || check[i][j] >= 4) {
-					my_img[i][j] = BLACK;
+					if (my_img[i][j]!=BLACK&&time<boom_time) {
+						float chance = ofRandom(0, 2);
+						if (chance < 1) {
+							my_img[i][j] =BLACK;
+						}
+						else {
+							my_img[i][j] = last;
+						}
+					}
+					else {
+						my_img[i][j] = BLACK;
+					}
 				}
 			}
 		}
