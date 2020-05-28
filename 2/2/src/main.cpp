@@ -64,7 +64,7 @@ void go_kinect(void *) {
 		cerr << "Can't open sensor" << endl;
 		return;
 	}
-
+	
 	// 2. Color Related code
 	IColorFrameReader* pColorFrameReader = nullptr;
 	cv::Mat	mColorImg;
@@ -78,7 +78,7 @@ void go_kinect(void *) {
 			cerr << "Can't get color frame source" << endl;
 			return ;
 		}
-
+		
 		// 2b. Get frame description
 		cout << "get color frame description" << endl;
 		int		iWidth = 0;
@@ -110,7 +110,7 @@ void go_kinect(void *) {
 		mColorImg = cv::Mat(iHeight, iWidth, CV_8UC4);
 		uBufferSize = iHeight * iWidth * 4 * sizeof(BYTE);
 	}
-
+	
 	// 3. Body related code
 	IBodyFrameReader* pBodyFrameReader = nullptr;
 	IBody** aBodyData = nullptr;
@@ -164,7 +164,7 @@ void go_kinect(void *) {
 	{
 		
 	
-
+/*
 		// 4a. Get last frame
 		IColorFrame* pColorFrame = nullptr;
 		if (pColorFrameReader->AcquireLatestFrame(&pColorFrame) == S_OK)
@@ -180,7 +180,7 @@ void go_kinect(void *) {
 		}
 		
 		cv::Mat mImg = mColorImg.clone();
-		
+		*/
 		// 4b. Get body data
 		IBodyFrame* pBodyFrame = nullptr;
 		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)
@@ -241,30 +241,29 @@ void go_kinect(void *) {
 								goto rjmp;
 							}
 							float rk = (ry2 - ry1) / (rx2 - rx1);
-							int dir = 0;
+							int dirr = 0;
 							if (rk < 1.0&&rk >= -1.0) {
 								if (rx2 > rx1) {
 								//	cout << "right" << rk << endl;
-									dir = 1;
+									dirr = 1;
 								}
 								else if (rx2 < rx1) {
 								//	cout << "left" << rk << endl;
-									dir = 3;
+									dirr = 3;
 								}
 							}
 							else {
 							rjmp:
 								if (ry2 > ry1) {
 								//	cout << "up" << rk << endl;
-									dir = 2;
+									dirr= 2;
 								}
 								else if (ry2 <= ry1) {
 								//	cout << "down" << rk << endl;
-									dir = 4;
+									dirr = 4;
 								}
 							}
-							DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dir);
-
+							int dirl = 0;
 							float lx1 = aJoints[JointType_ElbowLeft].Position.X;
 							float ly1 = aJoints[JointType_ElbowLeft].Position.Y;
 							float lx2 = aJoints[JointType_HandLeft].Position.X;
@@ -277,29 +276,30 @@ void go_kinect(void *) {
 							if (lk < 1.0&&lk >= -1.0) {
 								if (lx2 > lx1) {
 								//	cout << "right" << lk << endl;
-									dir = 1;
+									dirl = 1;
 								}
 								else if (lx2 < lx1) {
 								//	cout << "left" << lk << endl;
-									dir = 3;
+									dirl= 3;
 								}
 							}
 							else {
 							ljmp:
 								if (ly2 > ly1) {
 								//	cout << "up" << lk << endl;
-									dir = 2;
+									dirl = 2;
 								}
 								else if (ly2 <= ly1) {
 								//	cout << "down" << lk << endl;
-									dir = 4;
+									dirl = 4;
 								}
 							}
 
 							float get = aJoints[JointType_Head].Position.Z;
 							float check = aJoints[JointType_Head].Position.X;
 							if (abs(check) < 0.5) {
-								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper, dir);
+								DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dirr);
+								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper, dirl);
 								HandState left;
 								HandState right;
 								if (pBody->get_HandLeftState(&left)==S_OK&&pBody->get_HandRightState(&right)==S_OK) {
