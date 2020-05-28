@@ -263,7 +263,7 @@ void go_kinect(void *) {
 									dir = 4;
 								}
 							}
-							
+							DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dir);
 
 							float lx1 = aJoints[JointType_ElbowLeft].Position.X;
 							float ly1 = aJoints[JointType_ElbowLeft].Position.Y;
@@ -299,7 +299,6 @@ void go_kinect(void *) {
 							float get = aJoints[JointType_Head].Position.Z;
 							float check = aJoints[JointType_Head].Position.X;
 							if (abs(check) < 0.5) {
-								DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_HandRight], pCoordinateMapper, dir);
 								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_HandLeft], pCoordinateMapper, dir);
 								HandState left;
 								HandState right;
