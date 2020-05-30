@@ -164,7 +164,7 @@ void go_kinect(void *) {
 	{
 		
 	
-/*
+
 		// 4a. Get last frame
 		IColorFrame* pColorFrame = nullptr;
 		if (pColorFrameReader->AcquireLatestFrame(&pColorFrame) == S_OK)
@@ -178,9 +178,9 @@ void go_kinect(void *) {
 			// 4e. release frame
 			pColorFrame->Release();
 		}
-		
+	
 		cv::Mat mImg = mColorImg.clone();
-		*/
+		
 		// 4b. Get body data
 		IBodyFrame* pBodyFrame = nullptr;
 		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)
@@ -373,7 +373,7 @@ int main()
 
 	ofSetupOpenGL(1024, 768, OF_WINDOW);			// <-------- setup the GL context
 	
-	_beginthread(go_kinect,1024*1024,NULL);
+	//_beginthread(go_kinect,1024*1024,NULL);
 	ofRunApp(new ofApp());
 	
 
