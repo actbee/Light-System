@@ -5,15 +5,15 @@
 ## Introduction
 
 This is a project I made based on Openframeworks, an amazing creative coding frameworks. 
-Things are keep going so this project is still on the move.
-I will update this document once I have finished most of the works. 
+The project is an interative light system with an arcade outlook. With Kinect V2 it can recognise simple gesture and give output images with
+a style of pixel culture or a classic SNAKE game interactively.
 
-## GAP Warning
 
-Since most of the professors in PD actually do not care about the design of hardwares and the code itself, 
-there is a great possibility that I can not gradute on time even though I finish this project normally.
-Think really hard about how to release a nice visual output. God helps me!
+## Meaning
 
-![LOOSE ENDS](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/1.png)
+Using a whole new way to interactive with the past things, please try to consider the relationship between the past and the future. If it is 
+possible to bring the old things reborn by the new technologies? And feel the consistant humanism thoughts under the fast growing technologies.
+
+
 
 
