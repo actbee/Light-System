@@ -15,5 +15,8 @@ Using a whole new way to interactive with the past things, please try to conside
 possible to bring the old things reborn by the new technologies? And feel the consistant humanism thoughts under the fast growing technologies.
 
 
+## Video
 
+You can find the video of this project from this link: [https://alioss.pinwall.design-engine.org/video/6c2kXH5rptrfD7d3PTR6.mp4?OSSAccessKeyId=LTAIsvXXw2cmRUG2&Expires=1591193061&Signature=zfjCYR4hAwRsw42CcduxvKsjtvQ%3D]
 
+![PIXEL](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/1.png?raw=true)
