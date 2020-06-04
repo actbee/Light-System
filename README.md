@@ -17,13 +17,13 @@ possible to bring the old things reborn by the new technologies? And feel the co
 
 ## How to run
 
-Please make sure you have installed the basic Kinect V2, OpenCV and Openframeworks environment on WIN before running this. The IDE I used in this project is VS2017. 
-You can find all of the core codes under the 2/2/sec/ file. In the KINECT file there are some codes I wrote to test the function of Kinect V2. You can find the design
+Please make sure you have installed the basic Kinect V2, OpenCV and Openframeworks environments on WIN before running this. The IDE I used in this project is VS2017. 
+You can find all of the core codes under the 2/2/sec/file. In the KINECT file there are some codes I wrote to test the function of Kinect V2. You can find the design
 report (in Chinese) in the PPT file.
 
 ## Video
 
-You can find the video of this project from this link: https://alioss.pinwall.design-engine.org/video/6c2kXH5rptrfD7d3PTR6.mp4?OSSAccessKeyId=LTAIsvXXw2cmRUG2&Expires=1591193061&Signature=zfjCYR4hAwRsw42CcduxvKsjtvQ%3D
+You can find the video of this project from this link: https://alioss.pinwall.design-engine.org/video/6c2kXH5rptrfD7d3PTR6.mp4?OSSAccessKeyId=LTAIsvXXw2cmRUG2&Expires=1591288986&Signature=pcygLl6pJWxnEl7mWaI9180ZwQQ%3D
 
 
 ![PIXEL](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/1.png?raw=true)
