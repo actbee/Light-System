@@ -23,7 +23,7 @@ report (in Chinese) in the PPT file.
 
 ## Video
 
-You can find the video of this project from this link: https://alioss.pinwall.design-engine.org/video/6c2kXH5rptrfD7d3PTR6.mp4?OSSAccessKeyId=LTAIsvXXw2cmRUG2&Expires=1591288986&Signature=pcygLl6pJWxnEl7mWaI9180ZwQQ%3D
+You can find the video of this project from this link: https://alioss.pinwall.design-engine.org/video/6c2kXH5rptrfD7d3PTR6.mp4?OSSAccessKeyId=LTAIsvXXw2cmRUG2&Expires=1591325962&Signature=bY8WYvTEpX812fAnR28JhiedJj4%3D
 
 
 ![PIXEL](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/1.png?raw=true)
