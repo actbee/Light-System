@@ -23,7 +23,7 @@ report (in Chinese) in the PPT file.
 
 ## Video
 
-You can find the video of this project from this link: https://www.bilibili.com/video/BV1x54y1Q7mP
-and this link: https://www.youtube.com/watch?v=vJQ7U_tFxb0
+You can find the video of this project from this: [BiliBili](https://www.bilibili.com/video/BV1x54y1Q7mP ) 
+and this [Youtube](https://www.youtube.com/watch?v=vJQ7U_tFxb0 ) 
 
 ![PIXEL](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/1.png?raw=true)
