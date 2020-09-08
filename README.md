@@ -27,7 +27,7 @@ Here in order to low down the complexity of the circut design, I choose a red an
 together we can see the purple color, which is an obvious result thourgh the principle of Color Mixing(also this is how the main idea of LOGO comes from). So by this
 means I can control in total 4 status of each LED light(red, blue, purple and off) and use them to get some meaningful images.
 
-![testimg](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/test.png?raw=true）
+![testimg](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/test.png?raw=true)
 
 
 ## Meaning
