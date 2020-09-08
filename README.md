@@ -21,14 +21,29 @@ Finally the person notice the interactive result and do the next step, the proce
 
 
 According to the distance between the person and the Arcade, I devide two areas, A and B. In area A people can play games and in area B there are some randomed 
-animes which can be interacted with people. The depth data of the real-time skeleton data can tell the system whether the person is in area A or area B.
+animes which can be interacted with people. The depth data of the real-time skeleton data can tell the system whether the person is in area A or area B. Some simple
+but natural human gestures are choosed to interact and the following image shows all of them.
+
+![gesture](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/gestures.png?raw=true)
+
+For the considertion of safety, instead using high power strong light LED, I choose low power LED and by paralleling some of them together and let the light
+pass throug some specific meterials placed beyond a nice pixel light can be provided. The principle of producing those beautiful pixel lights is shown in the 
+following image. The visual effect is strongly recongnised with the pixel (hole) width, the light-passing material choosed, the sickness of this material 
+and the distance between the material and the LED light. I have tested multiple possible materials in multiple distances to get the best visual result.
+
+![principle](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/led.png?raw=true)
 
 Here in order to low down the complexity of the circut design, I choose a red and a blue LED light, both in single color. When the blue and red LED light turn on
 together we can see the purple color, which is an obvious result thourgh the principle of Color Mixing(also this is how the main idea of LOGO comes from). So by this
-means I can control in total 4 status of each LED light(red, blue, purple and off) and use them to get some meaningful images.
+mean I can control in total 4 status of each LED light(red, blue, purple and off) and use them to get some meaningful images.
 
 ![testimg](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/test.png?raw=true)
 
+Finally all of these circuts are put all together in the hardware. The following image describes the strutre of the hardware.
+The control board gets the information from the laptop and controls the LED circuit board. Lights from small LED lights pass through the ABS skeleton to get together, 
+forming the pixel light. Finally the pixel light passes through the transparent PC to get the final visual result.
+
+![hardware](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/hardware.png?raw=true)
 
 ## Meaning
 
@@ -37,6 +52,9 @@ something in the past. So I choose a classic SNAKE game, some pixel charachters 
 
 Using a whole new way to interactive with the past things, please try to consider the relationship between the past and the future. If it is possible to bring the 
 old things reborn by the new technologies? And feel the consistant humanism thoughts under the fast growing technologies.
+
+Besides these kinds of art-guided thinking, this project can be expanded to help the old practing their body, help the physical injured patients to get recovery or 
+teach the young kids. Many potential situations need to be discussed.
 
 ## How to run
 
