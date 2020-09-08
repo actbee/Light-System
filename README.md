@@ -32,7 +32,7 @@ means I can control in total 4 status of each LED light(red, blue, purple and of
 ## Meaning
 
 Since the total size of pixels is quite small(only 15x10), it is a great challenge to give a meaningful output. Inspired by the Pixel Culture, I decide to present 
-something in the past. 
+something in the past. So I choose a classic SNAKE game, some pixel charachters in some games, and a modified GAME OF LIFE to present.
 
 Using a whole new way to interactive with the past things, please try to consider the relationship between the past and the future. If it is possible to bring the 
 old things reborn by the new technologies? And feel the consistant humanism thoughts under the fast growing technologies.
@@ -50,6 +50,6 @@ and this [Youtube](https://www.youtube.com/watch?v=vJQ7U_tFxb0 )
 
 This project was exhibited on the [Aisan New Generation Design Exhibition(2020)](http://www.iden.cn/home/active.NewYouzhan/workinfo?id=6761).
 
-![2]((https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/2.png?raw=true))
+![2](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/2.png?raw=true)
 
-![3]((https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/3.jpg?raw=true))
+![3](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/3.jpg?raw=true)
