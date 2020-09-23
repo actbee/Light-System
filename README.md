@@ -4,8 +4,8 @@
 
 ## Introduction
 
-This is a project I made based on Openframeworks, an amazing creative coding frameworks. 
-The project is an interative light system with an arcade outlook. With Kinect V2 it can recognise simple gesture and give output images with
+This is a project I made based on openFrameswork, an amazing creative coding frameworks. 
+The project is an interactive light system with an arcade outlook. With Kinect V2 it can recognise simple gesture and give output images with
 a style of pixel culture or a classic SNAKE game interactively.
 
 ![PIXEL](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/1.png?raw=true)
@@ -26,9 +26,9 @@ but natural human gestures are choosed to interact and the following image shows
 
 ![gesture](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/gestures.png?raw=true)
 
-For the considertion of safety, instead using high power strong light LED, I choose low power LED and by paralleling some of them together and let the light
-pass throug some specific meterials placed beyond a nice pixel light can be provided. The principle of producing those beautiful pixel lights is shown in the 
-following image. The visual effect is strongly recongnised with the pixel (hole) width, the light-passing material choosed, the sickness of this material 
+For the consideration of safety, instead of using high power strong light LED, I choose the low power LED and by paralleling some of them together and let the light
+passes throug some specific meterials placed beyond to provid pixel light well. The principle of producing those beautiful pixel lights is shown in the 
+following image. The visual effect is strongly connected with the pixel (hole) width, the light-passing material choosed, the sickness of this material 
 and the distance between the material and the LED light. I have tested multiple possible materials in multiple distances to get the best visual result.
 
 ![principle](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/led.png?raw=true)
@@ -58,7 +58,7 @@ teach the young kids. Many potential situations need to be discussed.
 
 ## How to run
 
-Please make sure you have installed the basic Kinect V2, OpenCV and Openframeworks environments on WIN before running this. The IDE I used in this project is VS2017. 
+Please make sure you have installed the basic Kinect V2, OpenCV and openFrameswork environments on WIN before running this. The IDE I used in this project is VS2017. 
 You can find all of the core codes under the 2/2/sec/file. In the KINECT file there are some codes I wrote to test the function of Kinect V2. You can find the design
 report (in Chinese) in the PPT file.
 
