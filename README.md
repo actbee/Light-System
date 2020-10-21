@@ -68,6 +68,7 @@ You can find the video of this project from this: [BiliBili](https://www.bilibil
 and this [Youtube](https://www.youtube.com/watch?v=vJQ7U_tFxb0 ) 
 
 This project was exhibited on the [Aisan New Generation Design Exhibition(2020)](http://www.iden.cn/home/active.NewYouzhan/workinfo?id=6761).
+
 You can find the paper of this project on [arXiv](https://arxiv.org/abs/2010.10180).
 
 ![2](https://github.com/actbee/Interactive-Light-System-Design-Based-On-Simple-Gesture-Recognition-/blob/master/images/chosen/2.png?raw=true)
