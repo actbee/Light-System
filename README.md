@@ -67,7 +67,7 @@ report (in Chinese) in the PPT file.
 You can find the video of this project from this: [BiliBili](https://www.bilibili.com/video/BV1x54y1Q7mP ) 
 and this [Youtube](https://www.youtube.com/watch?v=vJQ7U_tFxb0 ) 
 
-<video controls width="800" height="600" src="https://www.bilibili.com/video/BV1x54y1Q7mP"></video>
+<iframe src="//player.bilibili.com/player.html?aid=840943071&bvid=BV1x54y1Q7mP&cid=199270892&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 This project was exhibited on the [Aisan New Generation Design Exhibition(2020)](http://www.iden.cn/home/active.NewYouzhan/workinfo?id=6761).
 
